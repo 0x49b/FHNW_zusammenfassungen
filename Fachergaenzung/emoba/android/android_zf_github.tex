@@ -1,0 +1,1115 @@
+\documentclass[a4paper,10pt,titlepage=false]{scrreprt}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[german]{babel}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+%opening
+\title{Entwicklung Mobiler Applikationen : Android}
+\author{Roland Hediger}
+\date{\today}
+\usepackage{fancyhdr}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{amssymb}
+\newcommand{\pic}[2][figure]{\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.3]{#2}
+ % rsc.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+ \caption{#1}
+\end{figure}
+}
+\usepackage{framed}
+% Code listenings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{
+ language=Java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left,               % Ort der Zeilennummern
+ numberstyle=\tiny,          % Stil der Zeilennummern
+ stepnumber=5,              % Abstand zwischen den Zeilennummern
+ numbersep=5pt,              % Abstand der Nummern zum Text
+ tabsize=2,                  % Groesse von Tabs
+ extendedchars=true,         %
+ breaklines=true,            % Zeilen werden Umgebrochen
+ frame=b,         
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false,           % Leerzeichen anzeigen ?
+ showtabs=false,             % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=5pt,
+ framexbottommargin=4pt,
+ showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+\setuptoc{toc}{leveldown}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\pagestyle{fancy}
+\chapter{Android GUI}
+\section{View Klassen}
+Die Klasse View ist die Basisklasse der User Interface komponenten.
+\begin{itemize}
+ \item UI-Widgets wie Buttn,Textfield,TextView
+ \item LayoutKlassen
+ \item Zeichenöberfläche wie SurfaceView,GLSurfaceView.
+
+\end{itemize}
+UI können om Android auf 2 Arten, Prozedural oder Deklarativ.
+\begin{description}
+	\item[Deklarativ Vorteile]
+	\begin{itemize}
+	 \item Kurzer in XML,
+	 \item leserlicher
+	 \item GUI Designers können XML Manipuliere
+	\end{itemize}
+	\item[Performanz von XML GUI] Anderoid übersetzt die XML Dateien zur Kompilationszeit in ein komprimiertes binäres Format. Das \textbf{Android Asset Packaging Tool - aapt} kompilert Rescourcen in ein binäres Format. Ist in Eclipse Plugin integriert. Das übersetzte binäre Format wird geladen. Verarbeitung zur Runtime ist notwendig.
+\end{description}
+Eine Activity ist die Applikationskomponente, welche das User Interface zur Verfügung stellt. Über
+dieses Interface kann ein Benutzer mit der Applikation interagieren. Jede Activity besitzt ein Fenster
+(Window) in welches das Benutzerinterface gezeichnet wird. Deshalb ist die Methode
+setContentView() sehr wichtig, denn über diese Methode wird ein geeignetes User-Interface
+gesetzt, d.h. eine View.
+Die View-Klasse ist die Basisklasse aller User Interface Komponenten. Diese Komponenten können
+UI-Widget (Button, EditText, ...), Layout-Klassen (LinearLayout, RelativeLayout, ...) oder
+Zeichenflächen (SurfaceView, VideoView, ...) sein. Die View-Hierarchie ist wie folgt:
+
+\pic{vklass.png}	
+
+\section{Class R}
+Die Klasse R wird automatisch vom Eclipse Plugin und aapt generiert und synchron gehalten. die Klasse umfasst alle Resourcen die in den XML Files unter der Folder \textbf{res} abgelegt sind. \texttt{Hex Zahlen sind Handles auf die eigentliche Resource}. de
+
+\begin{lstlisting}[caption=R Class Example, language=xml]
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingBottom="@dimen/activity_vertical_margin"
+android:paddingLeft="@dimen/activity_horizontal_margin"
+android:paddingRight="@dimen/activity_horizontal_margin"
+android:paddingTop="@dimen/activity_vertical_margin"
+tools:context="ch.fhnw.edu.helloworld.MainActivity$PlaceholderFragment" >
+<TextView android:id="@+id/mytext"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="@string/hello_world" />
+</RelativeLayout>
+
+\end{lstlisting}
+
+\section{Layout}
+Ein Layout ist ein Container für mehrere Child Objekte und erlaubt die Positionierung dieser Objekte innerhalb des Containers.
+\begin{description}
+	\item[FrameLayout] Positioniert alle Child objekte oben links. (Tabbed Views/Image Switcher)
+	\item[LinearLayout] ChildObjekte in einer Reihe oder Kolonne. Meist verwendete Layout.
+	\item [RelativeLayout] ChildObjekte relativ zuenander vor allem in Formular eingesetzt.
+	\item [TableLayout] Analog Html Table.
+\end{description}
+
+\section{Widgets} Gibt eine grosse breite davon..
+\begin{description}
+\item[Widget Deklarativ] 
+ \begin{lstlisting}[caption=Widget Beispiel,language=xml]
+ 	<TextView android:id="@+id/status"
+android:layout_height="wrap_content"
+android:textSize="10sp"
+android:gravity="right"
+android:layout_width="match_parent"
+android:textColor="#ffff00" />
+\end{lstlisting}
+\begin{description}
+\item[id] Die neue Resource ID "status" wird erzeugt - kann im Programm über r.status zugegriffen werden.
+\item[gravity] Platzierung
+\end{description}
+\item[SurfaceView] eignet sich um eigene Szenen zu zeichnen. Über die klasse SurfaceHolder kann die Zeichenfläche verändert werden.\\
+Erhohlt über getHolder()\\
+Dazu mussen in der eignen Klasse diverse Callback Methoden implementiert werden:
+\begin{verbatim}
+   Callback Methoden implementiert werden:
+ ... implements SurfaceHolder.Callback
+ surfaceChanged(), surfaceCreated(),
+surfaceDestroyed()
+\end{verbatim}
+\item[Surface View und Render Thread] Das zeichnen im eigenen Thread auslagern.
+Der Thread wird in \texttt{Surfacecreated} gestartet und in \texttt{SurfaceDestroyed} gestoppt. Zum zeichnen braucht es in \textbf{Canvas}. Canvas stellt verschiedene methoden zur Verfügung, um Zeichen-Primitive wie Kreis Rechteck, Linie,use darzustellen.
+\pic{canvloop.png}
+\item[Touch Screen] Jede View kennt verschiedene OnXXEvent() Methoden z.B :
+\begin{itemize}
+  \item onTouchEvent(MotionEvent event)
+  \subitem Die Klasse MotionEvent umfasst verschiedenste informationen wie x und y Koordinaten des Event. Der Typ des Event z.b  des Event ACTION\_UP, ACTION\_DOWN
+
+\end{itemize}
+
+\end{description}
+
+\section{Aufbau eines Games}
+Spiele sind in den meisten Fällen nicht event bassiert, sondern die laufen ständig. Sie zeichnen die Speilwelt permanent neu, hohlen sich neue Benutzereingaben und simulieren die Spielwelt.
+Ein Seperater Thread muss die Applikation permanent neu Zeichnen : Game Loop.
+\begin{lstlisting}[caption=Game Loop]
+while( !done ) {
+processInput( )
+simulateWorld( )
+renderWorld( )
+}
+
+\end{lstlisting}
+  
+\chapter{Intents}
+\section{Einführung}
+Das Android-Betriebssystem verwendet einen asynchronen Mechanismus namens Intent für den
+Austausch von Nachrichten. Dadurch lassen sich im laufenden Betrieb anfallenden Aufgaben mit
+einer dazu passenden Android-Activity koppeln. Man kann Intents dazu verwenden, um
+\begin{itemize}
+
+
+ \item  eine Activity innerhalb derselben Anwendung aufzurufen,
+ \item  eine Activity innerhalb einer anderen Anwendung aufzurufen,
+ \item  einen Service zu starten,
+ \item  eine Applikation über Systemereignisse zu informieren.
+\end{itemize}
+Der Einsatz von Intents bietet sich auch dann an, wenn mit Hilfe des Betriebssystems eine
+passende Activity gesucht wird, die eine bestimmte Aufgabe übernehmen soll, so z.B. das Abspielen
+eines Videos (Youtube vs. Video App). Die folgenden drei Zeilen Programmcode starten
+beispielsweise die Dialer Applikation, wobei die zu wählende Nummer automatisch im Eingabefeld
+erscheint
+
+
+
+\begin{lstlisting}
+ Uri number = Uri.parse("tel:2125551212");
+Intent dial = new Intent(Intent.ACTION_DIAL, number);
+startActivity(dial);
+\end{lstlisting}
+Wenn man sich eine Activity als einen Grundstein vorstellt auf dem alle Android Anwendungen
+aufbauen, dann stellen Intents den Klebstoff dar, der diese Activities miteinander verbindet. Dadurch
+kann der Anwender flexibel von einer Activity zur nächsten wechseln
+
+\section{Details}
+Ein Intent (android.content.Intent) besteht aus zwei Teilen:
+\begin{enumerate}
+
+
+\item die Aktion, die ausgeführt werden soll, und
+\item die Daten, die verarbeitet werden sollen
+\end{enumerate}
+Wenn man einen Intent erstellt und verschickt, weist man das Betriebssystem an eine vorher
+definierte Aufgabe an eine bestimmte Activity zu delegieren. So ruft man zum Beispiel mit dem
+Intent, der die Aktion ACTION\_VIEW festlegt und als Daten die URL einer Webseite enthält, die
+Browser Activity auf. Es ist nun diese Activity welche die geforderte Kombination aus Aktion und
+Daten verarbeitet.
+\begin{lstlisting}
+ Uri address = Uri.parse("http://www.perggurl.org");
+Intent surf = new Intent(Intent.ACTION_VIEW, address);
+startActivity(surf);
+\end{lstlisting}
+\begin{framed}
+ Das Android Betriebssystem sucht dabei nach einer passenden Activity für die im Intent festgelegten
+Kombination aus Aktion und Daten (hier eine URL) und wird bei der Browser Anwendung fündig.
+Android lädt nun den Browser in den Vordergrund, die aktuelle Activity wird auf einen Stack
+geschoben und bleibt inaktiv im Hintergrund. Der Browser lädt die gewünschte Webseite. Wenn der
+Browser beendet wird, aktiviert Android die Activity die den Intent generiert hat - und die im Stack
+zuoberst liegt.
+\end{framed}
+
+\section{Manifest}
+Android führt genau Buch über alle auf einem Gerät installierten Anwendungen sowie über alle
+Activities, die im Android-Manifest deklariert sind. Die <activity> Definition in der Manifest-Datei
+bestimmt, welche Aktionen und Datentypen eine Activity verarbeiten kann. Diese Fähigkeit wird über
+den Intent-Filter beschrieben. Das Android-System nutzt diese Informationsangaben um einen
+Intent mit einer entsprechenden Activity zu verknüpfen. Bei einem Intent-Request wählt das System
+immer die Activity, die am besten dazu geeignet ist, den Request zur Laufzeit zu verarbeiten. Wenn
+es nun mehrere Activities geben sollte die zu einem Intent passen, dann entscheidet der Anwender
+schlussendlich über einen Dialog welche Applikation zum Einsatz kommen soll.
+
+Was passiert, wenn keine \textbf{passende Activity auf dem Gerät installiert ist? }Normalerweise wird eine
+Exception ausgelöst. Man kann als Entwickler aber überprüfen, ob Activities auf dem System
+existieren, die für bestimmte Intents geeignet sind. Dazu kommen Methoden der PackageManager-
+Klasse zum Einsatz, wie z.B. queryIntentActivities() oder
+queryBroadcastReceivers().
+
+\textit{Es gibt eine Reihe von Standard-Aktionen, wie z.B. ACTION\_VIEW, ACTION\_EDIT oder
+ACTION\_SEND, die auf der Android Plattform universell einsetzbar sind. Entwickler können
+natürlich auch eigene Activities und Intents schaffen. Durch den Einsatz massgeschneiderten Intents
+lassen sich komplexe Programme entwickeln.}
+
+\section{Expliziter und Impliziter Events}
+\begin{description}
+ \item [startActivity(Intent intent)] wird ein \textbf{Impliziter} Intent eingesetzt, der alle Activities anspricht, die den Intent "edu.
+intro.HELLOWORLD" verarbeiten können. 
+\begin{verbatim}
+ startActivity(new Intent("edu.intro.HELLOWORLD"));
+\end{verbatim}
+\item[startActivity(new Intent(Context context, Class<?> clazz))] \hfill \\
+Will der Applikationsentwickler den Intent Empfänger genauer spezifizieren, so muss er einen
+expliziten Intent einsetzen. Hier wird genau festlegt welche Activity gestartet werden soll. Dieser
+explizite Einsatz des Intents wird durch den Klassennamen ausgedrückt.
+Dieser Intent teilt der Android Plattform mit, dass eine Activity namens MyOtherActivity gestartet
+werden soll. Die entsprechende Klasse MyOtherActivity muss innerhalb der gleichen
+Anwendung implementiert sein und sie muss einen Eintrag in der Android-Manifest Datei der
+Anwendung haben.
+\begin{verbatim}
+  startActivity(new Intent(getApplicationContext(), MyOtherActivity.class));
+\end{verbatim}
+
+\item[startActivityForResult(Intent intent, int requestCode)] \hfill \\
+Erwartet man von der aufgerufenen Activity eine Antwort, zum Beispiel soll der Contact Picker
+Informationen über den ausgewählten Kontakt zurückgeben, so steht dem Entwickler die Methode
+startActivityForResult() zur Verfügung. Die aufrufende Activity kann eine Ergebnisrückgabe
+einfordern, indem die Activity mittels der startActivityForResult() gestartet wird. Das
+Ergebnis kann dann in der Callback Methode onActivityResult()der aufrufenden Activity
+verarbeitet werden:\\
+\begin{lstlisting}
+ ...
+startActivityForResult(intent, requestCode);
+...
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+...
+}
+\end{lstlisting}
+\end{description}
+
+\section{Daten übergeben mit Intents}
+Intents lassen sich auch dazu verwenden, zusätzliche Informationen zwischen Activities - und
+folglich zwischen Anwendungen - zu übermitteln. Dazu fügt man dem Intent weitere Eigenschaft
+hinzu, sogenannte Extras. Ein Extra besteht aus einer Kombination Bezeichnung und Wert. Man
+kann bestimmte Extra unter der Verwendung dieser Bezeichnung auslesen und schreiben, indem
+man die entsprechenden put() und get() Methoden verwendet, die in der Intent Klasse zur
+Verfügung stehen.
+Bei der Übermittelung von zusätzlichen Informationen zwischen den Activities können beliebige
+weitere Eigenschaften definiert werden. Es hat sich die Konvention eingebürgert, die Paketnamen
+der Anwendung als Präfix für die Bezeichnung des Extra zu benutzen. Hier ein Beispiel:
+\begin{lstlisting}
+ Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+Intent.putExtra("com.mygame.LEVEL", 7);
+startActivity(intent);
+Intent callingIntent = getIntent();
+int level = callingIntent.getIntExtra(("com.mygame.LEVEL", 1);
+\end{lstlisting}
+
+\chapter{Responsive Design}
+Das Aufkommen der Tablets führte zu einer weiteren Fragmentierung der mobilen Systeme.
+Insbesondere der viel grössere Bildschirm zwang die Entwickler Konzepte zu finden, welche
+einerseits erlauben, dass die gleiche Applikation auf den unterschiedlichen Gerätetypen lauffähig
+bleibt, und andererseits dass die vorhandenen Hardware-Ressourcen sinnvoll genutzt werden.
+Mit dem Responsive Design handelt es sich nun um die technische Umsetzung eines solchen
+Konzepts. Der grafische Aufbau einer „responsiven“ Seite erfolgt anhand der Möglichkeiten des
+jeweiligen Gerätes, mit dem die Seite betrachtet wird. Dies betrifft insbesondere die Anordnung und
+Darstellung einzelner Elemente, wie beispielsweise Navigation, Seitenspalten und Texte.
+
+
+\section{Fragments}
+Seit Android 3.0 lassen sich Activites aus mehreren Fragments zusammensetzen. Diese Fragmente
+stellen autonome Content-Bereiche bzw. Klassen dar, müssen aber immer innerhalb einer Activity
+ausgeführt werden. Sie können deshalb genau wie Activities ein Layout besitzen und übernehmen
+somit die Funktion die früher eine Activity hatte.
+Fragments besitzen einen umfangreicheren Lebenszyklus als die Activities. Er ist aber mit dem
+Lebenszyklus der Activity eng verzahnt, da das Fragment an die Host-Activity gebunden ist. Die
+einzelnen Lebenszyklusmethoden für die Erzeugung eines Fragments bis zu dessen Anzeige lauten:
+
+\begin{verbatim}
+ onAttach (Activity)
+onCreate(Bundle)
+onCreateView(LayoutInflater, ViewGroup, Bundle)
+onActivityCreated(Bundle)
+onStart()
+onResume()
+\end{verbatim}
+
+Früh wird die Methode onAttach aufgerufen, nämlich wenn das Fragment der Activity zugeordnet
+wird.
+onCreateView muss eine View zurückgeben. Hier können Initialisierungen speziell am Layout der
+View, also der Oberfläche des Fragments, vorgenommen werden. Ein Zugriff auf das Layout der
+Activity darf hier nicht erfolgen, da dieses Layout zum Zeitpunkt noch nicht existiert.
+onActivityCreated wird aufgerufen, nachdem die onCreate-Methode der Activity durchlaufen
+wurde, zu der das Fragment gehört. In dieser Methode steht somit die vollständige View-Hierarchie
+zur Verfügung, also auch die der Activity darüber. Dadurch liesse sich beispielsweise auch auf
+Views der Activity zugreifen. Insbesondere eignet sich diese Methode für dynamische Anpassungen
+des Layouts, beispielsweise wenn Zustände im Bundle gespeichert wurden. Generell kann diese
+Methode für Initialisierungen genutzt werden, da sie recht spät im Lebenszyklus des Fragments und
+seiner Activity aufgerufen wird.
+
+\section{Resourcen}
+\begin{description}
+
+
+\item[drawable-XXX:] Die drawable Ordner enthalten Bilder Ressourcen in unterschiedlicher Auflösung.
+Die App fordert z.B. die Ressource @drawable/icon an, und auf einem hochauflösendem Gerät
+wird dann vom System automatisch die aus dem drawable-hdpi Verzeichnis genommen und auf
+einen niedrigauflösendem die ldpi-Version. Bei einem Prototyp kann man sich auf ein drawable-
+Verzeichnis beschränken, dann skaliert Android die Ressource auf die konkret passende Grösse.
+Der Nachteil dabei ist, dass die skalierten Grafiken bisweilen überproportioniert wirken. Oder wenn
+man nur grosse Grafiken ablegt verbraucht ein kleines Gerät viele Ressourcen um die (zu) grosse
+Grafik erst zu laden und dann runter zu skalieren.
+\item[layout-XXX:] Hier sind die Layout Beschreibungen als XML-File abgelegt. Zusätzliche zum Default
+Ordner layout können weitere Ordner angelegt werden, die bei einer bestimmten Konstellation
+gelesen werden. Ein eigenes Layout in der "Landscape"-Orientierung wird im Ordner layout-land
+abgelegt.
+\item[values-XXX:] Hier sind XML Files hinterlegt, welche einfache Werte wie z.B. Strings, Zahlen oder
+Farben enthalten. Auch diese Werte können an unterschiedliche Konstellation gebunden werden wie
+minimale Auflösung (values-sw600dp) oder API Versionen (values-v11) oder Bildschirmgrösse
+(values-large). Um Duplikationen von Layout Definitionen zu verhindern, kann man über diese
+values-Ordner und einem Files refs.xml Referenzen erstellen, um einer bestimmten Layout
+Definition einen anderen Werte zuzuschreiben. Mehr dazu in den folgenden Aufgaben.
+\end{description}
+
+\section{Responsive Design for Tablet}
+
+\begin{enumerate}
+ \item Layout anpassen:
+ \begin{lstlisting}[language=xml,caption=MainActivity]
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent" >
+<fragment android:name="ch.fhnw.edu.helloworld.MainFragment"
+android:id="@+id/main_container"
+android:layout_width="match_parent"
+android:layout_height="match_parent" />
+</LinearLayout>
+ \end{lstlisting}
+  \begin{lstlisting}[language=xml,caption=MainActivityTwoPane]
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent" >
+<fragment android:name="ch.fhnw.edu.helloworld.MainFragment"
+android:id="@+id/main_container"
+android:layout_width="wrap_content"
+android:layout_height="match_parent" />
+<FrameLayout
+android:id="@+id/helloworld_container"
+android:layout_width="match_parent"
+android:layout_height="match_parent" >
+</FrameLayout>
+</LinearLayout>
+ \end{lstlisting}
+\item  Code Anpassungen: \\
+Das erste Element entspricht dem Fragment aus activity\_main.xml.Für das zweite Fragment, hier
+soll ja das HelloWorld-Image eingeblendet werden, wird mittels FrameLayout der notwendige Platz
+geschaffen. Da das entsprechende Fragment erst bei einem Button-Klick gezeigt werden soll, darf
+hier nicht schon das resultierende Layout definiert werden.
+WICHTIG: Der Container für das 2. Fragment hat die ID helloworld\_container. Mit dieser ID
+helloworld\_container kann in der MainActivity gearbeitet werden.
+In der onCreate() Methode von der MainActivity muss entschieden werden, ob man im
+Portrait oder Landscape Modus ist. Im Landscape Modus ist die View mit der ID
+helloworld\_container vorhanden, im Portrait Modus nicht. Das kann man nutzen indem man
+folgende Abfrage startet:
+if (findViewById(R.id.helloworld\_container) != null) {}
+\item Landscape Layout Referenzen: \\
+Damit beim Wechsel in den Landscape Mode das Layout activity\_main\_twopane geladen wird,
+muss die MainActivity anstelle activity\_main dieses neue Layout laden. Dazu muss man
+eine alternative Ressource erstellen und den Namen activity\_main mit
+activity\_main\_twopane "überschreiben". Dies kann über ein File layout-land/refs.xml
+realisiert werden:
+\begin{lstlisting}[language=xml]
+<resources>
+<item name="activity_main" type="layout">@layout/activity_main_twopane</item>
+</resources>
+\end{lstlisting}
+WICHTIG: Über den Ordner layout-land wird dem Android System signalisiert, dass im
+Landscape Modus die Resources aus diesem Ordner gelten, u.a. wird die Referenz von
+activity\_main auf das neue Layout gesetzt.
+\end{enumerate}
+
+\section{Auswechselung von Fragments}
+\begin{lstlisting}
+ FragmentManager fm = getSupportFragmentManager();
+Fragment f = fm.findFragmentById(R.id.helloworld_container);
+if (f == null) {
+FragmentTransaction trx = fm.beginTransaction();
+trx.add(R.id.helloworld_container, new MessageFragment());
+trx.commit();
+}
+\end{lstlisting}
+
+
+\chapter{Effiziente Netwerk Synchronization}
+
+\section{Probleme}
+\begin{itemize}
+ \item Wie kann ein eiffizienter batterieschönender Datenaustausch realisiert werden?
+ \item Behandelung von Unterbruch der Verbindung
+\end{itemize}
+
+\section{Radio State Machine}
+\pic{rsm.png}
+\begin{description}
+\item[Full Power] Eine Verbindng ist aktiv. Höchstmögliche Rate.
+\item [Low Power] Übergang bei 50\% der Batterieleistung
+\item[Standby] Keine Verbindung aktiv, batterieschönend.
+\end{description}
+
+\subsection{Probleme}
+\pic{rsmp.png}
+ Eine App tauscht alle 18 Sekunden Daten aus. Für den Datenaustausch
+braucht die App 1 Sekunde. Das bedeutet, dass nie in den Standby Modus
+gewechselt werden kann (1 (Transfer ) + 5 (Idle) + 12 (Low Power) = 18).
+Es kann nie in den batterieschonenden Standby Modus geschaltet werden.
+ Wird die Datenübertragung gebündelt, so genügen pro Minute 3 Sekunden.
+Das führt dazu, dass 40 Sekunden im Standby Modus gewartet werden
+kann, da nur noch über 20 Sekunden (3 (Transfer) + 5 (Idle) + 12 (Low
+Power) = 20) die anderen Zustände gebraucht werden.
+
+\subsection{Ansätze}
+\begin{description}
+ \item[Prefetch]  Anzahl Verbindungen,Batterieverbrauch,Latzenzzeit,Kommunikationsbreite und Downloadzeit reduzieren. Wie viel soll aber im vorraus geladen werden.
+ Welche Daten? Welche Rate? Server API gestaltung?. \texttt{Beispiel Ansatz: }Verbindungsaufbau alle 2 bis 5 Minuten
+Datenvolumen zwischen 1 und 5 MB
+\item[Koordination mit mehrere Apps]  Normalerweise werden mehrere Apps das
+Netzwerk für Kommunikationsaufgaben nutzen z.B. Gmail, Evernote, WhatsApp, ...\\
+Herausforderung:\\
+Wie können diese verschiedenen Apps koordiniert
+werden, damit das Netzwerk optimal genutzt wird?
+\end{description}
+
+
+\section{Pattern Content Provider und Sync Adapter}
+\pic{apatternnet.png}
+\begin{description}
+\item[Framework] Datentransfer automatisiert. Sync über verschiedene Apps koordinieren.
+\item[Sync Adapter] ist Plugin für den Android Sync Manager
+sind Background Services, die vom Sync Manager
+gestartet werden, wenn z.B. Netzwerk vorhanden ist
+und Sync Request ansteht Sync Manager verwaltet eine Queue von Sync
+Adapter mit ihren Synchronisationsaufgaben.
+\end{description}
+
+\chapter{Background Tasks}
+
+\section{UI Thread}
+Ein GUI Framwork ist normallierweise auf einem Main Thread basiert um Events aus Input (Keyboard, Maus, ...) und für
+Output (Screen, Window, ...) sequentiell abarbeiten zu können,um Deadlocks einfach vermeiden zu können. Beim Start wird für eine Android Applikation ein eigener Prozess mit einem einzigen UI Thread hochgefahren. Der UI Thread ist für die sichtbaren Bestandteile einer Applikation zuständig.
+
+\section{Herausforderungen Single Thread}
+Reaktionsverhalte n auf der User Input ist entschiedend für die Akzeptanz einer Applikation. Aufwändige Berechnungen im UI Thread lassen view einfrieren.
+Das Android System überprüft die Reaktionszeit einer Applikation und wird bei schlechtem Antwortverhalten mit einen entsprechenden Dialog (Applikation not Responding) konfrontiert.
+
+\subsection{Triggers für ANR}
+\begin{itemize}
+ \item Window Manager : Keine Reaktion innerhalb 5 sec. 
+ \item Broadcastreciever kann Event innerhalb 10 sec verarbeiten.
+\end{itemize}
+
+\subsection{Folgerungen}
+Jede Methode im UI-Thread soll nur das
+Notwendigste ausführen. Alle anderen
+Operationen wie Netzwerkzugriff,
+Datenbankzugriff oder umfangreiche
+Berechnungen sollen in Child Threads oder
+Services ausgelagert werden. UI Thread soll nie blockiert werden mit Thread wait oder Thread sleep.
+
+
+\section{Varianten}
+\subsection{Worker Thread}
+\textbf{Vorteile:} Konstrukt aus Java Welt. Einfache Interaktion mit UI Thread über Methode runonUIThread().\\
+\textbf{Nachteile:} 
+\begin{itemize}
+\item Explizites Lifecycle Management
+\item Sync muss unbedingt beachtet werden.
+\item Unterscheidung wann im UI Thread vs wann im Worker Thread ist nicht immer einfach.
+\end{itemize}
+
+\subsection{Async Tasks}
+\textbf{Vorteile:} klare Trennung der Methoden zwischen UI Thread und Worker Task. Einfgache und Klare Interaktion mit dem UI Thread auch zur Laufzeit des Worker Threads. Keine Thread Management notwendig. 
+\textbf{Nachteile:} Neues Kontrukt - Übergabe der Parameter an verschiedene Methoden.
+\subsection{Service and Broadcastreciever}
+\textbf{Vorteile:} Klare Trennung.Einfache Kommunikation von Background Service zu Activity. Service mit einem eigenen Lifecycle d.h Uunabhängig von der Activity.
+\textbf{Nachteile:}Einwegkommunikation vom Service zur Activity
+\section{Service und Messenger + Handler}
+\textbf{Vorteile:} Klare Trennung. Zweiwegkommunikation zwischen Service und
+Activity.keine Synchronisationsprobleme dank Einsatz von
+Message-Queues in den Handler.
+\textbf{Nachteile:}Komplexe Kommunikationsinfrastruktur zwischen
+Service und Activity.
+
+\chapter{Background Tasks II}
+Das Android UI gleicht konzeptionell den gängigen GUI Frameworks. Es ist event-driven, besteht
+aus geschachtelten GUI Komponenten und vor allem ist es single-threaded. Denn man hat bei der
+Entwicklung der gängigen GUI Frameworks schnell erkannt, dass mit einem multi-threaded Ansatz
+Deadlocks fast nicht zu vermeiden sind, da ein GUI auf Events von unterschiedlichen Quellen
+reagieren muss. Ein GUI mit einem einzigen Thread, der sowohl Input (Touch Screen, Keypad, etc.)
+und Output (Display, etc.) besitzt ist viel einfacher zu implementieren, da alle anstehenden Events
+sequentiell verarbeitet werden können.
+Das GUI ist single-threaded, normale Applikation sind in der Regel aber multi-threaded. Denn ein
+umfangreicher, aufwändiger Arbeitsschritt darf das GUI nicht blockieren. Solche Arbeiten sind
+asynchron, d.h. ausserhalb des GUI-Threads auszuführen, so dass das GUI schnell und
+reaktionsfähig bleibt.
+Ein Android gibt es nun zwei typische Fehlerdialoge die der Benutzer bei schlecht geschriebenen
+Anwendungen zu sehen bekommen kann. Der eine ist der "Force Close"- (FC) (linkes Bild) und der
+andere ist der "Application Not Responding"-Dialog (ANR) (rechtes Bild).
+
+\section{Variante 1 Background Thread - runonUIThread}
+\begin{lstlisting}
+ public class MainActivity extends Activity {
+public static final String TAG = "HelloWorldAsynTask";
+private TextView helloWorldView;
+private ColorThread colorTask;
+private RGBColor actColor = new RGBColor();
+private Runnable updateBackground = new Runnable() {
+#6
+@Override
+public void run() {
+synchronized (actColor) {
+helloWorldView.setBackgroundColor(
+#4
+Color.rgb(actColor.r,actColor.g, actColor.b));
+Log.d(TAG, actColor.r + " " + actColor.g + " " + actColor.b);
+}
+}
+};
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+helloWorldView = (TextView) findViewById(R.id.txtView);
+helloWorldView.setText("Hello World");
+}
+public void start(View view) {
+colorTask = new ColorTask();
+colorTask.start();
+#2
+#3
+}
+public void stop(View view) {
+colorTask.stopTask();
+colorTask = null;
+}
+class ColorTask extends Thread {
+private boolean isRunning = true;
+#1
+@Override
+public void run() {
+while (isRunning) {
+synchronized (actColor) {
+actColor.r = (int) Math.round(Math.random() * 255);
+#4
+actColor.g = (int) Math.round(Math.random() * 255);
+actColor.b = (int) Math.round(Math.random() * 255);
+}
+runOnUiThread(updateBackground);
+try {
+#5
+Thread.sleep(1000);
+} catch (InterruptedException e) {
+isRunning = false;
+}
+}
+}
+public void stopTask() {
+#7
+isRunning = false;
+}
+}
+class RGBColor {
+int r;
+int g;
+int b;
+}
+}
+\end{lstlisting}
+
+\section{Async Tasks}
+\begin{lstlisting}
+ public class MainActivity extends Activity {
+public static final String TAG = "HelloWorldAsynTask";
+private TextView helloWorldView;
+private AsyncTask<Void, RGBColor, Void> colorTask;
+private void updateHelloWorldView(RGBColor c) {
+helloWorldView.setBackgroundColor(Color.rgb(c.r,c.g, c.b));
+Log.d(TAG, c.r + " " + c.g + " " + c.b);
+}
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+helloWorldView = (TextView) findViewById(R.id.txtView);
+helloWorldView.setText("Hello World");
+}
+public void start(View view) {
+colorTask = new ColorTask();
+colorTask.execute();
+#2
+#3
+}
+public void stop(View view) {
+colorTask.cancel(true);
+colorTask = null;
+}
+class ColorTask extends AsyncTask<Void, RGBColor, Void> {
+private boolean error;
+#1
+private RGBColor color = new RGBColor();
+@Override
+protected void onPreExecute() {
+#4
+error = false;
+}
+@Override
+protected Void doInBackground(Void... params) {
+while (!error && !isCancelled()) {
+#5
+#6
+try {color.r = (int) Math.round(Math.random() * 255);
+color.g = (int) Math.round(Math.random() * 255);
+color.b = (int) Math.round(Math.random() * 255);
+publishProgress(color);
+#7
+Thread.sleep(1000);
+} catch (InterruptedException e) {
+error = false;
+}
+}
+return null;
+}
+@Override
+protected void onProgressUpdate(RGBColor... values) {
+#8
+updateHelloWorldView(values[0]);
+#9
+}
+}
+class RGBColor {
+int r;
+int g;
+int b;
+}
+}
+\end{lstlisting}
+\pic{atask.png}
+
+\section{Service und Broadcastreciever}
+Die Service Klasse ist ein weiteres Konstrukt von Android, um Aufgaben im Hintergrund laufen zu
+lassen. Genau wie das Activity ist der Service eine Klasse, die von Android zur Laufzeit
+bereitgestellt wird und erweitert werden kann. Das bedeutet dass ein Service im File
+AndroidManifest.xml eingetragen werden muss, damit Android diesen Dienst erkennen kann.
+Wichtig ist die folgende Bemerkung im API zur Klasse Service:
+"Note that services, like other application objects, run in the main thread of their hosting process.
+This means that, if your service is going to do any CPU intensive (such as MP3 playback) or
+blocking (such as networking) operations, it should spawn its own thread in which to do that work."
+Da der Service einen eigenen Life-Cycle hat und unabhängig von einer Activity laufen kann, ist die
+Kommunikation zwischen Service und Activity aufwändiger.
+Eine elegante Variante nutzt den Broadcast. Broadcasts sind im Prinzip systemweit in Form von
+Intents versandte Nachrichten, die von allen Android-Komponenten des Typs Broadcast Receiver
+empfangen werden können, die sich für den jeweiligen Nachrichtentyp registriert haben.
+
+\pic{brecv.png}
+\begin{lstlisting}
+ public class MainActivity extends Activity {
+public static final String TAG = "HelloWorld-MainActivity";
+private TextView helloWorldView;
+private BroadcastReceiver receiver = new BroadcastReceiver() {
+@Override
+public void onReceive(Context ctx, Intent intent) {
+RGBColor color = (RGBColor) intent.getSerializableExtra(
+ColorService.COLOR_VALUE);
+if (color != null) {
+updateHelloWorldView(color);
+}
+}
+};
+private void updateHelloWorldView(RGBColor c) {
+helloWorldView.setBackgroundColor(Color.rgb(c.r,c.g, c.b));
+Log.d(TAG, c.r + " " + c.g + " " + c.b);
+}
+#1
+#2
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+helloWorldView = (TextView) findViewById(R.id.txtView);
+helloWorldView.setText("Hello World");
+}
+@Override
+protected void onResume() {
+super.onResume();
+LocalBroadcastManager.getInstance(this).registerReceiver(
+receiver, new IntentFilter(ColorService.NOTIFICATION));
+}
+@Override
+protected void onPause() {
+super.onPause();
+LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+}
+public void start(View view) {
+startService(new Intent(this, ColorService.class));
+}
+public void stop(View view) {
+stopService(new Intent(this, ColorService.class));
+}
+#3
+#4
+#5
+
+\end{lstlisting}
+\begin{lstlisting}
+ public class ColorService extends Service {
+private static String TAG = "HelloWorld-ColorServiceBroadcast";
+public static final String COLOR_VALUE = "COLOR";
+public static final String NOTIFICATION = "ch.fhnw.edu.helloworld";
+private Timer timer = null;
+@Override
+public void onCreate() {
+Log.d(TAG, "onCreate() called");
+}
+@Override
+public int onStartCommand(Intent intent, int flags, int startId) {
+startColoring();
+return Service.START_NOT_STICKY;
+}
+@Override
+public IBinder onBind(Intent arg0) {
+return null;
+}
+@Override
+public void onDestroy() {
+super.onDestroy();
+stopColoring();
+Log.d(TAG, "onDestroy() called");
+}
+public void startColoring() {
+if (timer == null) {
+timer = new Timer();
+timer.schedule(new ColorTask(this), 0, 1000);
+}
+}
+public void stopColoring() {
+if (timer != null) {
+timer.cancel();
+timer = null;
+}
+}
+private class ColorTask extends TimerTask {
+private RGBColor color = new RGBColor();
+private Service service;
+public ColorTask(Service service) {
+this.service = service;
+}
+#1
+#2
+@Override
+public void run() {
+color.r = (int) Math.round(Math.random() * 255);
+color.g = (int) Math.round(Math.random() * 255);
+color.b = (int) Math.round(Math.random() * 255);
+Intent intent = new Intent(NOTIFICATION);
+intent.putExtra(COLOR_VALUE, color);
+LocalBroadcastManager.getInstance(service).sendBroadcast(intent);
+Log.d(TAG, "color is " + color);
+}
+};
+}
+#3
+#4
+#5
+
+\end{lstlisting}
+
+\section{Messenger und Service}
+\pic{mhandler.png}
+
+\begin{description}
+\item[Bind to Color Service] \begin{lstlisting}
+                              protected void onResume() {
+super.onResume();
+bindService(new Intent(this, ColorService.class), svcConn,
+Context.BIND_AUTO_CREATE);
+}
+protected void onPause() {
+super.onPause();
+if (serviceMessenger != null) {
+unbindService(svcConn);
+}
+}
+
+
+                             \end{lstlisting}
+\item[svcconn] \begin{lstlisting}
+                private ServiceConnection svcConn = new ServiceConnection() {
+public void onServiceConnected(ComponentName className, IBinder service) {
+serviceMessenger = new Messenger(service);
+}
+public void onServiceDisconnected(ComponentName className) {
+serviceMessenger = null;
+}
+};
+
+               \end{lstlisting}
+\item[instanzieren von messenger in Oncreate]
+\begin{lstlisting}
+ myMessenger = new Messenger(new IncomingHandler(this));
+...
+static class IncomingHandler extends Handler {
+private final WeakReference<MainActivity> mainActivity;
+public IncomingHandler(MainActivity activity) {
+this.mainActivity = new WeakReference<MainActivity>(activity);
+}
+@Override
+public void handleMessage(Message msg) {
+switch (msg.what) {
+case ColorService.MSG_SET_VALUE:
+RGBColor color = (RGBColor) msg.getData().getSerializable(
+ColorService.COLOR_VALUE);
+mainActivity.get().updateHelloWorldView(color);
+break;
+default:
+super.handleMessage(msg);
+}
+}
+}
+
+\end{lstlisting}
+\item[Start Service mit Message] \begin{lstlisting}
+                                 public void start(View view) {
+Message msg = Message.obtain(null, ColorService.MSG_START_SERVICE);
+msg.replyTo = myMessenger;
+try {
+serviceMessenger.send(msg);
+} catch (RemoteException e) {
+Log.e(TAG, e.getMessage());
+}
+}
+
+                                \end{lstlisting}
+\item[Color Service] \hfill \\
+\begin{description}
+ \item [Sending Message] \begin{lstlisting}
+                          Message msg = Message.obtain();
+msg.what = ColorService.MSG_SET_VALUE;
+Bundle data = new Bundle();
+data.putSerializable(COLOR_VALUE, color);
+msg.setData(data);
+this.messenger.send(msg);
+
+                         \end{lstlisting}
+\item [Handler in ColorService] \begin{lstlisting}
+                                 static class IncomingHandler extends Handler {
+private final WeakReference<ColorService> service;
+public IncomingHandler(ColorService service) {
+this.service = new WeakReference<ColorService>(service);
+}
+@Override
+public void handleMessage(Message msg) {
+switch (msg.what) {
+case MSG_START_SERVICE:
+service.get().mainMessenger = msg.replyTo;
+service.get().startColoring();
+break;
+case MSG_STOP_SERVICE:
+service.get().stopColoring();
+break;
+default:
+super.handleMessage(msg);
+}
+}
+}
+
+                                \end{lstlisting}
+
+\end{description}
+
+\end{description}
+
+
+
+
+\chapter{Persistenz}
+Write Amplifikation Faktor als Kenngrosse. Von Write-Amplification spricht man, wenn ein
+Solid State Drive deutlich mehr Daten schreiben
+muss, als sich eigentlich ändern.
+\section{Ausgangslage} % (fold)
+\label{sec:ausgangslage}
+SSDs sind in Speicherblöcke (512 KB) unterteilt.
+ Ein Speicherblock besteht aus Pages zu 4 oder
+8 KB.
+ Einzelne Pages können beschrieben werden.
+Aber Pages lassen sich erst beschreiben,
+nachdem sie gelöscht worden sind.
+ Einzelne Page können nicht gelöscht werden.
+Nur komplette Blöcke können gelöscht werden.
+% section ausgangslage (end)
+\section{Read Write Cycle}
+\pic{rwcyc.png}
+\section{Worst Case}
+Situation:\\
+SSD-Speicherblock (512 KB) zu 128 Pages (4 KB)\\
+127 Pages mit gültigen Daten\\
+1 Page ungültig\\
+Neue Nutzdaten à 4 KB (= 1 Page) speichern\\
+ Folge:\\
+127 Pages (508 KB) lesen\\
+Nutzdaten (1 Page = 4 KB) ergänzen\\
+128 Pages (512 KB) schreiben\\
+ Amplification Faktor: 512 KB / 4 KB = 128\\
+\section{Fazit}
+ Eine geringer Write-Amplification-Faktor ist eine
+Kennzahl für die Effizienz der Speicher- und
+Speicherverwaltungsalgorithmen der SSD.
+ Die beste Leistung erzielt eine SSD im
+fabrikneuen Zustand.
+ Bei vollem Speicher kann es passieren, dass
+die SSD erst einen ganzen Block von 512 KByte
+lesen, anschliessend um die neuen Daten
+ergänzen und alles zusammen wieder
+zurückschreiben muss
+
+
+\chapter{Persistenz II}
+
+\section{Key Value}
+Primitive Datentypen in Form von key/value-Paaren können dauerhaft mit der Klasse
+SharedPreferences in einer Datei persistiert werden. In der Regel werden solche
+SharedPreferences eingesetzt, um
+ Benutzereinstellungen oder
+ Zustände des Programms
+zu speichern.
+Die Daten werden dabei in einem Preference File abgelegt, das nur der Applikation zur Verfügung
+steht. Das File kann aber auch lokal zu einer entsprechenden Activity gehalten werden, um z.B.
+explizit die Zustände dieser Activity zwischenspeichern zu können, oder das Preference File steht
+der gesamten Applikation zur Verfügung.
+Mit folgendem Code, die Methode getSharedPreferences() ist in jeder Activity vorhanden,
+werden die Preferences aus einem benannten File ausgelesen:
+\begin{lstlisting}
+SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
+boolean silent = settings.getBoolean("silentMode", false);
+\end{lstlisting}
+Das Speichern wird über einen entsprechenden Editor realisiert:
+\begin{lstlisting}
+SharedPreferences.Editor editor = settings.edit();
+editor.putBoolean("silentMode", mySilentMode);
+editor.commit();
+\end{lstlisting}
+
+\section{Preferece Activity}
+\begin{lstlisting}
+ <?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<ListPreference android:title="Choose a robot"
+android:summary="This preference allows to select an robot type"
+#1
+#2
+#3
+android:key="robottype"
+android:entries="@array/robotTypes" #4
+#5
+android:entryValues="@array/robotIDs" />
+</PreferenceScreen>
+\end{lstlisting}
+values in values/array.xml.
+\begin{lstlisting}
+ public class Settings extends PreferenceActivity
+@Override
+{
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+addPreferencesFromResource(R.layout.settings);
+}
+}
+\end{lstlisting}
+
+\section{Loading Bitmaps}
+Internal/External Storage
+Da dem Android-System ein Linux-Kernel zugrunde liegt, überrascht es nicht, dass man es auch mit
+einem Linux-Dateisystem zu tun haben. Als Basis-Dateisystem bezeichnet man das fest installierte
+Speichermedium des Geräts. Das Basis-Dateisystem lässt sich um Speicherkarten (SD-Karten)
+erweitern, deren Speicherplatz nicht an das Gerät gebunden ist.
+Mit der Installation einer Anwendung auf dem Android-Gerät wird automatisch ein privates
+Anwendungsverzeichnis
+/data/data/packagename.der.anwendung/
+erstellt. In dieses Verzeichnis darf nur die Anwendung selbst Schreiboperationen ausführen.
+Unterhalb des privaten Anwendungsverzeichnisses werden z.B. alle Datenbanken der Anwendung
+abgelegt.
+Die Zugriffsmethoden auf das Dateisystem werden vom android.content.Context
+bereitgestellt. Hier findet man Methoden wie getDir(), getCacheDir(), getFilesDir(),
+openFileInput(), openFileOutput(), usw.
+Dateien können aber auch als Ressourcen in der Anwendung selber abgelegt werden.
+Zum Beispiel soll als Begrüssung das Bild text\_welcome.png gezeigt werden. Dieses Bild wird in
+den Ordner /res/drawable gelegt. Da dieser res-Ordner vom Android-System verwaltet wird, wird
+automatisch ein Key generiert und in der R-Klasse aufgenommen. Mit
+\begin{lstlisting}
+ Resources res = context.getResources();
+Bitmap greetingBitmap = BitmapFactory.decodeResource(res, R.drawable.text_welcome);
+greetingBitmap = Bitmap.createScaledBitmap(greetingBitmap,
+viewWidth, viewHeight, true);
+canvas.drawBitmap(greetingBitmap, 0, 0, null);
+\end{lstlisting}
+\section{SQLITE}
+In Android fehlt JDBC. Deshalb muss ein anderer Weg gewählt werden. Die Klasse
+SQLiteOpenHelper stellt eine entsprechende Funktionalität bereit. Man muss eine Unterklasse
+von SQLiteOpenHelper implementieren. In dieser Unterklasse wird definiert, wie die Datenbank
+erstellt und bei einer Versionsänderung (der Applikation) migriert werden soll. In der Unterklasse
+überschreibt man deshalb folgende Methoden von SQLiteOpenHelper:
+\\
+public void onCreate(SQLiteDatabase db)
+Wird aufgerufen, wenn die Datenbank bisher nicht existiert. Enthält typischerweise Anweisungen
+zum Erzeugen der Datenbank-Relationen.
+\\
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+Wird aufgerufen, wenn beim Öffnen der Datenbank eine höhere Versionsnummer angegeben
+wird, als beim letzten Öffnen. Enthält Anweisungen zum Upgrade der Datenbank auf
+newVersion.
+
+\begin{verbatim}
+ SQLiteDatabase db = dbHelper.getReadableDatabase();
+SQLiteDatabase db = dbHelper.getWriteableDatabase();
+Über diese beiden Methoden erhält man den Zugriff auf die Datenbank. Zum Beispiel wie folgt:
+private void insertOneHundredRecords() {
+SQLiteDatabase db = dbHelper.getWritableDatabase();
+#1
+for (int i = 0; i < 100; i++) {
+ContentValues values = new ContentValues();
+#2
+values.put("Id", i);
+values.put("HelloString", "Hello World"); #3
+db.insert(SAMPLE_TABLE_NAME, null, values); #4
+}
+dbHelper.close();
+#5
+}
+\end{verbatim}
+
+
+
+\part{Code}
+\chapter{Layout}
+\lstinputlisting[caption=Layout1]{./code/c1.java}
+\lstinputlisting[caption=Layout2]{./code/c2.java}
+\chapter{Intents}
+\lstinputlisting[caption=MainActivity]{./code/c3.java}
+\lstinputlisting[caption=MessageActivity]{./code/c4.java}
+\lstinputlisting[caption=MessageActivityv2]{./code/c5.java}
+\lstinputlisting[caption=MessageActivityBitmap]{./code/c6.java}
+\chapter{Responsive Design}
+\lstinputlisting[caption=mainactivitylayout,language=xml]{./code/x1.xml}
+\lstinputlisting[caption=mainactivitytwopane,language=xml]{./code/x2.xml}
+\lstinputlisting[caption=fragment main,language=xml]{./code/x3.xml}
+\lstinputlisting[caption=fragment message,language=xml]{./code/x4.xml}
+\lstinputlisting[caption=MainActivity]{./code/c7.java}
+\lstinputlisting[caption=MainFragment]{./code/c8.java}
+\lstinputlisting[caption=MessageActivity]{./code/c9.java}
+\lstinputlisting[caption=MessageFragment]{./code/c10.java}
+\chapter{Background Tasks}
+\lstinputlisting[caption=ColorService]{./code/c11.java}
+\lstinputlisting[caption=MainActivity]{./code/c12.java}
+\lstinputlisting[caption=RGBColor]{./code/c13.java}
+\chapter{Content Provider}
+\lstinputlisting[caption=DBHelper]{./code/c14.java}
+\lstinputlisting[caption=MainActivity]{./code/c15.java}
+\lstinputlisting[caption=HelloWorldContentProvider]{./code/c16.java}
+\chapter{Sensors}
+\lstinputlisting[caption=Main]{./code/c17.java}
+\end{document}
+

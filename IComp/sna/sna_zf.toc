@@ -1,0 +1,25 @@
+\select@language {german}
+\contentsline {part}{\numberline {I}Grundkonzepte}{3}
+\contentsline {chapter}{\numberline {1}Grundkonzepte 1}{4}
+\contentsline {section}{\numberline {1.1}Andere Begriffe}{4}
+\contentsline {section}{\numberline {1.2}SNA Allgemein}{4}
+\contentsline {chapter}{\numberline {2}Grundkonzepte 2}{6}
+\contentsline {section}{\numberline {2.1}Eigenschafen von Dyaden}{6}
+\contentsline {section}{\numberline {2.2}Datenformate}{6}
+\contentsline {section}{\numberline {2.3}Datenerhebung}{7}
+\contentsline {section}{\numberline {2.4}Social Media Monitoring}{8}
+\contentsline {section}{\numberline {2.5}Definitions Extra}{9}
+\contentsline {chapter}{\numberline {3}Grundkonzepte 3}{10}
+\contentsline {section}{\numberline {3.1}Arten von Fragestellungen}{10}
+\contentsline {section}{\numberline {3.2}Zusammenh\IeC {\"a}nge}{11}
+\contentsline {section}{\numberline {3.3}Kritierien einer guten Visualisierung}{12}
+\contentsline {part}{\numberline {II}Mathematischer Hintergrund}{13}
+\contentsline {chapter}{\numberline {4}Grundlagen zur Graphen}{14}
+\contentsline {chapter}{\numberline {5}Interpretation/Metriken}{16}
+\contentsline {section}{\numberline {5.1}Zentralisierung}{18}
+\contentsline {section}{\numberline {5.2}Metriken}{19}
+\contentsline {section}{\numberline {5.3}Communities}{20}
+\contentsline {section}{\numberline {5.4}Clustering und Communities}{21}
+\contentsline {chapter}{\numberline {6}Small World}{25}
+\contentsline {section}{\numberline {6.1}Experimente}{25}
+\contentsline {section}{\numberline {6.2}Eigenschaften}{26}

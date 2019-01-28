@@ -1,0 +1,97 @@
+\documentclass{beamer}
+\usetheme{FHNW}
+\usepackage[utf8x]{inputenc}
+\usepackage[german]{babel}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstdefinestyle{JavaStyle}{
+ language=java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left, % Ort der Zeilennummern
+ numberstyle=\tiny, % Stil der Zeilennummern
+ stepnumber=5, % Abstand zwischen den Zeilennummern
+ numbersep=5pt, % Abstand der Nummern zum Text
+ tabsize=2, % Groesse von Tabs
+ extendedchars=true, %
+ breaklines=true, % Zeilen werden Umgebrochen
+ frame=b,
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false, % Leerzeichen anzeigen ?
+ showtabs=false, % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=5pt,
+ framexbottommargin=4pt,
+ showstringspaces=false % Leerzeichen in Strings anzeigen ?
+}
+\newcommand\Fontvi{\fontsize{6}{7.2}\selectfont}
+
+
+
+%\lstdefinestyle{htmlStyle} {
+%   language=html,
+%   basicstyle=\scriptsize\ttfamily,
+%   keywordstyle=\bfseries\ttfamily,
+%   commentstyle=\color{gray}\ttfamily,
+%   escapechar=| % Escape to LaTeX between |...|
+%}
+\begin{document}
+\title{FHNW APSI Lab 2 : Html Form}   
+\author{Jan Fässler, Fabio Oesch} 
+
+\date{\today} 
+
+\frame{\titlepage} 
+
+\begin{frame}
+\section*{Übersicht}
+\tableofcontents
+\end{frame} 
+
+\section{Robuste Programmierung im Controller und Model} 
+\begin{frame}
+ \subsection{SQL-Injection \& XSS Attacken}
+ \textbf{SQL-Injection \& XSS Attacken}
+\end{frame}
+
+\subsection{Validierung}
+\begin{frame}
+ \textbf{Validierung}\\
+ \begin{itemize}
+  \item Regexausdruck der die Eingaben überprüft
+  \item E-Mail Adresse
+  \item Postleitzahl wird mit Post.ch
+  \item Passwort
+  \item Model wird geschützt, dass 2 verschiedene Konstruktoren existieren
+ \end{itemize}
+\end{frame}
+
+\section{SSL}
+\begin{frame}
+ \textbf{SSL}\\
+\end{frame}
+
+
+
+\begin{frame}
+\section{Demo}
+ \huge Demo
+\end{frame}
+
+\begin{frame}
+\section*{Ende}
+ \huge Danke für Ihre Aufmerksamkeit.
+\end{frame}
+
+\end{document}
+

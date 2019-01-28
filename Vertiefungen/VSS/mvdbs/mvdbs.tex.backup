@@ -1,0 +1,1048 @@
+\documentclass[a4paper,10pt,titlepage=false]{scrreprt}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[german]{babel}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+%opening
+\title{Mobile und Verteilte Datenbanksysteme}
+\author{Roland Hediger}
+\date{\today}
+\usepackage{fancyhdr}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{helvet}
+\usepackage{amssymb}
+\newcommand{\pic}[2][figure]{\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.3]{#2}
+ % rsc.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+ \caption{#1}
+\end{figure}
+}
+\usepackage{framed}
+% Code listenings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{
+ language=Java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left,               % Ort der Zeilennummern
+ numberstyle=\tiny,          % Stil der Zeilennummern
+ stepnumber=5,              % Abstand zwischen den Zeilennummern
+ numbersep=5pt,              % Abstand der Nummern zum Text
+ tabsize=2,                  % Groesse von Tabs
+ extendedchars=true,         %
+ breaklines=true,            % Zeilen werden Umgebrochen
+ frame=b,         
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false,           % Leerzeichen anzeigen ?
+ showtabs=false,             % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=5pt,
+ framexbottommargin=4pt,
+ showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+\setuptoc{toc}{leveldown}
+
+\begin{document}
+ \maketitle
+ \tableofcontents
+\pagestyle{fancy}
+\chapter{Einführung}
+\begin{description}
+ \item [Was wird Verteilt] \hfill \\
+ \begin{itemize}
+  \item Aufbaulogik, Verarbeitungselemente 
+  \item Funktion
+  \item Daten
+  \item Steuerung
+ \end{itemize}
+\end{description}
+\section{Fundamental Definitionen}
+\begin{description}
+ \item [Fundamental Principle] To the user, a distributed system should look exactly like a nondistributed
+system.
+\item[Data Processing and Mobility] It has become a common appproach to turn any location and situation a job
+of ce.
+\item [Warum Parallel] 	Performance
+Performance
+And more Performance.
+\item[Big Data] Volume,Variety,Velocity.
+\end{description}
+
+\section{Verteilte Datenbank Definitionen}
+\begin{description}
+ \item [Verteilte Datenbank - DDB] ine verteilte Datenbank ist eine Sammlung mehrerer,
+untereinander logisch zusammengehöriger Datenbanken,
+die über ein Computernetzwerk verteilt sind.
+\item[Verteiltes Datenbankverwaltungssystem (D-DBMS)] Ein verteiltes Datenbankverwaltungssystem ist die
+Software, die die verteilte Datenbank verwaltet und
+gegenüber den Nutzern einen transparenten Zugang
+erbringt.
+\item[Verteiltes Datenbank System]DDBS = DBS + D-DBMS
+\end{description}
+
+\subsection{Klassifizierung}
+\begin{description}
+ \item [Heterogenität] Hardware, Netzwerkprotokolle,
+Datenverwaltung, Datenmodell, Abfragesprache,
+Transaktionsverwaltung
+2 Ausprägungen: homogen, heterogen.
+\item[Verteilung]Verteilung: betrifft die Verteilung der Daten
+2 Ausprägungen: verteilt, zentral
+\item[Autonomie] Autonomie: betrifft die Verteilung der Steuerung
+3 Ausprägungen: stark integriert, halbautonom,
+isoliert
+\end{description}
+\section{Dates 12 Regeln}
+\begin{enumerate}
+\item Lokale Autonomie
+\item  Unabhängigkeit von zentralen Systemfunktionen
+\item Hohe Verfügbarkeit
+\item Ortstransparenz
+\item  Fragmentierungstransparenz
+\item  Replikationstransparenz
+\item  Verteilte Anfragebearbeitung
+\item Verteilte Transaktionsverarbeitung
+\item  Hardware Unabhängigkeit
+\item Betriebssystem Unabhängigkeit
+\item Netzwerkunabhängigkeit
+\item Datenbanksystem Unabhängigkeit
+\end{enumerate}
+\section{Aspekte Verteilte Datenbanksysteme}
+\begin{description}
+ \item [Verteilter Datenbankentwurf]\hfill \\ \begin{itemize}
+                                      \item wie die Datenbank verteilen
+\item Verteilung der DB mit Replikaten oder ohne
+\item Verzeichnisverwaltung
+                                     \end{itemize}
+\item[Anfragebearbeitung] \hfill \\ \begin{itemize}
+                           \item Zerlegung der Anfragen in ausführbare Instruktionen
+\item Anfrageoptimierung
+\item berücksichtigen von Verarbeitungs- und
+Datentransferkosten
+                          \end{itemize}
+\item[Nebenläufigkeit] \hfill \\ \begin{itemize}
+                        \item Synchronisation konkurrierender Transaktionen
+\item Konsistenz und Isolation
+\item Deadlock Erkennung
+                       \end{itemize}
+\item[Zuverlässigkeit] \hfill \\\begin{itemize}
+                        \item Robustheit gegenüber Fehler
+\item Atomarität und Dauerhaftigkeit
+                       \end{itemize}
+
+
+\end{description}
+
+\section{Paralelle Datenbanksysteme}
+Parallele DB Systeme kombinieren
+Datenbankverwaltung und
+Parallel Verarbeitung zur
+Verbesserung der Performance und der Verfügbarkeit.
+\subsection{Architekturen}
+\begin{itemize}
+ \item Shared Memory Architecture
+\item Shared Disk Architecture
+\item Shared Nothing Architecture
+\end{itemize}
+\subsection{Aspekte}
+\begin{itemize}
+ \item Parallele Anfrageverarbeitung
+\item Daten Partitionierung
+\item Parallelisierung von Operationen
+\item Lastausgleich
+\item Verfügbarkeit
+\end{itemize}
+\section{Nosql Systeme}
+ \begin{itemize}
+  \item Big Data
+\item Performance vs Scalability
+\item Latency vs Throughput
+\item Availability vs Consistency
+ \end{itemize}
+\subsection{Konzepte}
+\begin{itemize}
+ \item CAP Theorem \footnote{Consistency, Availability , Partition Tolerance, will never achieve all three}
+\item ACID vs BASE\footnote{Basically Available, Soft State, Eventual Consistency}
+\item Speicherstrukturen : Keyvalue, Document, Wide Column, Graph DB.
+\item Map / Reduce : Verarbeitung
+\item Consistent Hashing : Verteilung
+\item Multiversion Concurrency Control
+\item Paxos\footnote{Protokolle : Verfahren definiert - Griescisches Parlament lausig - wie kann man zu Entscheidung 
+kommen}
+\end{itemize}
+
+\section{Mobile Datenbank Systeme}
+Mobile Datenbank Systeme sind Verteilte Datenbank
+Systeme mit zusätzlichen Eigenschaften und
+Einschränkungen:
+\begin{itemize}
+\item beschränkte Ressourcen
+\item häufig nicht verbunden
+\item verlangt andere Transaktions Modelle
+\item verlangt andere Replikationsstrategien
+\item Ortsabhängigkeit
+\end{itemize}
+
+
+\section{Semantic Web}
+Die aktuelle Web Infrastruktur unterstützt ein verteiltes
+Ge echt von Webseiten, die gegenseitig mittels den sog.
+Uniform Resource Locators (URL) verknüpft sein können:
+\begin{itemize}
+ \item Das Semantic Web
+unterstützt das Web auf der Ebene der Daten statt nur
+auf der Ebene der Darstellung
+\item Datenelemente können gegenseitig verknüpft sein,
+nicht nur Webseiten
+\item Datenelemente können gegenseitig verknüpft sein,
+nicht nur Webseiten
+\item Information über einzelne Entitäten können verteilt
+sein
+\item Daten Modell: Resource Description Framework (RDF)
+\end{itemize}
+$ 3^2 + 4x + 3x_{bla}$
+\chapter{Entwurf Verteilte Datenbanken}
+\pic[Beispiel DB]{bspdb.png}
+Anwendungen auf verschiedenen Knoten benötigen
+verschiedene Daten, unterschiedlich häufig:\\
+A1: Liste der Aufträge mit günstigen Bikes (auf ORION
+in Basel)\\
+A2: Änderungen an Bikes (auf CALYPSO in Aarau)\\
+A3: Liste der Aufträge mit teuren Bikes vom Typ
+Mountain (auf TELESTO in Olten)\\
+A4: Liste aller Kunden (auf ANANKE in Zürich)\\
+Die Daten sollten dort abgelegt sein, wo sie am häu gsten
+gebraucht werden.\\
+
+\section{Einfführung}
+\begin{itemize}
+\item Entscheid über die Platzierung von Daten auf den
+Knoten eines Computernetzwerks
+\item beeinflüsst die Performance
+der DDB und der Anwendungen
+\item lokaler Zugriff ist günstiger
+als Zugriff auf entfernte Knoten
+\item Analyse:
+\subitem welche Anwendungen (Queries)
+\subitem auf welchen Knoten
+\subitem benötigen welche Daten
+\subitem mit welcher Häu gkeit
+\item Resultat:
+\subitem Menge von Fragmenten (Ausschnitte der Daten)
+\subitem zugeteilt auf verschiedene Knote
+\end{itemize}
+
+\section{Entwürfe}
+\subsection{Top Down}
+beim Entwurf from scratch
+in homogenen Systemen
+nachgelagert an den konzeptionellen Entwurf.
+\pic{bup.png}
+
+\begin{enumerate}
+\item wozu überhaupt fragmentieren?
+\item  wie fragmentieren?
+\item  wieviel fragmentieren?
+\item  wie prüfen der Korrektheit?
+\item  wie Fragmente zuteilen?
+\item  welche Informationen werden benötigt?
+\end{enumerate}
+
+\subsubsection{Grad der Fragmentierung}
+\begin{itemize}
+\item Vollständige Relationen sind zu grob, einzelne
+Attributswerte sind zu fein.
+\subitem geeignete Teile (Fragmente) der Relationen
+bestimmen
+\subitem Nebenläufikeit steigern bei mehreren Transaktionen
+mit Zugriff auf verschiedene Fragmente
+\subitem Zusatzkosten für Transaktionen mit Zugriff auf
+Fragmente an verschiedenen Knoten
+\end{itemize}
+
+\subsubsection{Horizontal}
+Zerlegt aufgrund Riehen, mit Where klausel.
+%pic
+\subsubsection{Projektion - Vertikal}
+Spaltenliste. In allen Fragmente PK muss dabei sein damit es rekonstruierbar ist-
+%pic
+Kann kombiniert weden mit Horizontal für optimale Verteilung.
+
+\subsection{Bottom Up}
+\begin{itemize}
+ \item Multidatenbank Anwendungen
+\item Datenbanken schon auf verschieden Knoten vorhanden
+\item Problem der Datenintegration, Schemaintegration
+\item Web Services
+\end{itemize}
+
+\section{Korrektheit der Fragmentierung}
+\begin{description}
+ \item [Vollständig] Wenn R zerlegt wird $R1,R2 \\ldots R_n$ dann muss jedes Datenelement aus R in einem $R_i$ 
+enthalten sein. (Join mit gemeinsamen Pk - wiederzusammenstellung). (Horizontal umkehroperation - Union)%todo
+\item [Rekonstruierbar] Wenn wenn R zerlegt wird in , dann muss es $R1,R2 \\ldots R_n$
+relationale Operatoren geben, so dass R wiederhergestellt
+werden kann.
+\item[Disjunkt] wenn R horizontal zerlegt wird in $R1,R2 \\ldots R_n$, dann
+müssen die Fragmente paarweise disjunkt sein.
+wenn R vertikal zerlegt wird in $R1,R2 \\ldots R_n$, dann müssen
+die Fragmente bezogen auf die nichtprimen Attribute
+paarweise disjunkt sein.
+\end{description}
+
+\section{Fragmentierungsabkürzungen}
+\begin{itemize}
+ \item Horizontale Fragmentierung (HF)
+\subitem Primäre horizontale Fragmentierung (PHF)
+\subitem Abgeleitete horizontale Fragmentierung (DHF) Fragmente gehören zu andere Fragmente wegen PK oder FK. Ähnliche 
+Fragmentierung sinnvoll.
+\item Vertikale Fragmentierung (VF)
+\item Gemischte Fragmentierung (MF)
+\end{itemize}
+
+\section{PHF}
+\pic{phfbsp.png}
+
+Quantitive Informationen:\\
+Bedingungen in Queries bestehen aus:
+\begin{description}
+ \item [Simple Predicate p] Vergleich eines Attributs mit einem Wert : Name = ``bla'' Preis < 2000. Allgemein 
+bestehenbedingungen aus boolschen Kombinierung von simple Predicates : $ P = \{p_1,p_2 \ldots , p_m\}$ vom simple 
+predicates bilden wir
+\item[Mintem predicate] $M(P)$ \textbf{Verknupfungen aller simple predicates aus P mit AND und NOT}. bname= bla and not 
+preis < 2000 z.B \\
+Bemerkung : \\
+$p_1 : $ bname = `Sienna'\\
+$p_2 : $ preis < 2000 \\
+$ p_1 \wedge p_2 \\
+p_1 \wedge \neg p_2 \\
+\neg p_1 \wedge p_2\\
+\neg p_1 \wedge \neg p_2$
+
+\end{description}
+\pic{mtbsp.png} %todo
+\newpage
+Quantitive Informationen : Brauche ich das minterm oder nicht?
+\begin{description}
+ \item [Minterm selectivity] $sel(m_i)$ Anzahl Tuppel die mit dem Minterm $m_i$ augewählt werden.
+ \item [Access frequency] $acc(m_i)$ Häufigkeit der Anwendungen auf Daten mit dem
+minterm $m_i$ zugreifen
+\end{description}
+
+\section{PHF Schritt für Schritt}
+\begin{description}
+ \item [Vollständigkeit] Eine Menge von simple predicates ist vollständig genau
+dann, wenn auf beliebige 2 Tupel im gleichen Fragment
+von allen Anwendungen mit der gleichen Häu gkeit
+zugegriffen wird
+\item[Minimalität] Wird durch ein simple predicate ein Fragment weiter
+aufgeteilt, dann muss es mindestens eine Anwendung
+geben, die auf diese Fragmente verschieden zugreift
+Ein simple predicate soll also relevant sein für die
+Bestimmung einer Fragmentierung
+Sind alle simple predicate eine Menge P relevant, dann ist
+P minimal
+\end{description}
+
+\begin{itemize}
+ \item Menge von Simple predicates mit der Eigenschaft der Vollständigkeit und Minimalität.
+ 
+\end{itemize}
+
+\section{PHF Beispiel Bikes} %todo in schritten
+Zugriffshäufigkeit gegeben je nach art des Fahrrads. \\
+Anwendung 2 : Bikes aufgrund preise verwaltet. \\ Predicates aus beobachtungen\\
+Anwendung 1:
+Zugriffshäufigkeit der Anwendung in excel, schauen. Wenn grosse verschieden  - schlussfolgerung kann unterscheiden 
+durch eine WHERE bedingung
+Anwendung 2 :
+Preis spielt hier eine rolle - ist relevante Bedingungen. Simple predicates aufnehmen die RELEVANT sind.
+
+Verfahren erklären :
+Minimale Menge von simple predicates ausarbeiten aufgrund der Beobachtung Anwendungen.
+wahle eines aus von allen predicates das relevant ist - typ = mounten. 
+erganze meine menge p' um die nächsten nur relevanten \\ 
+\\ sehe phf beispiel. \\
+p1..p6 = P
+p1 ist relevant wege häufigkeit.\\
+p2, p3 hinzufügen  relevant \\
+p4 nicht relevant weil : typ  =city kann ich ausdrucken im minterm von anderen (Restmenge) p4 ist aber einfacher zu 
+benutzen.\\
+entweder p5, oder p6 aufnehmen sehe oben. MINIMALE MENGE.
+2 HOCH 6 kombinationen. durch impl und wiedersprüche nur 8 sinnvoll. \\
+Beispiel : \\
+Typ = Road und Typ = Mountain ist ein wiederspruch. Bike für beides geht nicht.\\
+Impl beispiel :
+Typ = road folgt nicht alle anderen typen. alle extrabedingungen mit nots reduzieren. \\ (Schritt 3)
+Fragmente bilden sehe folie.\\
+homogen zugriff auf fragment ?? nutzung alle tupel gleich. zugriffhäufigkeit konform pro fragment. \\
+wichtigsten anwendung betrachte 20 prozent 80 prozent last.
+kleinste sinnvolle einheit. \\
+
+\section{DHF}
+\begin{itemize}
+ \item ist eine horizontale Fragmentierung, die auf einer
+horizontalen Fragmentierung einer übergeordneten
+Relation basiert
+\item stellt sicher, dass Fragmente verschiedener
+Relationen, auf die häu g im Verbund zugegriffen
+wird, dem gleichen Knoten zugeteilt werden
+\item defnieren mit einem Semijoin (Dreickzeichen) \footnote{Mit subquieries definiert: SELECT * FROM AUFTRÄGE WHERE 
+EXISTS (SELECT 1  FROM $KUNDEN_1$ WHERE $KUNDEN_1$.KNR = AUFTRÄGE.KNR) }: Kann als normallen Join geschrieben werden :
+Projektion $\pi_{knr,datum,auftrage.knr}$ (Aufträge $\ltimes $ $Kunden_1$) 
+
+\end{itemize}
+
+\pic{dhfbsp.png}
+
+
+\chapter{Vertikale Fragmentierung}
+
+Geht um ``ähnliche Nutzung''.
+\begin{itemize}
+
+\item Vertikale Fragmentierung einer einzelnen Relation
+\item Modellieren des Zugriffs auf die Relationen
+\subitem Welche Anwendungen (Queries)
+\subitem verwenden welche Attribute
+\item und werden auf welchen Knoten
+\item wie häufig ausgeführt
+\item mit dem Ziel zu entscheiden
+\subitem welche Attribute werden häu g zusammen verwendet
+\subitem und sollen deshalb zum selben Fragment gehöre
+\end{itemize}
+
+\pic{dbvf.png}
+\section{Zugriffseigenschaften}
+\pic{dbze.png}
+Die Verwendung (Usage) der Attribute durch diese
+Anwendungen (Queries) wird in einer Matrix dargestellt:
+Matrix U.
+eine 1 bedeutet: Query verwendet Attribut
+eine 0 bedeutet: Query verwendet Attribut nicht
+\begin{tabular}{c c c c c}
+ &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+$q_1$ & 1 & 0 & 0 & 1 \\
+$q_2$ & 0 & 1 &0 & 1 \\
+$q_3$ & 0 & 1 & 1 & 0 \\
+$q_4$ & 0 & 0 & 1 & 1 \\
+\end{tabular}
+
+Anwendung wird ebenfalls in einer Matrix festgehalten:
+Matrix Acc.
+
+\begin{tabular}{c c c c c}
+ &\textbf{S1} & \textbf{S2}  & \textbf{S3}\\
+$q_1$ & 15 & 20 & 10 \\
+$q_2$ & 5 & 0 & 0 \\
+$q_3$ & 25 & 25 & 25 \\
+$q_4$ 3 & 0 & 0 \\
+\end{tabular}
+
+die Zahl 15 oben links besagt z.B.: Query $q_1$ wird auf
+Knoten S1 15 Mal pro Tag ausgeführt
+
+\section{Cluster Methode}
+\begin{itemize}
+\item  Der Zugriff auf jede Attributsmenge durch die
+Anwendungen ist sehr unterschiedlich
+\subitem Dadurch würde jedes Attribut sein eigenes Fragment
+bilden, was wenig sinnvoll ist
+\subitem Besser wird nach Attributsmengen gesucht, auf die
+ähnlich zugegriffen wird
+\item Die Clustering Methode erkennt ähnliche Zugriffsmuster auf
+Attribute
+\subitem Für jedes Paar von Attributen bestimmen, wie oft auf
+sie gemeinsam zugegriffen wird
+\subitem Cluster bilden von Attributen mit hoher Af nität
+\end{itemize}
+
+\subsection{Äffinität}
+\begin{framed}
+ \begin{equation}
+  aff (A_i,A_j) = \sum_{k : U_{k_i}=1,U_{k_j}=1} \sum_{l=1}^s acc_{k_l} 
+ \end{equation}
+
+\end{framed}
+
+\pic{affin.png}
+%todo tex extra workflowy.
+
+Matrix AA Zeigt Äffinität zweier Attribute :
+\begin{tabular}{c c c c c}
+ &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+BName & 45 & 0 & 0 & 45 \\
+Preis & 0 & 80 &75 & 5 \\
+Typ & 0 & 75 & 78 & 3 \\
+Bestand & 45 & 5 & 3 & 53 \\
+\end{tabular}
+
+\begin{framed}
+ Skalarprodukt benachbarter Spalten
+misst die Ähnlichkeit des
+Zugriffsmusters: Af nität der
+Nachbarschaft (bond):
+\begin{equation}
+ \sum_{z=1}^{n} = aff(A_z,A_x)*aff(A_z,A_y)
+\end{equation}
+Die Summe über alle Skalarprodukte ist
+die globale Af nität der Nachbarschaft
+
+\end{framed}
+BName, Preis: 45 x 5 = 225\\
+Preis, Typ:\\
+80 x 75 + 75 x 78 + 5 x 3 = 11865\\
+Typ, Bestand:
+75 x 5 + 78 x 3 + 3 x 53 = 768\\
+
+globale Affinität: 12858\\
+
+\textbf{Vertauschen ist auch möglich:}
+
+\subsection{Vertauschen bei Affinität}
+Durch Austausch von Spalten (und den entsprechenden Zeilen) in
+der Matrix AA verändert sich die globale Af nität der
+Nachbarschaft:
+
+\begin{tabular}{c c c c c}
+  &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+BName & 45 & 0 & 0 & 45 \\
+Preis & 0 & 80 &75 & 5 \\
+Typ & 0 & 75 & 78 & 3 \\
+Bestand & 45 & 5 & 3 & 53 \\
+\end{tabular}
+
+
+Preis, BName: 5 x 45 = 225\\
+BName, Typ: 45 x 3 = 135\\
+Typ, Bestand:\\
+75 x 5 + 78 x 3 + 3 x 53 = 768\\
+Globale Affinität: 1128\\
+
+\section{Bond Energie Algorythmus}
+\begin{itemize}
+\item Gegeben $n \times n$ Matrix AA der Affinitäten
+\subitem Beliebige 2 Spalte aus AA wählen und in Resultats Matrix CA stellen
+\item Iteration:
+\subitem eine der übrigen $n - i$ Spalten so in Resultats Matrix
+positionieren ($i + 1$ mögliche Positionen), dass sich der
+grösste Beitrag an die globale Affinität der
+Nachbarschaft ergibt
+\subitem Die Zeilen entsprechend den Spalten anordnen
+\item Beitrag einer Spalte $A_k$ wenn zwischen $A_i$ und $A_j$ platziert:\\
+$ \text{cont} (A_i , A_k , A_j ) = \text{bond}(A_i , A_k ) + \text{bond}(A_k , A_j ) - bond(A_i , A_j )$
+\end{itemize}
+\section{VF - Vertical Fragmentation Example}
+\pic[Gegebene Matrix der AA Affinitäten]{vfb1.png}
+\pic[Aus der Affinitäts Matrix AA werden
+die Spalten BName und Typ beliebig
+gewählt]{vfb2.png}
+Spalte Preis an 1. Position
+platzieren und Beitrag an globaler
+Affinität berechnen:\\
+cont(\_, Preis, BName) =
+0 + 225 - 0 = 225\\
+Spalte Preis an 2. Position platzieren
+und Beitrag an globaler Af nität
+berechnen:\\
+cont(BName, Preis, Typ) =
+225 + 11865 - 135 = 11955\\
+Spalte Preis an 3. Position platzieren
+und Beitrag an globaler Af nität
+berechnen:\\
+cont(Typ, Preis, \_) = 11865 + 0 - 0 =
+11865  \\
+
+Preis an der 2. Position bietet den grössten Beitrag.
+
+\pic{vfb5.png}
+
+\section{VF : Cluster möglichketen}
+  \pic{vfcm.png}
+\begin{itemize}
+ \item Trennpunkt kann entlang der Diagonalen verschoben
+werden
+\item Für jede der Möglichkeiten berechnen, wie oft:
+\subitem ausschliesslich auf Attribute eines Fragments
+zugegriffen wird (gut)
+\subitem auf Attribute beider Fragmente zugegriffen wird
+(schlecht)
+\item Trennqualität $sq = acc(VF_1 ) \times acc(VF_2 ) - acc(VF_1 , VF_2 )^2$
+maximieren
+\subitem acc(VF 1 ): Summe Zugriffshäu gkeiten der Queries
+ausschliesslich auf VF 1
+\subitem acc(VF 2 ): Summe Zugriffshäu gkeiten der Queries
+ausschliesslich auf VF 2
+\subitem acc(VF 1 , VF 2 ): Summe Zugriffshäu gkeiten der Queries
+auf VF 1 und VF 2
+\end{itemize}
+\pic{vfse.png}
+
+\section{Schluss : VF}
+Aus der erhaltenen Clusterung der Attribute, ergänzt mit
+dem Primärschlüssel ergeben sich die Fragmente:\\
+BIKES 1 : $\pi_{\text{BNr, BName, Bestand}}$(BIKES)\\
+BIKES 2 : $\pi_{\text{BNr, Preis, Typ}}$ (BIKES)\\
+
+\chapter{Verteilte Anfrage Verarbeitung}
+
+\begin{framed}
+ Beispiel Query:
+$KUN_1$ = $\pi_{KNR,KNAME}(KUN)$ \\
+$KUN_2$ = $\pi_{KNR,ORT}(KUN)$\\
+$KUN = KUN_1 \bowtie KUN_2$ \\
+\end{framed}
+
+\section{Query Processor}
+Umformen der SQl Queries in ausführbare Operationen für den Datenzugriff:
+
+\pic{qproc.png}
+
+\section{Zentralisiert vs Dezentraliziert}
+\begin{description}
+ \item [Zentraliziertes System] 
+ \begin{itemize}
+  \item Umformen der SQL Anfrage in ausführbare Einheiten - Operationen der Rationalen Algebra.
+  \item Auswählen des besten Ausführungsplans
+ \end{itemize}
+ \item[verteiltes System] \begin{itemize}
+                           \item berücksichtigen der Kommunikationskosten
+                           \item auswählen des besten Knotens.
+                          \end{itemize}
+Relationen werden mit den ersten drei Buchstaben von der DB Tabellenname zufkünfig benannt.
+\section{Überblick}
+\subsection{Ziel der Optimierung}
+\pic{zdo.png}
+
+\begin{itemize}
+ \item durch Umformen und Optimieren soll eine Kosenfunktion mimimiert werden
+ \subitem CPU Zeit
+ \subitem IO Zeit
+ \subitem Comm Zeit
+ \item verschiedene Gewichte in unterschiedlich verteilten Umgebungen. WAN - Kommzeit LAN - ähnlich gewichtet.
+ 
+\end{itemize}
+
+\subsection{Komplexität}
+$ \theta \pi $ mit Duplikate : O(n) \\
+$ \pi$ Ohne Duplikate - GROUP O(n log n) \\
+$ \bowtie \cup \cap \div$ : O(n log n) \\
+$ \times $ : $O(n^2)$ 
+
+
+\end{description}
+
+\section{Methode}
+\subsection{Verteilte Verarbeitung}
+\pic{vab}
+
+\subsection{Zerlegung}
+Sql Query zerlegen und umformen in relationale Algebra unter verwendung des globalen Schemas :
+\begin{itemize}
+ \item Normalisierung (Bedingung in Where Klausel)
+ \item Analyse um inkorrekte Queries zurückzuwechseln.
+ \subitem Analyse nach Typ
+ \subitem Analyse nach Semantik
+ \item Vereinfachung, Redundanz beseitigen.
+ \item Umformen in optimalen Ausdruck der relationalen Algrbra.
+ 
+\end{itemize}
+
+\section{Lokalisierung}
+\begin{itemize}
+ \item verwenden des Fragmentierunggsschema.
+ \item verteilte Anfrage mit globalen Relationen abbilden in Anfragen mit Fragmenten:
+ \subitem Ersetzen der globalen Relation mit den Fragmenten :
+ \subitem $\cup$ für Horizontale Fragmentierung
+ \subitem $\bowtie$ für Vertikale Fragmentierung.
+ \item Optimierng der lokalisierten Anfrage dürch Reduktion mit Selektion oder Join.
+\end{itemize}
+
+\subsection{PHF}
+\pic{phfr.png}
+\textbf{Bemerkung:} Eine Selektion auf einem Fragment mit einer Bedingung, die der Bedingung für die Fragmentierung 
+wiederspricht , ergibt leere Resultatsrelationen.
+
+\subsection{Schritten für Lokalisierung PHF}
+\begin{description}
+ \item [Schritt 1] globaler Query Baum erstellen
+ \item[Schritt 2] globale Relation mit Fragmenten ersetzen.
+ \pic{phflok.png}
+ \item[Schritt 3] Reduktion: \\
+ \pic{phflok1.png}
+ Eine Reduktion ist möglich wenn die Fragmentierung mit dem Join Attribute erfolgte. Wenn sich die Bedingungen der 
+Fragmente wiedersprechen, resultiert eine leere Relation. Vor einer möglichen Reduktion wird das Distributivgesetz 
+angewendet : \\
+$ (R_1 \cup R_2) \bowtie S = (R1 \bowtie S) \cup (R_2 \bowtie S) $
+\end{description}
+
+\subsection{Reduktion mit Join für PHF}
+\pic{redjphf.png}
+\pic{redjphf2.png}
+\pic{redjphf3.png}
+\pic{redjphf4.png}
+
+
+\section{Reduktion für VF}
+\pic{redvf1.png}
+Eine Projektion auf einem Fragment ist nutzlos wenn die Attribute der Projektion nicht im Fragment enthalten sind.
+\pic{redvf2.png}
+\pic{redvf3.png}
+\pic{redvf4.png}
+  
+\chapter{Concurrency}
+
+\section{Notation + Definitionen für Concurrency}
+\begin{tabular}{|c|c|}
+\hline 
+ \textbf{Notation} & \textbf{Bedeutung} \\ \hline
+ $r_i[x]$ & Read(x) durch Transaktion $T_i$ \\ \hline
+ $w_i[x]$ & Write(x) durch Transaktion $T_i$ \\ \hline
+ $o_i[x]$ & Read(x) oder Write(x) durch $T_i$ \\ \hline
+ $c_i$ & Commit durch Transaktion $T_i$ \\ \hline
+ $a_i$ & Commit durch Transaktion $T_i$ \\ \hline
+ $e_i$ & Commit oder Abort durch $T_i$ \\ \hline
+ 
+\end{tabular}
+
+\begin{description}
+ \item [Transaktion] Folge von Read und Write Operationen auf beliebiegen Datenelementen x. Letzte Operation entweder 
+Commit oder Abort.
+\item[Schedule,History] ist eine foge von Datenbank Scheduler auf der Datenbank ausgeführten Lese und 
+Screiboperationen.Es besteht aus Operationen verschiedener Transaktionen.Ordnung der Operationen innerhalb einer 
+Transaktion muss beibehalten werden.
+\item[Serielle History] Eine History H heisst seriell, wenn jeweils alle Operationen einer Transaktion direkt 
+hintereinander ausgeführt werden (keine überlappte Ausführung der Transaktionen).
+\item[Konflikt Operation] Zwei Datenbank-Operationen $o_i$ und $o_k$ heissen Konflikt-Operationen wenn :
+\begin{itemize}
+ \item beide auf dasselbe Element x zugreifen.
+ \item sie zu verschieden Transaktionen gehören.
+ \item mindestens eine der beiden eine Schreiboperation ist.
+\end{itemize}
+\item[Konflikt Serialisierbarkeit] Eine History heisst konflikt-serialisierbar , wenn es eine serielle History mit 
+gleicher Reihenfolge der Konflikt-Operationen gibt.
+\item[Recoverable History] Eine History heisst Recoverable falls alle Commits der Transaktionen, von denen eine 
+Transaktion $T_i$ liest vor dem $c_i$ erfolgen.
+\item[Vermeiden von cascading Aborts] Eine History vermeidet cascading Aborts falls alle Commits der Transaktionen, von 
+denen eine Transaktion $T_i$ liest vor dem $r_i[x]$  erfolgen.
+\item[Strickte History] Eine History heisst strikt falls jedes $r_i[x]$ oder $w_i[x]$ einer Transaktion $T_i$ nach den 
+Commits aller anderen Transaktionen erfolgt, die auf $x$ geschreiben haben.
+\item[2 Phasen Sperrprotokoll] Two Phase Lock : Eine Transaktion folgt dem 2 Phasen Sperrprotokoll
+\begin{itemize}
+ \item vor einem Read bzw Write muss ein share Lock bzw exclusive lock verlangt und erlangt werden.
+ \item die Sperre darf erst freigegeb werden wenn die zugehörige Operation vollständig durchgeführt worden ist.
+ \item nach der ersten Freigabe einer Sperre darf keine neue Sperre verlangt werden.
+\end{itemize}
+\item[Striktes 2 Phasen Sperrprotokoll] 
+\begin{itemize}
+ \item Alle Sperren müssen auf einmal mit dem Commit atomar freigegeben werden.
+\end{itemize}
+
+
+\end{description}
+
+
+\section{Einführung}
+\begin{description}
+\item[Atomicity] Alles oder Nichts
+\item[Consistency] keine Verletzung von Integritätsregeln
+\item[Isolation] keine Nebeneffekte bei Nebenläu gkeit
+\item[Durability] Bestätigte Änderungen sind persistent
+\end{description}
+
+Transaktionen bieten :
+\begin{itemize}
+ \item unteilbare und zuverlässige Ausführung auch bei
+Ausfällen
+\item korrekte Ausführung auch bei gleichzeitigem Zugriff
+durch mehrere Benutzer
+\item korrekte Verwaltung von Replikaten (falls unterstützt)
+
+\subsection{Aspekte der Transaktionsverarbeitung}
+\begin{itemize}
+ \item Transaktionsstruktur (Transaktionsmodell)
+\subitem flache Transaktion, verschachtelte Transaktion
+\item Konsistenzerhaltung der Datenbank
+\item Zuverlässigkeitsprotokolle
+\subitem Unteilbarkeit, Dauerhaftigkeit
+\subitem lokale Wiederherstellung
+\subitem globale Commit Protokolle
+\item Nebenläufigkeitskontrolle
+\subitem Ausführung nebenläufiger Transaktionen (Korrektheit?)
+\subitem Konsistenzerhaltung zwischen Transaktionen, Isolation
+\item Kontrolle der Replikate
+\subitem Kontrolle der gegenseitigen Konsistenz von Replikaten
+\item One-Copy Equivalence, ROWA
+\end{itemize}
+
+\section{Arhitektur}
+\pic{dbarchcca.png}
+\pic{dbarchcc1.png}
+
+\section{Nebenläufigkeit}
+Nebenläufigkeitskontrolle wie in zentralisierten DBS
+\item Ablaufplan, History, Schedule
+\item serielle Ausführung, serielle History
+\item Äquivalenz von Histories
+\subitem Konflikt Äquivalenz
+\subitem Konflikt Operationen
+\item Serialisierbarkeit
+\item zwei verschiedene Arten Histories berücksichtigen
+\subitem lokale Ablaufpläne
+\subitem globaler Ablaufplan
+\item für Serialisierbarkeit des globalen Ablaufplans sind
+zwei Bedingungen nötig
+\subitem jeder lokale Ablaufplan muss serialisierbar sein
+\subitem zwei Konflikt Operationen müssen in der gleichen
+Reihenfolge auftreten in allen lokalen Ablaufplänen, in
+denen sie zusammen auftreten
+\end{itemize}
+
+\subsection{Beispiel : Global nicht serialisierbar}
+\pic{globalns.png}
+
+serialisierbar auf Knoten aber global nicht wegen verscheidene Reihenfolge.Wir wissen im Zentral wie man es macht, aber
+
+\chapter{Verteilte Transaktionen 2}
+
+\section{Einleitung}
+Eine Datenbank ist zuverlässig wenn sie robust und zur Wiederherstellung fähig ist. Idee steckt aucch in den ACID 
+Eigenschaften. mit Fokus auf Atomicity und Durability.
+
+\begin{description}
+ \item [Fehlerarten] \begin{itemize}
+                      \item Transaktionsfehler
+                      \subitem Transaktionssabruch
+                      \subitem einseitig, Deadlock.
+                      \item System oder Knotenausfall
+                      \subitem Ausfall von CPU, Hauptspeicher,Stromversorgung.
+                      \subitem Hauptspeicherinhalte gehen verloren.
+                      \subitem Teil oder Totalausfall.
+                      \item Plattenfehler
+                      \subitem Verlust gespeicherter Daten.
+                      \subitem Head Crash, Ausfall des Controllers.
+                      \item Verbindungsausfall
+                      \subitem Verlorene oder nicht zustellbarre Nachrichten
+                      \subitem Trennung des Netzwerks
+                     \end{itemize}
+\item[Lokale/Verteilte Zuverlässigkeit] \begin{framed}
+                                         \textbf{Zentrales DB hat zu tun mit} \\
+                                         \begin{itemize}
+                                          \item Transaktionsfehler
+                                          \item System oder Knotenausfall
+                                          \item Plattenfehler
+                                         \end{itemize}
+                                         
+                                         Bei Systemausfällen oder Plattenfehler handelt es sich immer um einen 
+vollständigen Ausfall. \\
+\textbf{ verteiultes DBS hat zustätzlich zu tun mit:}\\
+\begin{itemize}
+ \item Koordination bei 
+ \subitem Transaktionsfehler
+ \subitem System oder Knotenausfall
+ \subitem Plattenfehler
+ \item Verbindungsausfall
+ \item Erhöhte Verfügbarkeit. 
+\end{itemize}
+
+
+                                        \end{framed}
+
+\end{description}
+
+\section{Lokale Wiederherstellung}
+\pic{lokalearch.png}
+
+\begin{description}
+ \item [Prinzip] Einzelne DBS sind fähig zur Wiederherstellung durch:
+ \begin{itemize}
+  \item angemessene Schreibstrategie
+  \subitem Force bzw No Force
+  \item angemesse Seitenersetzung
+  \subitem Steal bzw No Steal
+  \item Protokollierung von Änderungsoperationen.
+  \subitem Undo und Redo Informationen.
+  \item Write Ahead Logging (WAL)
+  \subitem Vor Commit : (Redo) Log einträge sichern.
+  \subitem Vor Änderung der permanenten Datenbank: Undo Log Einträge sichern.
+  \item robustes Verfahren 
+  \subitem Indempotenz von Redo und Undo
+  \subitem ARIES
+  
+ \end{itemize}
+\item[Zuverlässigkeit in verteiltes DBS] 
+\begin{itemize}
+ \item Sicherstellen von Atomicity und Durability verteilter Transaktionen.
+ \item Jeder Knoten kann:
+ \subitem lokaler Teil der Transaktion zuverlässig verarbeiten.
+ \subitem nach Bedarf lokales Commit durchführen.
+ \subitem nach Bedarf lokales Rollback durchführen.
+ \subitem nach Bedarf lokales Recovery durchführen.
+ \item Übergeordnete Protokolle müssen sich mit der Koordination der beteiligten Knoten befassen.
+ \subitem Start der Transaktion beim Ursprüngskonoten verarbeiten.
+ \subitem Read und Write an den Zeilknoten  verarbeiten und spezielle Vorhehrungen bei Replikationsstrategien
+ \subitem Abort, Commit und Recover spezifisch für DDB.
+\end{itemize}
+\item[Komponenten] \begin{itemize}
+                    \item unterscheiden in 
+                    \subitem Coordinator Proccess beim Ursprungsknoten , steuert die Ausführung
+                    \subitem Participant Process bei den anderen Knoten, die an der Transaktion beteiligt sind.
+                    \item Verscheidene Protokolle (Reliability Protocols) : Commit, Termination,Recovery
+                    
+                   \end{itemize}
+\item[Reliability Protocols] \begin{framed}
+\begin{description}
+ \item [Commit Protocols] \hfill \\
+  Wie das Commit einer Transaktion verarbeiten wenn mehr als ein Knoten am Commit beteiligt 
+ist? Regelt Atomicity und Durability einer verteilten Transaktion.
+\item[Termination Protocols]\hfill \\
+Verwendet von Knoten, die vom Ausfall andererbetroffen sind.
+Regelt für einen Knoten das Commit/Abort,
+wenn andere Knoten ausfallen.
+Knoten
+Blocking/Non-Blocking: Müssen Knoten auf RecoveryKnoten warten, um Transaktion abzuschliessen?
+\item[Recovery Protocols] Verwendet von Knoten, die ausgefallen sind.
+Regelt das Recoveryverfahren beim Wiederanlauf
+nach einem Ausfall: \\
+Unabhängig: Ein ausgefallener Knoten kann das Ergebnis einer
+Transaktion bestimmen, ohne Information von anderen Knoten
+zu haben.
+
+\end{description}
+
+                             \end{framed}
+
+\end{description}
+
+\section{2 Phase Commit}
+\begin{description}
+ \item [1) WahlPhase] Der Koordinator fragt alle Teilnehmer, ob sie bereit sind für ein
+Commit: Prepare.\\
+Jeder Teilnehmer teilt dem Koordinator seine Entscheidung mit:
+Vote-Commit oder Vote-Abort.
+\item[2) EntscheidungsPhase] Der Koordinator trifft endgültige Entscheidung:
+Commit: Falls alle Teilnehmer bereit zum Commit\\
+Abort: In allen anderen Fällen
+und teilt sie den Teilnehmern mit: Global-Commit oder
+Global-Abort.
+Diese müssen sich entsprechend verhalten und bestätigen:
+Acknowledge.
+\end{description}
+
+\subsection{Ablauf}
+\pic[ 2 phase commit ablauf : write commit in log left global commit to rightmost ready.]{2pcom.png}
+
+\subsection{Beobachtungen}
+\begin{enumerate}
+ \item Ein Teilnehmer kann einseitig Abort durchführen,
+vorausgesetzt, er hat nicht mit Vote-Commit geantwortet.
+\item Nachdem ein Teilnehmer mit Vote-Commit geantwortet hat,
+muss er zum Commit bereit sein und kann nicht mehr
+umentscheiden.
+\item Ein Teilnehmer im Ready-Zustand muss bereit sein zum
+Commit oder Abort, je nach Entscheid des Koordinators.
+\item Die endgültige Entscheidung ist Commit, falls alle
+Teilnehmer Vote-Commit geantwortet haben, oder Abort,
+falls irgendein Teilnehmer mit Vote-Abort geantwortet hat.
+\item Koordinator und Teilnehmer verwenden Time-Out
+Methoden, um möglichen Wartezustand zu verlassen.
+\end{enumerate}
+
+\subsection{Zentralisirtes 2 P C}
+\pic{z2pc.png}
+\subsection{Lineares 2PC}
+\pic{l2pc.png}
+\subsection{Verteiltes 2PC}
+\pic{v2pc.png}
+\subsection{Zustandsübergänge}
+\pic{zu2pc.png}
+
+\subsection{Protokol Bemerkungen}
+\begin{description}
+ \item [Termination Protocols]\hfill \\
+ \begin{itemize}
+  \item Time Out des Koordinators im Zustand WAIT,ABORT,und COMMIT möglich.
+  \item WAIT Zustand
+  \subitem Koordinator wartet auf Entscheid der Teilnehmer.
+  \subitem \textbf{Lösung:} Koordinator entscheidet Global-Abort Transaktion.
+  \item COMMIT oder ABORT Zustand
+  \subitem Koordinator ist nicht sicher ob das Commit oder Abort Verfahren durch die LRMs aller Teilnehmer durchgeführt 
+wurde.
+\subitem \textbf{Lösung:} Global Commit oder Global Abort an alle Teilnehmer , die nicht geantwortet haben, erneut 
+senden.
+\item Time out eines Teilnehmers im Zustand INITIAL oder READY  möglich
+\item INITIAL Zustand
+\subitem Teilnehmer wartet auf das Prepare des Koordinators
+\subitem \textbf{Lösung:} Teilnehmer führt einseitig Abort dürch. Falls Prepare später ankommt, mit Vote-Abort 
+antworten oder ignorieren.
+\item READY Zustand
+\subitem Teilnehmer darf nach dem Vote Commit nicht umentscheiden und einsitig Abort durchführen.
+\subitem \textbf{Lösung:} Teilnehmer blokiert und muss auf den entgültigen Entscheid des Koordinators warten.
+ \end{itemize}
+\item[Recovery Protocols] \begin{itemize}
+                           \item Protokolle die ein Koordinator oder Teilnehmer nach einem Ausfall verwenden für die 
+Wiederherstellung beim Neustart.
+\item Annahmen: 
+\subitem Beschreiben des Logs und Versenden von Nachrichten ist eine Atomare Aktion
+\subitem Zustandsübergänge erfolgen nach Versenden der Nachricht.
+\end{itemize}
+\item[Ausfall des Koordinators] \hfill \\
+\begin{itemize}
+ \item Koordinator im Zustand INITIAL fällt aus 
+ \subitem Neustart der Transaktion
+ \item Koordinator im Zustand WAIT fällt aus :
+ \subitem Neustart des Commit Verfahrens mit nochmaligem Versenden der Prepare nachricht.
+ \item Koordinator im Zustand COMMIT oder ABORT fällt aus:
+ \subitem Falls alle Aknowledge Meldungen erhalten ist nichts zu tun.
+ \subitem Sonst Termination Protocols anwenden.
+ \item Teilneh,mer im Zustand INITIAL fällt aus :
+ \subitem Nach der Wiederherstellung führt Teilnehmer einseitig ein Abort der Transaktion durch.
+ \item Teilnehmer im Zustand READY fällt aus :
+ \subitem Ablauf wie nach Time Out im Ready Zustand und Termination Protocols anwenden
+ \item Ausfall bei COMMIT oder ABORT
+ \subitem Nichts tun.
+\end{itemize}
+\item[Probleme mit 2PC] \hfill \\
+\begin{itemize}
+ \item Blockierend
+  \subitem Im Zustand READY muss Teilnehmer auf Entscheid des Koordinators warten.
+  \subitem Fällt Koordinator aus, ist Teilnehmer blockiert.
+  \subitem Damit wird Verfügbarkeit reduziert.
+  \item Unanhängiges Recovery nicht möglich
+  \subitem Recovery eines Teilnehmers nach Ausfall in Zustand READY kann nicht unabhängig erfolgen.
+  \subitem Verfügbarkeit des Koordinators oder eines Teilnehmers , der die Rolle des Koordinators übernimmt ist nötig.
+\end{itemize}
+\end{description}
+
+\section{3 Phase Commit}
+\begin{itemize}
+ \item 3PC ist nicht blockierend.
+ \item Commit Protocol ist nicht Blockierend genau dann wenn
+ \subitem es synchron ist innerhalb eines Zustandübergangs. 
+ \subitem es keine Zustände hat die
+ \subsubitem benachbart sind zu einem Commit und Abort Zustand
+ \subsubitem benachbart sind zu einem Commit Zustand aber nicht ``commitable''
+ \item ``Commitable'' : Zustand in dem sichergestellt ist, dass alle Teilnehmer mit Vote Commit geantwortet haben.
+ 
+\end{itemize}
+
+\subsection{Zustandsübergänge}
+\pic{3pczu.png}
+ 
+
+\end{document}

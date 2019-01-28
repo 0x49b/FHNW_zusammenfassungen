@@ -1,0 +1,56 @@
+\select@language {german}
+\contentsline {chapter}{\numberline {1}Android GUI}{3}
+\contentsline {section}{\numberline {1.1}View Klassen}{3}
+\contentsline {section}{\numberline {1.2}Class R}{3}
+\contentsline {section}{\numberline {1.3}Layout}{4}
+\contentsline {section}{\numberline {1.4}Widgets}{4}
+\contentsline {section}{\numberline {1.5}Aufbau eines Games}{5}
+\contentsline {chapter}{\numberline {2}Intents}{6}
+\contentsline {section}{\numberline {2.1}Einf\IeC {\"u}hrung}{6}
+\contentsline {section}{\numberline {2.2}Details}{6}
+\contentsline {section}{\numberline {2.3}Manifest}{7}
+\contentsline {section}{\numberline {2.4}Expliziter und Impliziter Events}{7}
+\contentsline {section}{\numberline {2.5}Daten \IeC {\"u}bergeben mit Intents}{7}
+\contentsline {chapter}{\numberline {3}Responsive Design}{9}
+\contentsline {section}{\numberline {3.1}Fragments}{9}
+\contentsline {section}{\numberline {3.2}Resourcen}{9}
+\contentsline {section}{\numberline {3.3}Responsive Design for Tablet}{10}
+\contentsline {section}{\numberline {3.4}Auswechselung von Fragments}{10}
+\contentsline {chapter}{\numberline {4}Effiziente Netwerk Synchronization}{12}
+\contentsline {section}{\numberline {4.1}Probleme}{12}
+\contentsline {section}{\numberline {4.2}Radio State Machine}{12}
+\contentsline {subsection}{\numberline {4.2.1}Probleme}{12}
+\contentsline {subsection}{\numberline {4.2.2}Ans\IeC {\"a}tze}{12}
+\contentsline {section}{\numberline {4.3}Pattern Content Provider und Sync Adapter}{13}
+\contentsline {chapter}{\numberline {5}Background Tasks}{14}
+\contentsline {section}{\numberline {5.1}UI Thread}{14}
+\contentsline {section}{\numberline {5.2}Herausforderungen Single Thread}{14}
+\contentsline {subsection}{\numberline {5.2.1}Triggers f\IeC {\"u}r ANR}{14}
+\contentsline {subsection}{\numberline {5.2.2}Folgerungen}{14}
+\contentsline {section}{\numberline {5.3}Varianten}{14}
+\contentsline {subsection}{\numberline {5.3.1}Worker Thread}{14}
+\contentsline {subsection}{\numberline {5.3.2}Async Tasks}{14}
+\contentsline {subsection}{\numberline {5.3.3}Service and Broadcastreciever}{14}
+\contentsline {section}{\numberline {5.4}Service und Messenger + Handler}{15}
+\contentsline {chapter}{\numberline {6}Background Tasks II}{16}
+\contentsline {section}{\numberline {6.1}Variante 1 Background Thread - runonUIThread}{16}
+\contentsline {section}{\numberline {6.2}Async Tasks}{17}
+\contentsline {section}{\numberline {6.3}Service und Broadcastreciever}{18}
+\contentsline {section}{\numberline {6.4}Messenger und Service}{20}
+\contentsline {chapter}{\numberline {7}Persistenz}{22}
+\contentsline {section}{\numberline {7.1}Ausgangslage}{22}
+\contentsline {section}{\numberline {7.2}Read Write Cycle}{22}
+\contentsline {section}{\numberline {7.3}Worst Case}{22}
+\contentsline {section}{\numberline {7.4}Fazit}{22}
+\contentsline {chapter}{\numberline {8}Persistenz II}{23}
+\contentsline {section}{\numberline {8.1}Key Value}{23}
+\contentsline {section}{\numberline {8.2}Preferece Activity}{23}
+\contentsline {section}{\numberline {8.3}Loading Bitmaps}{23}
+\contentsline {section}{\numberline {8.4}SQLITE}{24}
+\contentsline {part}{\numberline {I}Code}{25}
+\contentsline {chapter}{\numberline {9}Layout}{26}
+\contentsline {chapter}{\numberline {10}Intents}{29}
+\contentsline {chapter}{\numberline {11}Responsive Design}{32}
+\contentsline {chapter}{\numberline {12}Background Tasks}{35}
+\contentsline {chapter}{\numberline {13}Content Provider}{39}
+\contentsline {chapter}{\numberline {14}Sensors}{42}

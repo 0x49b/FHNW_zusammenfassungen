@@ -1,0 +1,16 @@
+\documentclass[a4paper,10pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+
+%opening
+\title{ECNF Zusammenfassung}
+\author{Roland Hediger}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{}
+
+\end{document}

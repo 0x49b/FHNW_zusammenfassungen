@@ -1,0 +1,43 @@
+\select@language {german}
+\contentsline {part}{\numberline {I}Theorie Teil 2}{4}
+\contentsline {chapter}{\numberline {1}Wildfly Application Server}{5}
+\contentsline {section}{\numberline {1.1}Wildfly/JBoss Einf\IeC {\"u}hrung}{5}
+\contentsline {section}{\numberline {1.2}Wichitge Verzeichnisse + Modi}{5}
+\contentsline {subsection}{\numberline {1.2.1}Modi}{6}
+\contentsline {subsection}{\numberline {1.2.2}Microkernel Architektur}{6}
+\contentsline {subsection}{\numberline {1.2.3}Standalone Verzeichnisstruktur}{6}
+\contentsline {chapter}{\numberline {2}Caching}{8}
+\contentsline {section}{\numberline {2.1}Caching in Wildfly}{8}
+\contentsline {subsection}{\numberline {2.1.1}Strategieen}{8}
+\contentsline {subsection}{\numberline {2.1.2}Synchronisation}{9}
+\contentsline {subsection}{\numberline {2.1.3}Isolationsstrategieen}{9}
+\contentsline {subsection}{\numberline {2.1.4}Konfiguration}{9}
+\contentsline {subsection}{\numberline {2.1.5}Anwendung}{10}
+\contentsline {chapter}{\numberline {3}Load Balancing}{12}
+\contentsline {section}{\numberline {3.1}Load Balancers}{12}
+\contentsline {subsubsection}{\nonumberline Load Banalcing Topologie}{12}
+\contentsline {subsection}{\numberline {3.1.1}Strategieen}{13}
+\contentsline {subsection}{\numberline {3.1.2}DNS Load Balancers}{13}
+\contentsline {chapter}{\numberline {4}Clustering}{14}
+\contentsline {section}{\numberline {4.1}Topologie}{14}
+\contentsline {section}{\numberline {4.2}Verteilung vs Clustering und andere Definitionen}{14}
+\contentsline {section}{\numberline {4.3}Replikationsarten}{15}
+\contentsline {section}{\numberline {4.4}Fallover Unterst\IeC {\"u}tzung}{16}
+\contentsline {section}{\numberline {4.5}Programdesign f\IeC {\"u}r fallovoer}{16}
+\contentsline {chapter}{\numberline {5}Performanz messen}{17}
+\contentsline {section}{\numberline {5.1}Aspekten der Messung}{17}
+\contentsline {section}{\numberline {5.2}Erfassung der Messdaten}{17}
+\contentsline {subsection}{\numberline {5.2.1}JVMTI /JVMPI}{17}
+\contentsline {section}{\numberline {5.3}MessMethodik}{18}
+\contentsline {section}{\numberline {5.4}Zeit vs Eventbasiert}{19}
+\contentsline {section}{\numberline {5.5}Overhead und Messdatenverf\IeC {\"a}lschung}{19}
+\contentsline {subsection}{\numberline {5.5.1}CPU und speicher Overhead}{19}
+\contentsline {subsection}{\numberline {5.5.2}Netzwerk Overhead}{19}
+\contentsline {section}{\numberline {5.6}Theroretische Grundlagen}{19}
+\contentsline {part}{\numberline {II}Arbeitsbl\IeC {\"a}tter}{21}
+\contentsline {chapter}{\numberline {1}Wildfly}{22}
+\contentsline {chapter}{\numberline {2}Caching Puzzle}{24}
+\contentsline {chapter}{\numberline {3}Load Balancing + Clustering}{25}
+\contentsline {chapter}{\numberline {4}Pr\IeC {\"u}fungsfragen - Theorie}{27}
+\contentsline {section}{\numberline {4.1}Multiple Choice}{27}
+\contentsline {section}{\numberline {4.2}Sonnstiges}{28}

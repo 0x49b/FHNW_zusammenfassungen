@@ -1,0 +1,1007 @@
+\documentclass[a4paper,10pt]{scrreprt}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[german]{babel}
+\usepackage{pdfpages}
+\usepackage{rotating}
+\makeatletter
+\@addtoreset{chapter}{part}
+\makeatother  
+%opening
+\title{Application Performance Management}
+\author{Roland Hediger}
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand{\pic}[2][figure]{\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.3]{#2}
+ % rsc.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+ \caption{#1}
+\end{figure}
+}
+\newcommand{\tvert}[1]{
+\begin{turn}{90}
+ #1
+\end{turn}
+
+}
+\usepackage{framed}
+% Code listenings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+\lstset{
+ language=Java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left,               % Ort der Zeilennummern
+ numberstyle=\tiny,          % Stil der Zeilennummern
+ stepnumber=5,              % Abstand zwischen den Zeilennummern
+ numbersep=5pt,              % Abstand der Nummern zum Text
+ tabsize=2,                  % Groesse von Tabs
+ extendedchars=true,         %
+ breaklines=true,            % Zeilen werden Umgebrochen
+ frame=b,         
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false,           % Leerzeichen anzeigen ?
+ showtabs=false,             % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=5pt,
+ framexbottommargin=4pt,
+ showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+
+\begin{document}
+\pagestyle{fancy}
+ \maketitle
+ \tableofcontents
+\lstlistoflistings
+
+\part{Theorie Teil 2}
+
+\chapter{Wildfly Application Server} % (fold)
+\label{cha:wildfly_application_server}
+Der Programmierer soll sich auf funktionale Probleme konzentrieren können. Die immer wiederkehrenden nicht-
+funktionalen Aspekte werden vom Applikationsserver verwaltet. Ein Java Enterprise Edition (JEE) konformer
+Applikationsserver kann somit als eine Art Betriebssystem für JavaEE-Applikationen gesehen werden.
+Enterprise Software unterscheidet sich von anderer Software im Prinzip nicht. Man spricht aber von Enterprise
+Software meist dann, wenn es sich um eine Server-Applikation handelt, die mehreren Benutzern gleichzeitig zur
+Verfügung steht. Dies impliziert einige Probleme auf die geachtet werden muss:
+\begin{description}
+	\item[Transaktionen] Transaktionen: eine Benutzerin darf nicht Zustände sehen, welche durch Interaktionen mit anderen
+Benutzern entstanden sind, bzw. sie darf solche Zustände nur konsistent und zu definierten Zeitpunkten
+sehen.
+\item[Last]  LDie Belastung des Systems ist abhängig von der Anzahl und Art der Clients. Das System muss mit
+Lastspitzen umgehen können.
+\item[Verteilte Architektur:] Die Applikation ist über mehrere physische Systeme verteilt. Sie besteht aus GUI-
+Komponenten, Business-Logik und Datenbanksystemen. Eventuell werden auch sogenannte Legacy-
+Systeme (also ältere Systeme) oder Host-Systeme als Zuliefer- oder Abnehmersysteme verwendet.
+\end{description}
+\section{Wildfly/JBoss Einführung} % (fold)
+\label{sec:wildfly_jboss}
+
+% section wildfly_jboss (end)
+\pic{sjee.png}
+\pic{jeeu.png}
+ Web Container und die darin verwendeten Technologien werden im Modul Web Frameworks behandelt. Der EJB
+Container wird im Modul Enterprise Application Frameworks besprochen. Application Performance Management
+geht vertieft auf die Hintergrundtechnologien vom Java EE Server ein (ausgenommen Security, was im Modul
+Applikationssicherheit abgedeckt wird).
+\pic{jeeimp.png}
+
+\section{Wichitge Verzeichnisse + Modi} % (fold)
+\label{sec:wichitge_verzeichnisse}
+\begin{description}
+	\item[bin] Starten der AS + verschiedene tools.
+	\item[bin/client] bin/client
+Libraries (jar-Files) die benötigt werden um mit JBoss direkt von einer Client-Applikation aus zu
+kommunizieren. Es handelt sich dabei um sogenannte Standalone-Clients, also z.B. herkömmliche Java-
+Applikationen mit Swing-GUIs, welche via RMI auf den Applikationsserver zugreifen wollen.
+\item[docs/schema] DTDs für XML.
+\item[docs/examples/cnfigs] Konfigurationsbeispiele für häufige Anwendungsfälle
+\item[domain] Konfigurationen, Deployments und schreibbarer Bereich, der von dem Domain-Mode verwendet wird
+\item[modules] Wildfly basiert auf einer modularen Architektur. Die verschiedenen Module des Servers sind hier gespeichert
+\item[standalone] ndalone
+Konfigurationen, Deployments und schreibbarer Bereich, der von dem Standalone-Mode verwendet wird
+\item[welcome content] Welcome Page
+\end{description}
+
+\subsection{Modi} % (fold)
+\label{sub:modi}
+\begin{description}
+	\item[Standalone]Im Standalone Modus ist jede Wildfly-Instanz ein unabhängiger Prozess mit eigener Konfiguration,
+Deploymentbereich und schreibbarem Bereich. Einzelne Standalone Instanzen können aber weiterhin
+geclustert werden.
+\item[Domain]   Im Domain Modus kontrolliert eine einzige Domain-Konfiguration eine ganze Gruppe von virtuellen oder
+physischen Wildfly-Instanzen. Diese Instanzen werden von einem Host-Controller Prozess gesteuert und
+kontrolliert. Wir werden diesen Modus im Folgenden nicht weiter vertiefen.
+
+\end{description}
+% subsection modi (end)
+
+\subsection{Microkernel Architektur} % (fold)
+\label{sub:microkernel_architektur}
+\pic{mka.png}
+
+% subsection microkernel_architektur (end)
+
+\subsection{Standalone Verzeichnisstruktur} % (fold)
+\label{sub:standalone_verzeichnisstruktir}
+\begin{description}
+	\item[configuration] onfiguration:
+Enthält sämtliche Konfigurationen für den Betrieb im Standalone Modus. Mit der
+Installation kommen vier verschiedene Serverkonfigurationene:
+standalone.xml, standalone-ha.xml, standalone-full.xml
+und stanalone-full-ha.xml. Sie unterscheiden sich in der Verfügbarkeit
+von High-Availability (die ha-Variante) sowie dem vollen JEE Umfang (full-
+Varianten) nur das Web-Profil (Varianten ohne full).
+\item[data] :
+Hierhin schreibt Wildfly Informationen, die einen Server-Neustart überleben
+müssen. Kann auch von Applikationen genutzt werden die Zugriff auf das
+Dateisystem benötigen.
+\item[deployments] Hierhin werden Applikationen und Services deployed. Ein Deployment
+besteht darin, z.B. ein .ear- oder ein .war-File in dieses Verzeichnis zu kopieren. JBoss scannt dieses
+Verzeichnis regelmässig nach Veränderungen und führt dynamisch ein Deployment, bzw. ein Redeployment
+durch.
+\item[lib/ext] Libraries (.jar-Files), die von allen Applikationen der Server-Konfiguration geteilt und mit dem Extension-
+Classloader geladen werden sollen.
+\item[log] Log files.
+\item[tmp und tmp auth] Enthält temporäre Daten von Services.
+Das Unterverzeichnis auth wird auch genutzt um Authentifikationstokens mit lokalen Clients
+auszutauschen. So können sie beweisen, dass sie lokal ausgeführt werden.
+
+ 
+\end{description}
+% subsection standalone_verzeichnisstruktir (end)
+% section wichitge_verzeichnisse (end)
+
+% chapter wildfly_application_server (end)
+
+\chapter{Caching} % (fold)
+\label{cha:caching}
+Wie eingangs erwähnt, besteht der Grundgedanke des Caching darin, dass man ein Resultat in einem
+Zwischenspeicher ablegt. Ziel dabei ist, dass der Zugriff auf den Zwischenspeicher schneller ist, als die
+Neuberechnung oder der erneute Zugriff auf die nicht gecachten Daten.
+\begin{itemize}
+	\item Kopieen von Originaldaten : Hard Disk Cache Browser Cache JVM : Klassen
+	\item Aggregationen von Originaldaten : Wetterprognosen, Reporting : Charts im Cache
+	\item  Aggregierte Kopien von Originaldaten Ajax / Html 5 App : 
+	\item Beispiele von Caching : Mehrfacher zugriff, zigriff auf gecachte Daten soll zu mindenstens in eine Gross Ordnung schneller sein als auf nicht gecachte Daten.
+	\subitem Hit Rate : Anzahl Treffer pro Anzahl anfragen. Muss hoch sein.
+	\subitem u.a bei Aggregation von Original Daten - statisch, selten ändern.
+\end{itemize}
+
+\section{Caching in Wildfly} % (fold)
+\label{sec:caching_in_wildfly}
+\pic{cwf.png}
+Der SFSB Container verwendet den Cache um den gesamten Session State aller SFSBs zu speichern, der
+Persistence Context nutzt den Cache als second-level cache für seine Enitities. Der JBoss Webserver wiederum
+speichert http sessions im Cache.
+
+\subsection{Strategieen} % (fold)
+\label{sub:strategieen}
+\begin{description}
+	\item[Local]  Local: Die Cacheeinträge werden lokal abgelegt, egal ob der Knoten einem Cluster angehört oder nicht.
+Es findet keine Replikation auf andere Knoten statt.
+\item[Replication]  Die Cacheeinträge werden auf alle Knoten im Cluster repliziert. Sind viele Knoten im Cluster
+dann verringert sich durch diese Cachestrategie die Performance deutlich. Zudem nimmt auch der zur
+Verfügung stehende Speicher drastisch ab. Replication ist der Default, wenn sonst keine Strategie
+angegeben wird.
+\pic{crep.png}
+\item[Distribution] Die Cacheinträge werden nur auf eine Untermenge der Knoten im Cluster verteilt. Dabei
+kann in der Konfiguration angegeben werden auf wie viele Knoten verteilt wird und ein Hash-
+Algorithmus berechnet dann pro Eintrag, wohin dieser gespeichert wird. Hier entsteht ein typischer
+Trade-Off zwischen Ausfallsicherheit (Distribution auf viele Knoten) und Performance (Distribution auf
+wenige Knoten).
+\pic{cdist.png}
+\item[Invalidation] item Jeder Knoten befüllt seinen Cache lokal, es finden keine Replikationen statt. Die Einträge
+des Caches werden auch noch in einen zentralen Cache-Store (z.B. in eine Datenbank) gespeichert. Wird
+in einem Cache ein Eintrag erneuert, dann werden an andere Nodes nur noch Invalidierungsmeldungen
+verschickt, so dass diese ihre Instanzen verwerfen und neu laden.
+\pic{cinv.png}
+\end{description}
+% subsection strategieen (end)
+\subsection{Synchronisation} % (fold)
+\label{sub:synchronisation}
+\begin{description}
+	\item[Synchrone Meldungen] sind sehr teuer, da hier bei jedem Kopiervorgang auf ein Acknowledge-Signal gewartet
+wird. D.h. bei jedem Schreibzugriff in den Cache werden die Daten kopiert und auf die Bestätigungen gewartet.
+Dieser Aufwand lohnt sich selten. Er kann gerechtfertigt sein, wenn sehr hohe Ansprüche an die Cache-
+Konsistenz gestellt werden. Dies kann z.B. der Fall sein, wenn die Cacheeinträge Resultate von aufwändigen
+Berechnungen sind. Fehlerhafte Datenübertragungen werden mit synchronen Meldungen sofort entdeckt.
+\item[Asynchrone Meldungen] Asynchrone Meldungen hingegen blockieren beim Schreiben nicht. Es wird keine Bestätigung zurück gesendet,
+sondern nur ein Log-Eintrag gemacht. Dies ist natürlich weniger sicher wie synchrone Meldungen, reicht aber in
+der Praxis meist aus. Besonders geeignet sind asynchrone Meldungen z.B. bei sticky http-sessions. Hier wird bei
+jeder Veränderung eine Kopie auf andere Knoten geschrieben, das Ergebnis jedoch nicht abgewartet. Erst im
+Eintreten eines Versagens eines Knotens werden die Daten aus den verteilten Caches gelesen. Bei asynchronen
+Meldungen ist es also möglich, dass Daten verloren gehen. Dies aber nur dann, wenn exakt bei der
+Replikation/Distribution der Daten der Quell-Knoten versagt. Zu allen anderen Zeitpunkten sind die Daten
+konsistent und bei einem Versagen können andere Knoten sofort übernehmen.
+
+\end{description}
+% subsection synchronisation (end)
+\subsection{Isolationsstrategieen} % (fold)
+\label{sub:isolationsstrategieen}
+\begin{description}
+	\item[REPEATABLE\_READ:] dies ist der Default-Isolationslevel. Es werden Lese-Sperren auf alle gelesenen Daten
+gehalten. Phantom-Reads sind aber immer noch möglich.
+\item[READ\_COMMITTED:]  ist signifikant schneller als REPEATABL\_READ, aber Daten die durch ein Query gelesen
+wurden können von anderen Transaktionen verändert werden.
+ 
+\end{description}
+% subsection isolationsstrategieen (end)
+
+\subsection{Konfiguration} % (fold)
+\label{sub:konfiguration}
+\begin{itemize}
+	\item Nicht Teil der JEE Spezifikation.
+	\item JBOSS = Verteilten Caches. Der Cache ist ein Modul (Infinispan System)
+\end{itemize}
+Da Infinispan eine zentrale Rolle spielt, werden viele Details in der Cache-Konfiguration festgelegt. Diese
+Konfiguration findet man in den Konfigurationsdateien im configuration-Verzeichnis. Egal welches
+standalone*.xml sie auch anschauen:
+\begin{lstlisting}[caption=Standalone.xml Caching,language=xml]
+	standalone*.xml sie auch anschauen:
+<subsystem xmlns="urn:jboss:domain:infinispan:2.0">
+<cache-container name="web" ... >
+...
+</cache-container>
+<cache-container name="ejb" ... >
+...
+</cache-container>
+<cache-container name="hibernate" ... >
+...
+</cache-container>
+</subsystem>
+//Beuspiel:
+<cache-container name="server" default-cache="default" aliases="singleton cluster"
+module="org.wildfly.clustering.server">
+<transport lock-timeout="60000"/>
+<replicated-cache name="default" batching="true" mode="SYNC">
+<locking isolation="REPEATABLE_READ"/>
+</replicated-cache>
+</cache-container>
+<cache-container name="web" default-cache="dist"
+module="org.wildfly.clustering.web.infinispan">
+<transport lock-timeout="60000"/>
+<distributed-cache name="dist" batching="true" mode="ASYNC" owners="4" l1-lifespan="0">
+<file-store/>
+</distributed-cache>
+</cache-container>
+<cache-container name="ejb" default-cache="dist" aliases="sfsb"
+module="org.wildfly.clustering.ejb.infinispan">
+<transport lock-timeout="60000"/>
+<distributed-cache name="dist" batching="true" mode="ASYNC" owners="4" l1-lifespan="0">
+<file-store/>
+</distributed-cache>
+</cache-container>
+<cache-container name="hibernate" default-cache="local-query" module="org.hibernate">
+<transport lock-timeout="60000"/>
+<local-cache name="local-query">
+<transaction mode="NONE"/>
+<eviction strategy="LRU" max-entries="10000"/>
+<expiration max-idle="100000"/>
+</local-cache>
+<invalidation-cache name="entity" mode="SYNC">
+<transaction mode="NON_XA"/>
+<eviction strategy="LRU" max-entries="10000"/>
+<expiration max-idle="100000"/>
+</invalidation-cache>
+<replicated-cache name="timestamps" mode="ASYNC">
+<transaction mode="NONE"/>
+<eviction strategy="NONE"/>
+</replicated-cache>
+</cache-container>
+
+\end{lstlisting}
+\begin{itemize}
+	\item Konfiguration besteht aus mehereren Einzelkonfigs für die verschiedene Caches. 
+	\item Eigenschaften die früher erwähnt worden sind , sind alle hier konfigurierbar.
+	\item Sync oder Async kann gewählt werden.
+	\item Auffallend hierbei ist, dass der hibernate cache container offenbar drei Strategien spezifiziert. Das default-cache
+Attribut gibt an, welcher der drei ausgewählt wird. Die anderen beiden müssen explizit angefordert werden.
+Das <file-store>- Tag spezifiziert, wo der Cache seine Daten speichern soll. Der Default-Pfad ist:
+<JBOSS\_HOME>/standalone/data/web/repl . Er kann aber mit diesem Tag an einen beliebigen anderen Ort
+versetzt werden: <file-store relative-to="..." path="..."/>
+\end{itemize}
+% subsection konfiguration (end)
+\subsection{Anwendung} % (fold)
+\label{sub:anwendung}
+\begin{lstlisting}[caption=Anwendung Caching]
+	@ManagedBean
+public class MyBean<K, V> {
+@Resource(lookup="java:jboss/infinispan/hibernate")
+private org.infinispan.manager.CacheContainer container;
+private org.infinispan.Cache<K, V> cache1, cache2;
+@PostConstruct
+public void start() {
+cache1 = container.getCache(); // returns default cache
+cache2 = container.getChache("timestamps"); // explicit cache selection
+}
+}
+\end{lstlisting}
+Das ist alles! Es werden keine Wildfly spezifischen Klassen oder Annotationen mehr benötigt. Ein kleiner Haken
+bleibt noch: da Wildfly ein modulares System ist, ist auch Infinispan als Modul implementiert. Dieses Modul
+wird aber nicht automatisch geladen. Damit dies geschieht muss noch eine Modul-Dependency deklariert
+werden und zwar im File META-INF/MANIFEST.MF:
+Dependencies: org.infinispan export
+% subsection anwendung (end)
+% section caching_in_wildfly (end)
+% chapter caching (end)
+\chapter{Load Balancing} % (fold)
+\label{cha:load_balancing}
+Load Balancing ist eine Methode zur Lastverteilung auf verschiedene Application Server-Instanzen. Mit Last sind
+von ausserhalb eintreffende (, gleichzeitige) Requests gemeint. Load Balancing soll eine Applikation skalierbar
+und hoch-verfügbar machen.
+\begin{description}
+	\item[Skalierbarkeit] Applikation kann mehrere Requests verarbeiten kann mittels zusätzliche Hardware oder erzeugen von Redundante Insanzen der Applikation \texttt{ohne Spirce Code der Applikation zu verändern.} \textbf{IdealFall} - Applikation skaliert linear.\textbf{Praxis :} Fläschenhalse, die diese Linearität bedrohen: gemeinsame Dienste. Es findet immer ein gewisses Mass an Synchronisation statt.
+	\item[Bemerkung:] Load Balancing ist keine Eigenschaft einer Applikation oder von Applikationsservern.
+\end{description}
+% chapter load_balancing (end)
+\section{Load Balancers} % (fold)
+\label{sec:load_balancers}
+Load Balancers gibt es als Hardware- und Software-Versionen. Hardware Load Balancers sind typischerweise
+teurer, aber auch schneller und vor allem zuverlässiger.
+Ein Load Balancer präsentiert sich mit einer einzigen IP-Adresse stellvertretend für eine ganze Gruppe (einem
+Cluster) von Servern. Er unterhält dabei eine Liste von internen (oder virtuellen) IP-Adressen für jede Maschine
+des Clusters. Wenn ein Load Balancer einen Request erhält, so passt er dessen Header so an, dass er auf eine
+Maschine des Clusters verweist.
+\begin{description}
+	\item[High Availability] Hat immer Maschine bereit Request anzunehmen.
+	\item[Server Affinity] Aufeinanderfolgende Requests an gleichen Maschine - \texttt{Sticky Sessions bei stateful Applikationen.} 
+	\item[Software Load Balancers] Native Web Servers am besten geeignet.
+\end{description}
+\subsubsection{Load Banalcing Topologie} % (fold)
+\label{ssub:load_banalcing_topologie}
+\pic{lbt.png}
+Dabei steht der Load Balancer in der Demilitarized Zone1 (kurz DMZ) und die Applikationsserver hinter weiteren
+Firewalls im Intranet. Eine häufige Kombination ist: ein Apache HTTP Server in der DMZ mit offenem Port 80.
+Auf Unix-Systemen sind die unteren Ports root vorbehalten, d.h. der HTTP Server muss als root gestartet
+werden. Somit ist auch klar, dass aus Sicherheitsgründen niemals ein Application Server direkt den Verkehr auf
+Port 80 entgegennehmen wird. Mit dieser Topologie ergeben sich aber folgende Vorteile:
+\begin{itemize}
+
+\item  Jede seriöse Topologie wird eine DMZ verwenden, häufig wird auch das Intranet noch in verschiedene
+Sicherheitszonen unterteilt und mit Firewalls abgesichert.
+\item In der DMZ steht ein leichtgewichtiger LoadBalancer (evtl. sogar ein Hardware-Balancer) den zu hacken
+sowieso wenig bringt.
+\item  Im Intranet stehen die Application Server, welche dann auch einfacher administriert werden können, als
+wenn sie in der DMZ stünden.
+\end{itemize}
+Zwischen dem Load Balancer und den Applikationsservern kann HTTP verwendet werden, oft wird aber das
+effizientere AJP2 eingesetzt. Das AJP wurde als binäres Protokoll entwickelt, welches zur Kommunikation von
+nativen Webservern zu Webcontainern wie Tomcat zur Anwendung kommt. Es ist TCP/IP-basiert und effizienter
+als HTTP. Zudem bietet es auch Support für SSL. Es gibt von Apache auch ein IIS-Plugin für AJP.
+
+% subsubsection load_banalcing_topologie (end)
+\subsection{Strategieen} % (fold)
+\label{sub:strategieen}
+
+\begin{description}
+	\item[Random] Zufällig eine Maschine.
+	\item[Round Robin] Riehe nach in eine Loop.
+	\item [Sticky Session / First Available] Zuerst werden neu eintreffende Requests nach einer Random- oder
+Round-Robin-Strategie verteilt. Der Load Balancer merkt sich aber für jede Request-Quelle (Client oder
+User) wohin der Request weitergeleitet wurde. Nachfolgende Requests von derselben Quelle werden dann
+immer an dieselbe Maschine weitergeleitet. Diese Strategie wird im Zusammenhang mit Server Affinity
+verwendet.
+\item[Sonnstiges] Es gibt noch viele weitere Strategien, die z.B. statische Gewichtungen oder auch dynamische, lastabhängige
+Verteilmechanismen verwenden.
+\end{description}
+% subsection strategieen (end)
+\subsection{DNS Load Balancers} % (fold)
+\label{sub:dns_load_balancers}
+Einige DNS Server bieten auch Load Balancing an. Dabei wird der DNS Server angewiesen mehrere IP-Adressen
+für einen einzigen Domain-Namen zu unterhalten. Bei jeder DNS-Abfrage wird dann (meist im Round Robin
+Verfahren) eine andere IP-Adresse zurückgegeben. Diese Art des Load Balancings ist sehr einfach aufzusetzen,
+hat aber einige grundsätzliche Probleme:
+\begin{enumerate}
+	\item Viele Clients (oder auch andere DNS Server) merken sich IP-Adressen in eigenen Caches um einen
+weiteren DNS-Lookup zu verhindern. Dies führt dann automatisch zu Sticky-Sessions bei einer einzigen
+Applikation. Bei einem DNS-Server kann dies aber zu einer Serveraffinität führen, die einen Server
+überlastet, während die anderen unterbeschäftigt sind.
+\item DNS Server kennen keine Server Affinity, d.h. falls sich die Applikation selbst die IP-Adresse nicht merkt,
+oder ein Server abstürzt, wird der Request trotzdem stur weitergeleitet.
+\end{enumerate}
+
+% subsection dns_load_balancers (end)
+\begin{framed}
+Load Balancing kann ohne Clustering betrieben werden und umgekehrt kann ein Cluster ohne Load Balancing
+betrieben werden. Da es aber viele überlappende Konzepte gibt, werden beide häufig gemeinsam betrieben.
+
+\end{framed}
+% section load_balancers (end)
+
+\chapter{Clustering} % (fold)
+\label{cha:clustering}
+Durch das Load Balancing kann die Verfügbarkeit einer Applikation verbessert werden, einfach indem mehrere
+Maschinen zur Verfügung stehen um die Request zu bearbeiten. Das alleine reicht aber noch nicht aus, denn
+was passiert, wenn eine Maschine plötzlich ausfällt? Dieses Problem wird durch Clustering gelöst.
+\begin{description}
+	\item[Cluster:] Eine Gruppe von Computern die durch ein High-Speed-Netzwerk miteinander verbunden
+sind und so zusammenarbeiten, als ob sie eine Maschine mit mehreren CPUs wären.
+
+\end{description}
+% chapter clustering (end)
+\section{Topologie} % (fold)
+\label{sec:topologie}
+\pic{cltop.png}
+Abbildung 1: Cluster mit unterschiedlichen Topologien
+Es ist offensichtlich, dass der Skalierbarkeit (scaling up) eines vertikalen Clusters Grenzen gesetzt sind. In einer
+horizontalen Topologie ist es (zumindest theoretisch) immer möglich noch eine weitere Maschine hinzuzufügen
+(scaling out).\\
+
+\textbf{Horizontal vs Vertikal Clustering:}\\
+Falls genugend starke HW verfügbar ist dann ist vertikaler Clustering schneller da kein echter Netwerktraffic entsteht. ;eist interessiert die perfomance weniger als die Ausfallsicherheit. Diese kann nur dürch horizontaler Clustering erreicht werden.
+\textbf{IdealFall:} Im Idealfall besteht ein Cluster aus möglichst homogenen Knoten, d.h. gleiche Hardware und auch dieselben
+Applikationen deployed auf allen Knoten. In der Praxis ist dies nicht immer realisierbar, es kommt häufig vor,
+dass gewisse Knoten leistungsfähiger sind als andere, oder dass bestimmte Services nur auf spezieller Hardware
+zum Einsatz kommen.
+
+% section topologie (end)
+\section{Verteilung vs Clustering und andere Definitionen} % (fold)
+\label{sec:verteilung_vs_clustering}
+\begin{description}
+	\item[Verteilung] Aufteilen von logisch
+verschiedenen Applikationskomponenten
+auf physisch unterschiedliche Maschinen.
+Man spricht auch von verteilten
+Applikationen.
+\item[Clustering] Gleiche App versch Maschine.Es ist möglich sowohl zu clustern als auch zu verteilen. Macht die Verteilung einer Applikation auf mehrere
+physisch getrennte Tiers Sinn?
+\item[Replikation] Falls eine Applikation vollständig zustandslos ist, dann ist das Clustering einfach: ein Load Balancer reicht. Leider
+sind zustandslose Applikationen ein Ausnahmefall. Normalerweise wird in verschiedenen Stellen der Applikation
+Zustand gehalten: Als Session State im Web-Container oder als SFSB im EJB-Container. Auch Entities im
+Persistence-Context stellen Zustand dar.
+\item[Failover] Was soll geschehen, wenn eine Maschine ausfällt, welche noch Zustand gehalten hat, also z.B. Session Context-
+Objekte oder SFSBs im Speicher hatte? Da der Zustand verloren gegangen ist, kann die Session nicht mehr
+(vernünftig) fortgesetzt werden.
+In einem Cluster ist nun die Idee, dass eine andere Maschine die Session übernehmen kann und gegenüber dem
+Client einfach fortfahren kann – das sogenannte Failover. Ein Client merkt nichts vom Ausfall (ausser einer
+vielleicht etwas längeren Responsezeit).
+\item[Fault Tolerance] In einer zustandsbehafteten Applikation, bedeutet Fehlertoleranz (fault tolerance), dass der Zustand auch auf
+dem Knoten verfügbar ist, der im Notfall Sessions eines ausgefallenen Knotens übernehmen muss.
+Ein Beispielszenario: Eine Kundin ist am Bezahlvorgang an der virtuellen Kasse eines Webshops. Üblicherweise
+besteht dieser Vorgang aus mehreren einzelnen Schritten wie Rechnungsadresse und Versandadresse erfassen,
+Kreditkartenangaben, Überprüfen der bestellten Waren, Bestätigung die allg. Geschäftsbedingungen gelesen zu
+haben, dem Abschicken der Bestellung und der „Danke“-Seite inkl. Bestätigungsmail versenden. Diese Schritte
+werden in einzelnen Request/Response-Schritten behandelt. Was würde die Kundin nun erleben, falls der
+Server mitten in dieser Kommunikation abstürzt und die Session, nicht aber der State der Applikation auf einen
+Failover-Server übergeht?
+
+\begin{itemize}
+	\item Warenkorb
+	\item Addresse
+	\item Kreditkarteninfo
+	\item Reservation konsistent mit Bestellung
+	\item Bestätigungen
+	\item Loginzustand
+	\item History im Web Browser
+\end{itemize}
+
+Damit Sessions fehlertolerant sind, muss also eine
+Kopie des Session-States auf der Maschine zur
+Verfügung stehen, die den Request im Falle eines
+Failovers übernimmt. Das Kopieren des Zustandes auf
+andere Knoten in einem Cluster bezeichnet man als
+State Replication.
+\pic{ft.png}
+\end{description}
+% section verteilung_vs_clustering (end)
+\section{Replikationsarten} % (fold)
+\begin{tabular}{|c|p{5cm}|}
+Sychrone Replikation & Buddy könnte offline sein. Unproblematisch solange nicht alle Buddies offline sind -> Timeout wählen \\ \hline
+Asynchrone Replikation & Nur kitisch falls während Replikation ein Fehler auftritt \\ \hline
+Gar keine & Performant kritisch während der ganzen Session.
+\end{tabular}
+\begin{description}
+	\item[Total replication]Wenn jeder Knoten seine Zustände auf jeden anderen Knoten im Cluster repliziert spricht man von Total State
+Replication. Diese Art der Replikation bringt zwar die grösste Sicherheit, kostet aber am meisten. Da nun jeder
+Knoten alle Zustände aller anderen Knoten speichern muss kostet es neben dem Netzwerkverkehr auch
+Speicher und CPU-Ressourcen, da diese Zustände auch noch verwaltet werden müssen.
+\item[Buddy Replication] Bei der Buddy Replication versucht man diese
+Kosten zu senken, indem jeder Knoten
+mindestens einen Buddy (engl. für Kumpel)
+erhält. Nun wird der State nur noch zu diesem
+Buddy repliziert. Im Failover-Fall muss nun
+dieser Buddy übernehmen.
+\pic{br.png}
+\item[Active Replication] Jeder Knoten hat alle notwendigen Ressourcen vorgängig Repliziert (inklusive der Datenbank). Ein Request wird
+an \texttt{alle} Knoten des Clusters \texttt{gleichzeitig} verschickt. D.h. alle Knoten berechnen simultan eine Response. Hierbei
+handelt es sich eigentlich nicht um eine Replizierung von Zuständen indem Kopien von einem Knoten zum
+anderen gemacht werden. Sondern jeder Knoten berechnet autonom eine Response. Danach wird über ein sog.
+Voting darüber abgestimmt, welche Antworten die richtigen sind. Diese Abstimmungen können nach eigenen
+Gesetzmässigkeiten erfolgen. Active Replication wird vor allem in sicherheitskritischen Applikationen eingesetzt,
+beispielsweise in Medizinalsoftware, in Steuersoftware von Flugzeugen oder in Kontrollsoftware von
+Kernkraftwerken. Die Knoten sind dabei häufig heterogen, denn neben der Ausfallsicherheit geht es auch
+darum, nicht systematische Fehler auf allen Knoten zu machen. Es kommt (v.a. in der Flugzeugindustrie) vor
+dass die Knoten sogar von unterschiedlichen Programmierteams implementiert werden.
+
+\end{description}
+% section replikationsarten (end)
+\section{Fallover Unterstützung} % (fold)
+\label{sec:fallover_unterst_tzung}
+\begin{description}
+	\item[State Passivation]Es kommt oft vor, dass Sessions lange dauern (Stunden)
+und auch lange Zeit keine Requests mehr vorhanden sind
+für eine Session. In diesen Fällen kann der Zustand der
+Session z.B. auf eine Disk oder in eine DB persistiert
+werden. Wird dann wieder ein Request geschickt, kann der
+Zustand von der persistenten Quelle her geladen werden.
+Dieses Laden kann natürlich auch auf einen anderen
+Knoten erfolgen, als demjenigen der ursprünglich für die
+Session zuständig war.
+\pic{actpas.png}
+\item[Code Invalidierung] Eine weitere Möglichkeit effizient zu replizieren besteht darin, Daten zu löschen statt zu kopieren. Wie geht
+das?
+Wird ein Objekt im Cache eines Servers verändert, so müsste eigentlich der neue Zustand des Objektes an alle
+Failover-Maschinen verschickt werden. Jede dieser Knoten müsste dann bei sich im Cache nachschauen, ob das
+Objekt dort vorhanden ist und falls ja (Cache-Hit) das Objekt auch anpassen. Caches haben aber eine spezielle
+Eigenschaft: man kann jederzeit auf sie verzichten! Wenn nämlich auf dem Buddy-Knoten das Objekt nicht im
+Cache gefunden wird, muss auch nichts gemacht werden. Zwischenfrage: warum soll das Objekt bei einem
+Cache-Miss nicht einfach in den Cache eingefügt werden?
+Statt also bei einem Cache-Hit das Objekt anzupassen, kann es auch aus dem Cache gelöscht werden. Das spart
+vor allem Netzwerkbandbreite. Es muss nur noch übermittelt werden, welches Objekt zu löschen ist. Dies sind
+üblicherweise weniger Daten, als den kompletten neuen Zustand zu übermitteln.
+ 
+\end{description}
+% section fallover_unterst_tzung (end)
+\section{Programdesign für fallovoer} % (fold)
+\label{sec:programdesign_f_r_fallovoer}
+Was passiert, falls mitten in einer Methode ein Knoten ausfällt? Was erwarten Sie?
+Problematisch wird es, wenn beim Failover Teile des Codes nochmals und damit doppelt ausgeführt werden.
+Davor sollte man sich schützen, indem man folgende Techniken anwendet:
+\begin{enumerate}
+	\item Idempotente Operatinen : $f(x) = f(x) \dot f(x)$
+	Ein Beispiel für eine idempotente Funktion ist: setLocation(int x, int y). Nicht idempotent
+hingegen wäre: move(int dx, int dy).
+\item Transaktionen Acid eigenschaften.
+Erorberung der Indempotenz - Interface redesign hilft - \texttt{move(dx,dy) -> move(ddx,ddy,dx,dy)}
+Verwendung von eine "unique Invocation ID"
+\end{enumerate}
+% section programdesign_f_r_fallovoer (end)
+% part teil_ _2_ (end)
+
+\chapter{Performanz messen} % (fold)
+\label{cha:performanz_messen}
+\section{Aspekten der Messung} % (fold)
+\label{sec:aspekten_der_messung}
+\begin{description}
+	\item[Applikation Performanz] Algorithmen, Resourcenverbrauch selbst.
+	\item[AS Performance] Server, VM, Resourcen von Betriebsystem optimal benutzen.Prozessor,Memory,IO 
+	\item[Platform] Stehen dem Betriebsystem alle Resourcen zur Verfügung die es benotigt. (Mem,CPU IO  Graphics).
+	\item[Extern] Untersysteme,verbindungsqualitäten.
+\end{description}
+% section aspekten_der_messung (end)
+\section{Erfassung der Messdaten} % (fold)
+\label{sec:erfassung_der_messdaten}
+\begin{description}
+	\item[JMX] Java Management Extension - erlaubt es Anwendungen und Systemobjekte zu verwalten  und zu überwachen
+	\item[MBean] Managed Java Bean - Interface mit Namensmuster \texttt{xxxMBean} und eine Klasse xxx. Nachdem man eine Instanz erzeugt habe, kann man es beim JMX Server registrieren.  Falls nötig ist es also möglich selbstentwickle MBeans zur Performanzmessungen oder überwachung einsetzen.
+\end{description}
+
+\textbf{Ablauf:}
+\pic{jmxabl.png}
+\pic{jmx2.png}
+
+JBoss verfolgt einen POJO Ansatz.  Ersetzen von Services ist schwierug, da ein Client womöglich noch direkte Referenzen uf den Service hält. Dafür entfällt der JMX Server mit seinem Verwaltungsoverhead. Trotzdem ist es wierterhin angeboten weil Management tools darauf basiert sind.
+
+% section erfassung_der_messdaten (end)
+\subsection{JVMTI /JVMPI} % (fold)
+\label{sub:jvmt}
+\begin{itemize}
+	\item Natives Interface
+	\item JVM Zugriff durch C++
+	\item Bytecode modifizieren, Bytecode Instrumentierung.
+	\subitem Instrumentierung auf 3 Arten
+	\item Arten von Instrumentieren:
+	\subitem Statisch - Bevor JVM Klasse ladet, Post build process.
+	\subitem Zur Loadezeit mittels spezielle Classloader.
+	\subitem Laufzeit : Hot Spot Compiler (dynamische Instrumentierung)
+\end{itemize}
+% subsection jvmt (end)
+\section{MessMethodik} % (fold)
+\label{sec:messmethodik}
+\begin{enumerate}
+	\item Zeitbasierte Messung : Ausführungs-Stacks aller Threads einer Anwendung in einem definierten Intervall (Sample ) abgefragt und analysiert. Je häufiger eine Methode auf Stack erscheint - höhere Ausführungszeit. Keine genauen Angaben über Ausführungszeit hat. Kurzlebige Methoden könen leicht übersehen werden.\\
+	\textbf{Sample Graph:}
+	\pic{zm.png}
+	\item Eventbasierte Messung: Anstatt periodisch Snapshots vom Stack machen, werden einzelne Methodenaufrufe analysiert. Dabei wird für jenen Aufruf der Eintritts und Austrittszeitpunkt protokolliert. Um vorzunehmen brauchts Bytecode Instrumentierung.
+	\pic{em.png}
+\end{enumerate}
+% section messmethodik (end)
+\section{Zeit vs Eventbasiert} % (fold)
+\label{sec:zeit_vs_eventbasiert}
+\begin{tabular}{|c|c|}
+Zeitbasiert & Eventbasiert \\ \hline
+- nur statistische Daten & - mehr Overhead \\ \hline
++ keine Änderung am anusgeführten Code & - modifizierte Code verhält sich anders. \\ \hline
++ geringer Impact da in der Regel weniger Messungen durchgeführt werden & +sehr detailierte Infos \\ \hline
+-> grobe Lokalisierung von Performanzproblemen & detailierte Problemanalyse \\ \hline
+geeignet für produktive Systeme & Reihenfolge von Events erkennbar \\ \hline
+\end{tabular}
+
+% section zeit_vs_eventbasiert (end)
+\section{Overhead und Messdatenverfälschung} % (fold)
+\label{sec:overhead_und_messdatenverf_lschung}
+Messungen selber die Messungen beinflussen. Heisenbugs.
+\\subsection{Antwortzeit Overhead} % (fold)
+\label{sub:antwortzeit_overhead}
+%write
+% subsection antwortzeit_overhead (end)
+\subsection{CPU und speicher Overhead} % (fold)
+\label{sub:cpu_und_speicher_overhead}
+CPU sollte < 1\% sein und Speicher auch zu beachten wenn wir Resultaten abliegen.
+% subsection cpu_und_speicher_overhead (end)
+\subsection{Netzwerk Overhead} % (fold)
+\label{sub:netzwerk_overhead}
+Je detailierter eine Anwendung ausgemessen wird, desto mehr Daten müssen zi einem Profiling/Monitoring Tool übertragen werden. Als beispiel soll in einem eventbasierten Messverfahren in einer Serverlandschaft durch 50000 User je 5000 Methodenausführungen simuliert werden, dessen Name und die Ausfürhungsdauer bemerkt insegesamt 4GB.
+% subsection netzwerk_overhead (end)
+% section overhead_und_messdatenverf_lschung (end)
+\section{Theroretische Grundlagen} % (fold)
+\label{sec:theroretische_grundlagen}
+\begin{description}
+	\item[Queueing Theorie] Resourcen in Pool verwaltet. Eine Anfrage hohlt sich die benötigten Resourcen aus dem Pool oder wartet bis der Pool wieder freie Resourcen hat. Falsch dimensionierten Resourcenpools sind oft die Ursache für Performanzprobleme.
+	\begin{itemize}
+		\item Vergrösserung des Thread Pools bei gleicher CPU würde mehr Durchsatz bringen.
+		\item Eine Ressource die im Einsatz ist, steht anderen Requests nicht zur Verfügung. Je länger sie im Einsatz ist desto länger mussen andere Request darauf warten(stehen also stil)
+	\end{itemize}
+	\pic{qtr.png}
+	\item[Little Gesetz] \hfill \\
+	\begin{framed}
+		$N_s = \lambda t_s$
+		$N_s$ die \# Kunden.\\
+		$\lambda$ die Ankunfsrate\\
+		$t_s$ Verweildauer $ t_s = t_{w} + t{p}$ wo w = wait and p = processing.
+		Ein System ist dann stabil wenn die Anzahl neuer abfragen nicht grösser ist also die Anzahl abfragen die im gleichen Zeitraum maximal bearbeitet werden können.
+	\end{framed}
+\begin{itemize}
+	\item Abschätzen Pool grössen
+	\item Validierung von Lasttest-Setups
+\end{itemize}
+\item[Amdahl] \hfill
+\begin{framed}
+	$ S = \frac{1}{(1-p)+\frac{p}{n}}$
+	S = speedup \\
+	P = Anteil  Parallel Operation aus gesamt.
+	N = Einheiten
+\end{framed}
+\pic{agraph.png}
+\item[Erlang] \hfill \\
+\begin{framed}
+	$P_w = \frac{\frac{A^N}{N!} \frac{N}{N-A}}{\sum^{N-1}_{i=0} \frac{A^i}{i!} + \frac{A^N}{N!} \frac{N}{N-A}}$\\
+	$P_w$ Wahrscheinlichkeit Kunde muss warten.
+	$A$ Last vom System in Erlang
+	$N$ Anzahl Telefonisten.
+\end{framed}
+Benutzt für Poolgrössen und notwendige Ressourcen.
+\end{description}
+% section theroretische_grundlagen (end)
+% chapter performanz_messen (end)
+\part{Arbeitsblätter}
+\chapter{Wildfly} % (fold)
+\label{cha:wildfly}
+\begin{enumerate}
+	\item Was passiert, mit der Applikation HelloWorld, wenn Wildfly gestoppt und neu gestartet wird?
+Die Applikation wird wieder gestartet mit dem Reboot des AS.
+\item Löschen Sie HelloWorld.war aus dem deployments Verzeichnis. Was passiert?
+Die Konsole vermeldet ein undeployment und ein HelloWorld.war.undeployed File ersetzt das
+*.deployed File.
+\item Was ist ein exploded deployment?
+Statt einem war-File wird die Applikation als Verzeichnis deployed, d.h. der ausgepackte
+Inhalt des war-Files wird ins deployment-Verzeichnis kopiert.
+\item Wann kann es Sinn machen exploded zu deployen?
+Für Entwickler, die nur einzelne Files ersetzen wollen kann es bequemer sein, nicht immer
+ein war-File erzeugen zu müssen.
+\item Warum sollte man keine auto-deployment für exploded deployments einrichten?
+Weil ein deployment-Scanner mitten in der Kopieroperation des Verzeichnisses eine
+Änderung feststellen könnte und dann versuchten würde ein deployment durchzuführen
+während das Applikationsverzeichnis noch in einem inkonsistenten Zustand ist.
+\item Was sind Markerfiles und wozu sind sie notwendig?
+Markerfiles zeigen den Zustand eines Deployments einer Applikation an. Sie tragen den
+Namen der Applikation (inkl. der .war-Endung) und fügen dann je nach Zustand noch eine
+weitere Endung hinzu.
+Da Files atomar verändert werden können, können Markerfiles auch in einem
+Multitaskingumfeld Auskunft über den Zustand eines Deployments geben.
+\item Was passiert, wenn HelloWorld über die Management-Console entfernt wird?
+Die Applikation wird undeployed, und im deployment-Verzeichnis wird wieder ein
+HelloWorld.war.undeployed gesetzt.
+\item Stoppen Sie den AS, löschen Sie die HelloWorld-Applikation und eventuelle .undeployed oder
+.deployed Dateien aus dem deployments-Verzeichnis und starten Sie den AS erneut. Nun deployen
+Sie HelloWorld über die Management-Console. Was passiert im Verzeichnis deployments? Schauen
+Sie auch in das oben erwähnte Konfigurationsfile standalone.xml! Wohin wurde deployed? Hinweis:
+beobachten Sie das tmp- und das data-Verzeichnis!
+Es ist kein war-File sichtbar! Im standalone.xml wird das deployment aber explizit am Schluss
+erwähnt. Der Eintrag dort erwähnt einen sha1-Schlüssel, der auf ein Verzeichnis im data/content
+Folder hinweist. Und zwar setzt sich der endgültige Dateiname aus dem SHA1-Schlüssel zusammen
+(<erste beiden Stellen>/<restliche Stellen>/content). Das eigentliche Deployment findet im tmp/vfs-
+Verzeichnis statt! Und zwar bei jedem Neustart des AS erneut. Das tmp-Verzeichnis kann also
+gelöscht werden und die Applikation wird einfach nochmals dorthin deployed.
+\item Wozu diese beiden unterschiedlichen Deployment-Methoden?
+Hot-Deployment ist während der Entwicklung praktisch, in der produktiven Phase wird „offiziell“
+deployed. Hot-Deployment kann jeder machen, der Schreibzugriff auf das Verzeichnis hat, „offiziell“
+deployen können nur Administratoren.
+\item Wie kann das Hot-Deployment abgestellt werden?In der Management-Console unter
+Profile/Core/Deployment Scanners kann das deployment deaktiviert werden. Dort kann übrigen
+auch ein anderer Pfad angegeben werden, damit z.B. unter Linux das Deploymentverzeichnis nicht
+unter dem Installationsverzeichnis stehen muss (Konflikt mit Schreibrechten).
+\item Definieren Sie einen Logger, der auch den FINEST-Level-Log unseres Servlets in einem Log-File
+ausgibt.
+Log-Files können schnell sehr gross werden. Einerseits können Sie die Log-Geschwätzigkeit durch
+den Log-Level steuern (pro Logger falls nötig). Andererseits verwendet JBoss sogenannte
+RollingFileAppender um ein Log-File bei Erreichen bestimmter Kriterien zu schliessen und ein neues
+Log-File zu eröffnen. Wie müsste die Log-Konfiguration aussehen, damit höchstens 10 solcher Log-
+Files erzeugt werden, und keines grösser als 1kB ist?
+Erweitern Sie die Log-Konfiguration so, dass Logs vom HelloWorldServlet in ein eigenes File (z.B.
+apm.log) geschrieben werden.
+\begin{lstlisting}[caption=wildlfly log config,language=xml]
+Folgendes sollte im standalone.xml im subsystem logging drin stehen:
+<size-rotating-file-handler name="APM">
+<level name="FINEST"/>
+<file relative-to="jboss.server.log.dir" path="apm.log"/>
+<rotate-size value="1k"/>
+<max-backup-index value="10"/>
+</size-rotating-file-handler>
+<logger category="HelloWorldServlet">
+<level name="FINEST"/>
+<handlers>
+<handler name="APM"/>
+<handler name="CONSOLE"/>
+</handlers>
+</logger>
+\end{lstlisting}
+
+\end{enumerate}
+% chapter wildfly (end)
+\chapter{Caching Puzzle} % (fold)
+\label{cha:caching_puzzle}
+\begin{description}
+	\item[Cache grösse] Was sind die Vorraussetzung für das löschen aus einem Cache mit limitierte grösse. (Wobei die alle limitierte Grösse haben)
+	Das problem wird gelöst mit periodischen Testen für die notwendigen bedingungen oder ein Predikat für wenn man testen soll - bzw nur bei 50\% Voll.\\
+	Dies setzt doch vorraus das man die Grösse von Objekten wissen kann in Bytes oder dass wir Annahmen darüber zuverlässig machen können. Ist aber in der Praxis nicht war und kann nur mittels JVM commandline Optionen für Heapsize geregelt werden - Cache in seperater JVM laufen lassen.\\
+	\textbf{Eviction:} Auch replacement Strategie : Wie soll ich entscheiden welche  Elemente aus dem Cache gelöscht werden sollen.
+	\textbf{Expiration:} Wann Objekte zu "alt" sind - wann sind die zu lange in dem Cache - Most Recently Used, Least Frequently Used usw.
+	\item [Schnittstelle und Implementation] \textbf{Cache hit/Miss:} Wann in der Cache etwas gefunden wird bzw bei Miss wenn ich oder der Framework von der Originalquelle hohlen muss. \\
+	\textbf{Expliziter/Impliziter Cache} : Explizit Cache - Ich bekomme null oder ein Exception zurück bei Cache miss und sollte selber um das hohlen aus der Originalquelle kummern. Implizit - Das bedeutet mehr oder weniger das wir ein Persistence Framework implementieren wie JPA sodass der Programmierer nicht bemerkt ob Caching benutzt wird oder nicht, er  bekommt das Resultät so oder so und es wird hinter der Kulisse behandelt.
+	\item[Memory Leaks] Referenzen im Hash sind problematisch weil der Garbage Collector nicht da drin rekursiv durchgeht - Strong References. Man sollte die etwas abschwächern (wrap mit Weakreference) damit wenn die nicht mehr im Hash referenciert sind die aufgeräumt werden können. \\
+	\textbf{Key Value Probleme:} Equals methode muss überschrieben werden - d.h wenn die Keys gleich sind sind die entsprechende Objekte dann gleich.\\
+	(Angaben hier ohne gewähr)
+	\item[Performance] Keys sollten in der Hash eigentlich immutable sein damit die obere gGeichheitsprüfung OK wäre. Einsetzung  von IdentityCache? Multithreading - mann sollte auf Konsistenz der Cache achten und entsprechendes Locking einsetzen. (Update im Original - Update im Cache)
+	(Angaben hier ohne gewähr)\\
+\end{description}
+
+
+% chapter caching_puzzle (end)
+\chapter{Load Balancing + Clustering} % (fold)
+\label{cha:load_balancing}
+\begin{enumerate}
+	\item Load Balancing und asynchrone Requests.
+Wir haben Load Balancing immer nur im Zusammenhang mit synchronen Requests (http-Requests)
+betrachtet. Warum soll man nicht auch Load Balancing für asynchrone Requests verwenden?
+Überlegen Sie sich welche Konsequenzen es hat, wenn asynchrone Requests von einem Load
+Balancer auf einen Cluster verteilt werden. \\
+
+NOTE One thing to keep in mind is that load balancing is a mechanism for scaling applications
+that synchronously execute code. Applications that asynchronously execute requests don’t
+necessarily need to load balance requests. In fact, often, you want to make sure that there’s only
+a single instance of an asynchronous application or service running to ensure that it’s managing
+all the requests. Running a single instance allows the application or service to manage ordering
+and priority over all the incoming requests.
+
+
+\item Welche Nachteile haben Software Load Balancers gegenüber Hardware Load Balancers?
+Überlegen Sie z.B. warum Softwarelösungen weniger robust sind als Hardwarelösungen.
+
+\begin{tabular}{|c|p{5cm}|p{5cm}|}
+\hline
+Load Balancer & Vorteile & Nachteile \\ \hline
+Software Load Balancing & Billiger als Hardwarelösungen.Einige Balancer haben mehr
+Konfigurations- und
+Customization-Optionen. Kann
+besser an spezifische
+Bedürfnisse angepasst
+werden. & Die meisten Produkte
+können nicht mit grossen
+Sites oder komplexen
+Netzwerktopologien
+umgehen. Produkte die es können,
+haben immense
+Anforderungen an die
+Hardware. Load von anderen
+Applikationen auf der Load-
+Balancer Maschine kann
+Performance des Load
+Balancing kompromitieren.Angreifbar, da mögliches
+Ziel von Hackern. \\ \hline
+Hardware Load Balancing & Typischerweise robuster
+Verarbeitet Datenverkehr auf
+Netzwerkebene. Das ist
+effizienter als Software
+“Entschlüsselung”. Daten
+müssen nicht durch alle
+Netzwerklayers.
+Funktioniert mit allen
+Betriebssystemen.
+Bietet kein Angriffsziel für
+Hacker & Teurer als
+Softwarelösungen
+ Komplizierter in
+Konfiguration und Unterhalt \\ \hline
+\end{tabular}
+
+\item High Availability in Zahlen: Rechnen Sie die Downtime pro Jahr für folgende Tabelle aus. Downtime
+ist die Zeit in der ein System nicht verfügbar ist. In welche Kategorie gehört Ihr Internet-Banking?
+\pic{99.png}
+\item High Availability kann nicht alleine durch Load Balancing erreicht werden.
+Warum nicht? Was wird sonst noch benötigt? Erklären Sie anhand eines Szenarios.
+
+Falls eine Maschine abstürzt sollten die anderen Maschinen in der Lage sein den
+Request zu übernehmen. Reines Load-Balancing kann dies nicht leisten, da beim
+Absturz einer Maschine deren Zustand nicht auf eine andere Maschine übertragen
+wird. Clustering leistet genau dies, in JBoss z.B. durch einen verteilten Cache
+gelöst.
+
+\item Welche Alternativen gibt es zum Clustering?
+\subitem Applikation nur auf einer Maschine deployen. Dafür aber
+\subsubitem Algorithmen optimieren, Applikation tunen damit sie schneller läuft
+\subsubitem Stabile und redundante Algorithmen einsetzen um die Fehleranfälligkeit zu mindern.
+\subsubitem Schnellere Hardware einsetzen um die Performance zu steigern
+\subsubitem Sicherere Hardware einsetzen um das Absturzrisiko zu minimieren
+\subitem Verteilte Algorithmen. Applikation übernimmt dann die Verteilung selbst. Dezentrale und
+redundaten Datenhaltung und Berechnung sorgen für Failover.
+
+\item  Was müssen Sie tun, wenn Sie einen Cluster nur für Scalability haben wollen?\\
+Da reicht ein einfaches Load Balancing. Weil in diesem Fall keine veränderten Zustände auf andere
+Nodes im Cluster kopiert werden müssen wird die Applikation zusätzlich schneller.
+\item  Kann ein Cluster eine Applikation gleichzeitig skalierbar und zuverlässiger machen?\\
+Ja, das ist meistens der Sinn eines Clusters. Allerdings wird dies am besten erreicht, wenn nicht jeder
+Knotem im Cluster als Fail-Over-Knoten aller anderen Knoten dient. Daher wird mit Buddy-
+Replication für jeden Node nur ein Fail-Over-Node bestimmt. Der Kopieraufwand ist somit bedeutend
+verringert worden. Trotzdem ist der gesamte Cluster in der Lage mehr Last aufzunehmen als ein
+einzelner Server – die Skalierbarkeit wurde dadurch gewährt.
+Beachte: Skalierbarkeit heisst dass eine System mehr Last tragen kann, nicht dass eine einzelne
+Transaktion / ein einzelner Request schneller bearbeitet würde.
+\item  Cache-Invalidierung: Warum soll das Objekt bei einem Cache-Miss nicht einfach in den Cache
+eingefügt werden? (Diese Frage steht im Skript und ist im dortigen Zusammenhang zu verstehen!)\\
+Eine Cache-Invalidierung läuft so ab: statt den Inhalt wird eine Id des veränderten Objektes an die
+Buddy-Knoten geschickt. Jeder der Empfänger prüft nun, ob er das Objekt im Cache hat. Falls ja,
+wird das Objekt aus dem Cache gelöscht, Falls nein, muss gar nichts gemacht werden. Benötigt der
+Knoten das Objekt später wieder, muss er es von der Datenbank nachladen und kriegt somit wieder
+eine aktuelle Kopie.
+
+Die Frage bezieht sich nun auf eine Buddy-Knoten, der eine Id erhält und feststellt, dass er das
+Objekt gar nicht im Cache hat (also ein Cache-Miss). Achtung dies ist eine Fangfrage. Die Abfrage ob
+das Objekt im Cache ist, ist keine „echte“ Abfrage im Sinne, dass das Objekt auch benötigt wird.
+Würde der Buddy jedesmal das Objekt in den Cache nachladen, wenn er es nicht bei sich findet,
+würde unnötig viel Verkehr auf die DB erzeugt. Zudem wäre der Cache unnötigerweise mit Objekten
+gefüllt, die der Buddy-Knoten selber gar nicht braucht. Ein Knoten muss in der Lage sein den Zustand
+seines Buddys zu rekonstruieren im Fail-Over Fall. Er muss aber nicht dessen Caches bei sich
+nachführen, denn dadurch würde er die Leistung des Caches für seine eigenen Aufgaben
+vermindern.
+\item  Wie kann eine Methode idempotent gemacht werden. z.B. eine Methode die auf ein Konto einen
+Betrag x gutschreiben soll?\\
+Jede Methode kann mit einem eindeutigen Schlüsselwert idempotent gemacht werden. Das
+Gutschreiben eines Betrages z.B. würde eine Schnittstelle vorsehen, die nicht nur den Betrag enthält,
+sondern z.B. zusätzlich eine sogenannten unique invocation id. Diese wird z.B. der Webserver für
+jeden Request vergeben den er erhält. Wird nun (durch ein Fail-Over) die Gutschriftsmethode ein
+zweites Mal ausgeführt, kann die Methode dies erkennen anhand des Zeitstempels. Dazu muss sich
+die Methode allerdings die verarbeiteten Zeitstempel merken.
+Oft kann auch schon durch ein geschicktes Service-Design eine Idempotenz ohne unique invocation
+id erreicht werden.
+\end{enumerate}
+% chapter load_balancing (end)
+
+\chapter{Prüfungsfragen - Theorie} % (fold)
+\label{cha:pr_fungsfragen_theorie}
+\section{Multiple Choice} % (fold)
+\label{sec:multiple_choice}
+\begin{tabular}{|c|c|p{12cm}|}
+\hline
+Stimmt & Stimmt nicht & Aussage \\ \hline
+& X & Es ist generell nicht möglich mit einem Cache eine schlechtere Performance zu erreichen als
+ohne Cache.\\ \hline
+X & & Caching heisst verstecken. Daten werden versteckt in dem Sinne, dass von aussen nicht
+unterschieden werden kann, ob sie von der Originalquelle stammen oder von einem (von aussen
+her gesehen) versteckten Speicher.\\ \hline
+X & & Round-Robin ist eine Load Balancing Strategie.\\ \hline
+X & & Load Balancing erhöht die Verfügbarkeit.\\ \hline
+X & &Clustering erhöht die Verfügbarkeit.\\ \hline
+X & & Clustering erhöht die Ausfalltoleranz.\\ \hline
+& X & Caching ist eine Voraussetzung für Skalierbarkeit.\\ \hline
+X & & Message Driven Beans können State halten bis zum Ende einer Transaktion.\\ \hline
+&X& Der JEE Standard schreibt vor, dass eine Application Server Clustering anbieten muss.\\ \hline
+& X & Der JEE Standard schreibt vor, dass Clustering über einen verteilten Cache realisiert werden
+muss.\\ \hline
+X & & Performance-Tuning kann immer nur für eine ganz bestimmte Konfiguration gemacht werden. In
+der Regel ist ein Tuning z.B. für eine geringe Last nicht übertragbar auf ein System mit hoher
+Last. \\ \hline
+& X & Load Balancing erfordert Replikation von Zuständen.\\ \hline
+X & & JBoss verfügt über einen eigenen Loadbalancer für EJBs, benötigt aber einen externen Load
+Balancer für Web-Applikationen. \\ \hline
+X & & Laut dem Gesetz von Amdahl gilt: Der erreichbare Speedup durch Parallelisierung steigt linear
+mit der Anzahl verfügbarer Maschinen bzw. Prozessorkerne\\ \hline
+X & & Heisenbugs sind Fehler die entstehen, weil Messungen am Systen / an einer Applikation
+durchgeführt werden.\\
+X & & Das Gesetz von Little lautet: Ein System ist dann stabil, wenn mehr Requests verarbeitet werden
+können, als Neue im gleichen Zeitraum hinzukommen.\\ \hline
+X & & JBoss baut auf einer Kernel Architektur auf, welche je nach Bedarf um verschiedene Module (z.B.
+web, ejb, logging, datasources etc) erweitert werden kann. \\ \hline
+X & & Beim Deployment wird z.B. ein WAR-File in ein Unterverzeichnis der JBoss-Installation kopiert. Ist
+das Hot-Deployment aktiviert erkennt JBoss diesen Vorgang und initialisiert die neue Applikation
+automatisch. \\ \hline
+X & & Die Verzeichnisse für Hot-Deployment und für Deployment über die Admin-Konsole sind
+unterschiedlich. \\ \hline
+X & & JBoss kann mittels Ctrl-C gestoppt werden.\\ \hline
+& X & Als „exploded deployment“ bezeichnet man das Fehlschlagen beim Auspacken des WAR-Files
+und die daraus entstandene Unterordnung im deploy-Verzeichnis.\\ \hline
+&X& Hot-Deployment kann nicht ausgeschaltet werden.\\ \hline
+X & & Jeder AS kann neben den JEE-Standard-Konfigurationsfiles auch proprietäre Konfig-Files
+anbieten. \\ \hline
+X & & Beim Starten von JBoss wird ein Konfig-File eingelesen, in welchem unter anderem auch
+Memory-Grössen und Heap-Ratios für die JVM angegeben werden können.\\ \hline
+&X& JBoss ist ein Standard und wird von JEE implementiert.\\ \hline
+X & & Ein JBoss Server kann einzeln (standalone) oder in einem Verbund (domain) betrieben werden.\\ \hline
+X & & Eine JBoss-Installation muss über die üblichen Installationsmechanismen des Host-
+Betriebssystemes angelegt werden. D.h. unter Windows werden z.B. Registry-Einträge gemacht,
+unter Linux ist der Package-Manager zwingend nötig um die Installation durchzuführen. \\ \hline
+
+\end{tabular}
+% section multiple_choice (end)
+\section{Sonnstiges} % (fold)
+\label{sec:sonnstiges}
+
+ \textbf{Zeitbasierte vs Erregnisbasierte Messung  Was wann wozu gemessen wird, und die Nachteile}
+\begin{description}
+	\item[Zeitbasierte Messung] Was : Methodenaufrufe auf Stack \\ Wann : Vordefinierter Zeitintervall\\ Wozu: Load Prediction und grobe Lokalisierung von Performanceproblemen \\ Nachteile: iv) Nur Momentaufnahmen möglich, was zu Informationsverlust führt. Ausserdem ist die Reihenfolge der
+Methodenaufrufe nicht erkennbar. 
+\item[Erreignisbasierte Messung] Was : Wann eine Methode startet und endet.\\
+Wann :Beim Start und Ende einer Methode.\\
+Wozu Ermittlung von lange laufenden Methoden, und den Abhängigkeiten, welche Methode welche anderen aufruft.
+Nachteile: Der Impact auf das System ist sehr gross. Dies kann zu anderem Verhalten führen und die Messung verfälschen.
+Speziell bei kurz laufenden Methoden.\\
+\end{description}
+
+\textbf{Load Balancing}
+\begin{enumerate}
+	
+\item  Erklären Sie was eine Sticky-Session ist. Warum und in welchen Fällen ist Stickyness bei Web- oder Enterprise-
+Applikationen ein Thema?
+Jede Anfrage durch denselben Client wird immer demselben Server zugeordnet. Hält eine Session Daten, welche nicht
+persistiert oder an alle Server übertragen wurde und soll der Benutzer auch bei einem erneuten Aufruf darauf Zugriff
+haben, muss er zum selber Server, welcher eine Session hält, weitergeleitet werden.
+\item  Was versteht man unter DNS-Loadbalancing?
+Der DNS-Server löst bei jeder Anfrage einer Domain, diese zu einer anderen IP auf. Meist Round-Robin.
+\item  Wozu dient Load Balancing? Geben Sie in diesem Zusammenhang auch an, was eine 3-nine-Uptime bedeutet !
+Verteilung der Last auf mehrere Systeme. 99,9% der Zeit muss der Service erreichbar sein.
+\end{enumerate}
+
+\textbf{Clustering}
+\begin{enumerate}
+
+\item  Beim vertikalen Clustering werden zwei Knoten des Clusters auf derselben Maschine deployed.
+\subitem  Wozu wird dies eingesetzt? Bessere Ausnützung der Hardware.
+\subitem Nachteile? Ist die HW defekt, sind alle Teile der Applikation betroffen. 
+\item  Sowohl beim Clustering als auch bei Load Balancing sind die beteiligten Maschinen von aussen gesehen nur als eine
+Maschine sichtbar. Was unterscheidet nun Clustering von Load Balancing?
+Beim Clustering werden Daten so unter den Systemen verteilt, dass der Benutzer im Falle eines Ausfalls eines Knotens
+dies nicht bemerkt, also keine Daten verloren gehen.
+\item Erläutern Sie warum...
+\subitem  eine Applikation mit Clustering immer langsamer ist als eine Applikation ohne Clustering?
+Zusätzlicher Overhead für das Verteilen der Daten.
+\subitem man denn Clustering überhaupt einsetzen soll? Es erhöht die Ausfallsicherheit.
+\end{enumerate}
+% section sonnstiges (end)
+% chapter pr_fungsfragen_theorie (end)
+% section caching_puzzle_notitzen (end)
+\end{document}

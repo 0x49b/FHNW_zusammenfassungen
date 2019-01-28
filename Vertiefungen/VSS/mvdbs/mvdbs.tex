@@ -1,0 +1,2720 @@
+\documentclass[a4paper,10pt,titlepage=false]{scrreprt}
+\usepackage[top=2cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[german]{babel}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{url}
+
+%opening
+\title{Mobile und Verteilte Datenbanksysteme}
+\author{Roland Hediger, Egemen Kaba}
+\date{\today}
+\usepackage{fancyhdr}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{amssymb}
+\newcommand{\pic}[2][figure]{\begin{figure}[h]
+ \centering
+ \includegraphics[scale=0.5]{#2}
+ % rsc.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+ \caption{#1}
+\end{figure}
+}
+\newcommand{\bigpic}[3][figure]{\begin{figure}[h]
+ \centering
+ \includegraphics[width=#3]{#2}
+ % rsc.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+ \caption{#1}
+\end{figure}
+}
+\usepackage{framed}
+% Code listenings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage[T1]{fontenc}
+\DeclareCaptionFont{white}{\color{black}}
+\DeclareCaptionFormat{listing}{\colorbox{white}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white,font=bf}
+\lstdefinestyle{java}{
+   language=Java,
+   basicstyle=\footnotesize\ttfamily, % Standardschrift
+   backgroundcolor=\color[RGB]{230,230,230}, % Hintergrundfarbe
+   numbers=left,               % Ort der Zeilennummern
+   numberstyle=\tiny,          % Stil der Zeilennummern
+   stepnumber=1,               % Abstand zwischen den Zeilennummern
+   numbersep=5pt,              % Abstand der Nummern zum Text
+   tabsize=2,                  % Groesse von Tabs
+   extendedchars=true,         % Erlaubt non-ascii Charakter, aber nicht mit UTF8
+   literate={ä}{{\"a}}1 {ü}{{\"u}}1 {ö}{{\"o}}1,
+   breaklines=true,            % Zeilen werden Umgebrochen
+   frame=trbl,                 % Rahmen
+   stringstyle=\color[RGB]{42,0,255} \ttfamily, % Farbe der String
+   keywordstyle=\color[RGB]{127,0,85} \ttfamily, % Farbe der Keywords
+   commentstyle=\color[RGB]{63,127,95} \ttfamily, % Farbe des Kommentars
+   showspaces=false,           % Leerzeichen anzeigen ?
+   showtabs=false,             % Tabs anzeigen ?
+   xleftmargin=17pt,
+   framexleftmargin=17pt,
+   framexrightmargin=5pt,
+   framexbottommargin=5pt,
+   framextopmargin=5pt,
+   showstringspaces=false,     % Leerzeichen in Strings anzeigen ?
+}
+\lstdefinestyle{sqlNoTitle}{
+   language=SQL,
+   basicstyle=\footnotesize\ttfamily, % Standardschrift
+   backgroundcolor=\color[RGB]{230,230,230}, % Hintergrundfarbe
+   numbers=left,               % Ort der Zeilennummern
+   numberstyle=\tiny,          % Stil der Zeilennummern
+   stepnumber=1,               % Abstand zwischen den Zeilennummern
+   numbersep=5pt,              % Abstand der Nummern zum Text
+   tabsize=2,                  % Groesse von Tabs
+   extendedchars=true,         % Erlaubt non-ascii Charakter, aber nicht mit UTF8
+   literate={ä}{{\"a}}1 {ü}{{\"u}}1 {ö}{{\"o}}1,
+   breaklines=true,            % Zeilen werden Umgebrochen
+   frame=trbl,                 % Rahmen
+   stringstyle=\color[RGB]{42,0,255} \ttfamily, % Farbe der String
+   keywordstyle=\color[RGB]{127,0,85} \ttfamily, % Farbe der Keywords
+   commentstyle=\color[RGB]{63,127,95} \ttfamily, % Farbe des Kommentars
+   showspaces=false,           % Leerzeichen anzeigen ?
+   showtabs=false,             % Tabs anzeigen ?
+   xleftmargin=17pt,
+   framexleftmargin=17pt,
+   framexrightmargin=5pt,
+   framexbottommargin=5pt,
+   framextopmargin=5pt,
+   showstringspaces=false,     % Leerzeichen in Strings anzeigen ?
+}
+
+
+\lstdefinestyle{sql}{
+   style=sqlNoTitle,
+   title=SQL-Skript
+}
+
+\lstdefinestyle{queryResult}{
+  basicstyle=\footnotesize\ttfamily, % Standardschrift
+  backgroundcolor=\color[RGB]{240,255,240}, % Hintergrundfarbe
+  frame=trbl,                 % Rahmen
+  literate={ä}{{\"a}}1 {ü}{{\"u}}1 {ö}{{\"o}}1,
+}
+
+\lstdefinestyle{queryResultSmall}{
+  style=queryResult,
+  basicstyle=\scriptsize\ttfamily, % Standardschrift
+}
+\setuptoc{toc}{leveldown}
+
+\lstdefinestyle{java}{
+   language=Java,
+   basicstyle=\footnotesize\ttfamily, % Standardschrift
+   backgroundcolor=\color[RGB]{230,230,230}, % Hintergrundfarbe
+   numbers=left,               % Ort der Zeilennummern
+   numberstyle=\tiny,          % Stil der Zeilennummern
+   stepnumber=1,               % Abstand zwischen den Zeilennummern
+   numbersep=5pt,              % Abstand der Nummern zum Text
+   tabsize=2,                  % Groesse von Tabs
+   extendedchars=true,         % Erlaubt non-ascii Charakter, aber nicht mit UTF8
+   literate={ä}{{\"a}}1 {ü}{{\"u}}1 {ö}{{\"o}}1,
+   breaklines=true,            % Zeilen werden Umgebrochen
+   frame=trbl,                 % Rahmen
+   stringstyle=\color[RGB]{42,0,255} \ttfamily, % Farbe der String
+   keywordstyle=\color[RGB]{127,0,85} \ttfamily, % Farbe der Keywords
+   commentstyle=\color[RGB]{63,127,95} \ttfamily, % Farbe des Kommentars
+   showspaces=false,           % Leerzeichen anzeigen ?
+   showtabs=false,             % Tabs anzeigen ?
+   xleftmargin=17pt,
+   framexleftmargin=17pt,
+   framexrightmargin=5pt,
+   framexbottommargin=5pt,
+   framextopmargin=5pt,
+   showstringspaces=false,     % Leerzeichen in Strings anzeigen ?
+}
+
+\begin{document}
+ \maketitle
+ \tableofcontents
+\pagestyle{fancy}
+\part{Theorie} % (fold)
+\label{prt:theorie_}
+\chapter{Einführung}
+\begin{description}
+ \item [Was wird Verteilt] \hfill \\
+ \begin{itemize}
+  \item Aufbaulogik, Verarbeitungselemente 
+  \item Funktion
+  \item Daten
+  \item Steuerung
+ \end{itemize}
+\end{description}
+\section{Fundamental Definitionen}
+\begin{description}
+ \item [Fundamental Principle] To the user, a distributed system should look exactly like a nondistributed
+system.
+\item[Data Processing and Mobility] It has become a common appproach to turn any location and situation a job
+of ce.
+\item [Warum Parallel] 	Performance
+Performance
+And more Performance.
+\item[Big Data] Volume,Variety,Velocity.
+\end{description}
+
+\section{Verteilte Datenbank Definitionen}
+\begin{description}
+ \item [Verteilte Datenbank - DDB] ine verteilte Datenbank ist eine Sammlung mehrerer,
+untereinander logisch zusammengehöriger Datenbanken,
+die über ein Computernetzwerk verteilt sind.
+\item[Verteiltes Datenbankverwaltungssystem (D-DBMS)] Ein verteiltes Datenbankverwaltungssystem ist die
+Software, die die verteilte Datenbank verwaltet und
+gegenüber den Nutzern einen transparenten Zugang
+erbringt.
+\item[Verteiltes Datenbank System]DDBS = DBS + D-DBMS
+\end{description}
+
+\subsection{Klassifizierung}
+\begin{description}
+ \item [Heterogenität] Hardware, Netzwerkprotokolle,
+Datenverwaltung, Datenmodell, Abfragesprache,
+Transaktionsverwaltung
+2 Ausprägungen: homogen, heterogen.
+\item[Verteilung]Verteilung: betrifft die Verteilung der Daten
+2 Ausprägungen: verteilt, zentral
+\item[Autonomie] Autonomie: betrifft die Verteilung der Steuerung
+3 Ausprägungen: stark integriert, halbautonom,
+isoliert
+\end{description}
+\section{Dates 12 Regeln}
+\begin{enumerate}
+\item Lokale Autonomie
+\item  Unabhängigkeit von zentralen Systemfunktionen
+\item Hohe Verfügbarkeit
+\item Ortstransparenz
+\item  Fragmentierungstransparenz
+\item  Replikationstransparenz
+\item  Verteilte Anfragebearbeitung
+\item Verteilte Transaktionsverarbeitung
+\item  Hardware Unabhängigkeit
+\item Betriebssystem Unabhängigkeit
+\item Netzwerkunabhängigkeit
+\item Datenbanksystem Unabhängigkeit
+\end{enumerate}
+\section{Aspekte Verteilte Datenbanksysteme}
+\begin{description}
+ \item [Verteilter Datenbankentwurf]\hfill \\ \begin{itemize}
+                                      \item wie die Datenbank verteilen
+\item Verteilung der DB mit Replikaten oder ohne
+\item Verzeichnisverwaltung
+                                     \end{itemize}
+\item[Anfragebearbeitung] \hfill \\ \begin{itemize}
+                           \item Zerlegung der Anfragen in ausführbare Instruktionen
+\item Anfrageoptimierung
+\item berücksichtigen von Verarbeitungs- und
+Datentransferkosten
+                          \end{itemize}
+\item[Nebenläufigkeit] \hfill \\ \begin{itemize}
+                        \item Synchronisation konkurrierender Transaktionen
+\item Konsistenz und Isolation
+\item Deadlock Erkennung
+                       \end{itemize}
+\item[Zuverlässigkeit] \hfill \\\begin{itemize}
+                        \item Robustheit gegenüber Fehler
+\item Atomarität und Dauerhaftigkeit
+                       \end{itemize}
+
+
+\end{description}
+
+\section{Paralelle Datenbanksysteme}
+Parallele DB Systeme kombinieren
+Datenbankverwaltung und
+Parallel Verarbeitung zur
+Verbesserung der Performance und der Verfügbarkeit.
+\subsection{Architekturen}
+\begin{itemize}
+ \item Shared Memory Architecture
+\item Shared Disk Architecture
+\item Shared Nothing Architecture
+\end{itemize}
+\subsection{Aspekte}
+\begin{itemize}
+ \item Parallele Anfrageverarbeitung
+\item Daten Partitionierung
+\item Parallelisierung von Operationen
+\item Lastausgleich
+\item Verfügbarkeit
+\end{itemize}
+\section{Nosql Systeme}
+ \begin{itemize}
+  \item Big Data
+\item Performance vs Scalability
+\item Latency vs Throughput
+\item Availability vs Consistency
+ \end{itemize}
+\subsection{Konzepte}
+\begin{itemize}
+ \item CAP Theorem \footnote{Consistency, Availability , Partition Tolerance, will never achieve all three}
+\item ACID vs BASE\footnote{Basically Available, Soft State, Eventual Consistency}
+\item Speicherstrukturen : Keyvalue, Document, Wide Column, Graph DB.
+\item Map / Reduce : Verarbeitung
+\item Consistent Hashing : Verteilung
+\item Multiversion Concurrency Control
+\item Paxos\footnote{Protokolle : Verfahren definiert - Griechisches Parlament lausig - wie kann man zu Entscheidung 
+kommen}
+\end{itemize}
+
+\section{Mobile Datenbank Systeme}
+Mobile Datenbank Systeme sind Verteilte Datenbank
+Systeme mit zusätzlichen Eigenschaften und
+Einschränkungen:
+\begin{itemize}
+\item beschränkte Ressourcen
+\item häufig nicht verbunden
+\item verlangt andere Transaktions Modelle
+\item verlangt andere Replikationsstrategien
+\item Ortsabhängigkeit
+\end{itemize}
+
+
+\section{Semantic Web}
+Die aktuelle Web Infrastruktur unterstützt ein verteiltes
+Ge echt von Webseiten, die gegenseitig mittels den sog.
+Uniform Resource Locators (URL) verknüpft sein können:
+\begin{itemize}
+ \item Das Semantic Web
+unterstützt das Web auf der Ebene der Daten statt nur
+auf der Ebene der Darstellung
+\item Datenelemente können gegenseitig verknüpft sein,
+nicht nur Webseiten
+\item Datenelemente können gegenseitig verknüpft sein,
+nicht nur Webseiten
+\item Information über einzelne Entitäten können verteilt
+sein
+\item Daten Modell: Resource Description Framework (RDF)
+\end{itemize}
+$ 3^2 + 4x + 3x_{bla}$
+
+\chapter{Trigger} % (fold)
+\label{cha:trigger}
+\begin{description}
+  \item[Was sind Trigger?] \hfill \\
+  Prozeduren in der Datenbank hinterlegt. Ereignisse feuern die Trigger ,keine explizite Ausführung.
+  \item[Wozu dienen Trigger?] \hfill \\
+  \begin{itemize}
+    \item Realisieren aktive Datenbanksysteme
+\item Berechnung abgeleiteter Attribute
+\item Überprüfen komplexer Integritätsbedingungen
+\item Implementierung von Geschäftsregeln
+\item Protokollierung, Statistiken
+\item Überprüfen von Integritätsbedingungen in verteilten
+\item Datenbanken Synchronisation von Replikaten
+  \end{itemize}
+ \item[Trigger Konzept:] ECA Prinzip - Event, Condition Action
+\end{description}
+\section{Triggertypen} % (fold)
+\label{sec:triggertypen}
+\begin{description}
+  \item[TriggerTypen (erreignis)] DML-Trigger können auf Tabellen oder Views de niert
+werden.SQL-1999 beschreibt nur DML-Trigger auf Tabellen.\\
+
+\begin{itemize}
+  \item DML: UPDATE, DELETE, INSERT
+\item DDL: CREATE, ALTER, DROP, ...
+\item Datenbank: SERVERERROR, LOGON, LOGOFF, STARTUP,
+SHUTDOWN, ...
+
+\end{itemize}
+ \item[TriggerTypen (Timing)] 
+\begin{itemize}
+  \item BEFORE Trigger
+\item AFTER Trigger
+\item INSTEAD OF Trigger
+\end{itemize}
+ Der INSTEAD OF Trigger ist ein Spezialfall. Die
+Triggeraktion ersetzt den triggernden Befehl und wird nur
+bei Views eingesetzt.
+SQL-1999 beschreibt nur BEFORE und AFTER Trigger.
+\item[TriggerTypen (granularität)] \hfill \\
+\begin{itemize}
+  \item STATEMENT Trigger
+\item ROW Trigger
+\end{itemize}
+
+\end{description}
+% section triggertypen (end)
+\section{DML Trigger auf Tabellen} % (fold)
+\label{sec:dml_trigger_auf_tabellen}
+\begin{lstlisting}[caption=Syntax von DML Trigger,style=sql]
+  CREATE [OR REPLACE ] TRIGGER{ BEFORE|AFTER } events
+[WHEN ( c o n d i t i o n ) ]
+pl / sql_block
+\end{lstlisting}
+\begin{lstlisting}[caption=Events von DML Trigger,style=sql]
+  { DELETE|INSERT|UPDATE
+[OF column [ , column ] . . . ] }
+[OR { DELETE|INSERT|UPDATE
+[OF column [ , column ] . . . ] } ] . . .
+ON t a b l e [FOR EACH ROW]
+
+\end{lstlisting}
+\pic{plsql.png}
+
+\section{PLSQL allgemein} % (fold)
+\label{sec:plsql}
+\pic{plag.png}
+\pic{plag2.png}
+
+\begin{description}
+  \item[Datentypen:] \hfill \\
+  \begin{itemize}
+     \item SQL Datentypen wie
+VARCHAR2, DATE, NUMBER
+\item reine PL/SQL Datentypen wie
+BOOLEAN, PLS\_INTEGER
+\item strukturierte Datentypen wie
+TABLE, VARRAY, RECORD
+\item Datentypen für Spalten und Zeilen aus Tabellen
+\%ROWTYPE, \%TYPE
+
+   \end{itemize}
+   \item[Anweisungen] \pic{anwpl.png}
+   \pic{anwpl2.png}
+   \pic{anwpl3.png}
+
+\end{description}
+% section plsql (end)
+
+\section{Trigger Beispiele} % (fold)
+\label{sec:trigger_beispiele}
+\begin{lstlisting}[caption=Statement Level Trigger,style=sql]
+  CREATE OR REPLACE TRIGGERBEFORE UPDATE ON f i l m e
+f i l m e _ s t a t _ u p d
+DECLARE
+msg VARCHAR2 ( 3 0 ) : = ' f i l m e _ s t a t _ u p d ' ;
+BEGIN
+dbms_output . p u t _ l i n e ( msg ) ;
+END;
+
+\end{lstlisting}
+\begin{lstlisting}[caption=Triggering Statement,style=sql]
+  UPDATE v i d e o f i l m e
+SET m i n d e s t a l t e r = 10
+WHERE k a t a l o g n r =2028
+
+\end{lstlisting}
+\begin{lstlisting}[caption=Row Level Trigger,style=sql]
+  CREATE OR REPLACE TRIGGER filme_rows_upd
+BEFORE UPDATE ON f i l m e
+FOR EACH ROW
+DECLARE
+msg VARCHAR2 ( 3 0 ) : = ' filme_rows_upd ' ;
+BEGIN
+dbms_output . p u t _ l i n e ( msg ) ;
+END;
+
+\end{lstlisting}
+\begin{lstlisting}[caption=Konsistenz prüfen,style=sql]
+  CREATE OR REPLACE TRIGGER regdatum_test
+BEFORE INSERT ON r e g i s t r i e r u n g e n
+FOR EACH ROW
+DECLARE
+msg VARCHAR2 ( 3 0 ) : = 'Datum f a l s c h ' ;
+BEGIN
+I F : new . datum > SYSDATE THEN
+RAISE_APPLICATION_ERROR(-20005,msg);
+END I F ;
+END;
+
+\end{lstlisting}
+% section trigger_beispiele (end)
+% section dml_trigger_auf_tabellen (end)
+% chapter trigger (end)
+\chapter{Entwurf Verteilte Datenbanken}
+\pic[Beispiel DB]{bspdb.png}
+Anwendungen auf verschiedenen Knoten benötigen
+verschiedene Daten, unterschiedlich häufig:\\
+A1: Liste der Aufträge mit günstigen Bikes (auf ORION
+in Basel)\\
+A2: Änderungen an Bikes (auf CALYPSO in Aarau)\\
+A3: Liste der Aufträge mit teuren Bikes vom Typ
+Mountain (auf TELESTO in Olten)\\
+A4: Liste aller Kunden (auf ANANKE in Zürich)\\
+Die Daten sollten dort abgelegt sein, wo sie am häufigsten
+gebraucht werden.\\
+
+\section{Einfführung}
+\begin{itemize}
+\item Entscheid über die Platzierung von Daten auf den
+Knoten eines Computernetzwerks
+\item beeinflusst die Performance
+der DDB und der Anwendungen
+\item lokaler Zugriff ist günstiger
+als Zugriff auf entfernte Knoten
+\item Analyse:
+\subitem welche Anwendungen (Queries)
+\subitem auf welchen Knoten
+\subitem benötigen welche Daten
+\subitem mit welcher Häufigkeit
+\item Resultat:
+\subitem Menge von Fragmenten (Ausschnitte der Daten)
+\subitem zugeteilt auf verschiedene Knote
+\end{itemize}
+
+\section{Entwürfe}
+\subsection{Top Down}
+beim Entwurf from scratch
+in homogenen Systemen
+nachgelagert an den konzeptionellen Entwurf.
+\pic{bup.png}
+
+\begin{enumerate}
+\item wozu überhaupt fragmentieren?
+\item  wie fragmentieren?
+\item  wie viel fragmentieren?
+\item  wie prüfen der Korrektheit?
+\item  wie Fragmente zuteilen?
+\item  welche Informationen werden benötigt?
+\end{enumerate}
+
+\subsubsection{Grad der Fragmentierung}
+\begin{itemize}
+\item Vollständige Relationen sind zu grob, einzelne
+Attributswerte sind zu fein.
+\subitem geeignete Teile (Fragmente) der Relationen
+bestimmen
+\subitem Nebenläufigkeit steigern bei mehreren Transaktionen
+mit Zugriff auf verschiedene Fragmente
+\subitem Zusatzkosten für Transaktionen mit Zugriff auf
+Fragmente an verschiedenen Knoten
+\end{itemize}
+
+\subsubsection{Horizontal}
+Zerlegt aufgrund Riehen, mit Where klausel.
+%pic
+\subsubsection{Projektion - Vertikal}
+Spaltenliste. In allen Fragmente PK muss dabei sein damit es rekonstruierbar ist-
+%pic
+Kann kombiniert weden mit Horizontal für optimale Verteilung.
+
+\subsection{Bottom Up}
+\begin{itemize}
+ \item Multidatenbank Anwendungen
+\item Datenbanken schon auf verschieden Knoten vorhanden
+\item Problem der Datenintegration, Schemaintegration
+\item Web Services
+\end{itemize}
+
+\section{Korrektheit der Fragmentierung}
+\begin{description}
+ \item [Vollständig] Wenn R zerlegt wird $R_1,R_2 \ldots R_n$ dann muss jedes Datenelement aus R in einem $R_i$ 
+enthalten sein. (Join mit gemeinsamen Pk - wiederzusammenstellung). (Horizontal Umkehroperation - Union)%
+\item [Rekonstruierbar] Wenn wenn R zerlegt wird in , dann muss es $R_1,R_2 \ldots R_n$
+relationale Operatoren geben, so dass R wiederhergestellt
+werden kann.
+\item[Disjunkt] wenn R horizontal zerlegt wird in $R1,R2 \ldots R_n$, dann
+müssen die Fragmente paarweise disjunkt sein.
+wenn R vertikal zerlegt wird in $R_1,R_2 \ldots R_n$, dann müssen
+die Fragmente bezogen auf die nichtprimen Attribute
+paarweise disjunkt sein.
+\end{description}
+
+\section{Fragmentierungsabkürzungen}
+\begin{itemize}
+ \item Horizontale Fragmentierung (HF)
+\subitem Primäre horizontale Fragmentierung (PHF)
+\subitem Abgeleitete horizontale Fragmentierung (DHF) Fragmente gehören zu andere Fragmente wegen PK oder FK. Ähnliche 
+Fragmentierung sinnvoll.
+\item Vertikale Fragmentierung (VF)
+\item Gemischte Fragmentierung (MF)
+\end{itemize}
+
+\section{PHF}
+\pic{phfbsp.png}
+
+Quantitive Informationen:\\
+Bedingungen in Queries bestehen aus:
+\begin{description}
+ \item [Simple Predicate p] Vergleich eines Attributs mit einem Wert : Name = ``bla'' Preis < 2000. Allgemein 
+bestehende Bedingungen aus boolschen Kombinierung von simple Predicates : $ P = \{p_1,p_2 \ldots , p_m\}$ vom simple 
+predicates bilden wir
+\item[Mintem predicate] $M(P)$ \textbf{Verknüpfungen aller simple predicates aus P mit AND und NOT}. bname= bla and not 
+preis < 2000 z.B \\
+Bemerkung : \\
+$p_1 : $ bname = `Sienna'\\
+$p_2 : $ preis < 2000 \\
+$ p_1 \wedge p_2 \\
+p_1 \wedge \neg p_2 \\
+\neg p_1 \wedge p_2\\
+\neg p_1 \wedge \neg p_2$
+
+\end{description}
+\pic{mtbsp.png} %todo
+\newpage
+Quantitative Informationen : Brauche ich das minterm oder nicht?
+\begin{description}
+ \item [Minterm selectivity] $sel(m_i)$ Anzahl Tupel die mit dem Minterm $m_i$ ausgewählt werden.
+ \item [Access frequency] $acc(m_i)$ Häufigkeit der Anwendungen auf Daten mit dem
+minterm $m_i$ zugreifen
+\end{description}
+
+\section{PHF Schritt für Schritt}
+\begin{description}
+ \item [Vollständigkeit] Eine Menge von simple predicates ist vollständig genau
+dann, wenn auf beliebige 2 Tupel im gleichen Fragment
+von allen Anwendungen mit der gleichen Häufigkeit
+zugegriffen wird
+\item[Minimalität] Wird durch ein simple predicate ein Fragment weiter
+aufgeteilt, dann muss es mindestens eine Anwendung
+geben, die auf diese Fragmente verschieden zugreift
+Ein simple predicate soll also relevant sein für die
+Bestimmung einer Fragmentierung
+Sind alle simple predicate eine Menge P relevant, dann ist
+P minimal
+\end{description}
+
+\begin{itemize}
+ \item Menge von Simple predicates mit der Eigenschaft der Vollständigkeit und Minimalität.
+ 
+\end{itemize}
+
+\section{PHF Beispiel Bikes} %todo in schritten
+Zugriffshäufigkeit gegeben je nach art des Fahrrads. \\
+Anwendung 2 : Bikes aufgrund preise verwaltet. \\ Predicates aus beobachtungen\\
+Anwendung 1:
+Zugriffshäufigkeit der Anwendung in excel, schauen. Wenn grosse verschieden  - schlussfolgerung kann unterscheiden 
+durch eine WHERE bedingung
+Anwendung 2 :
+Preis spielt hier eine rolle - ist relevante Bedingungen. Simple predicates aufnehmen die RELEVANT sind.
+
+Verfahren erklären :
+Minimale Menge von simple predicates ausarbeiten aufgrund der Beobachtung Anwendungen.
+wähle eines aus von allen predicates das relevant ist - typ = mounten. 
+ergänze meine menge p' um die nächsten nur relevanten \\ 
+\\ sehe phf beispiel. \\
+p1..p6 = P
+p1 ist relevant wege häufigkeit.\\
+p2, p3 hinzufügen  relevant \\
+p4 nicht relevant weil : typ  =city kann ich ausdrucken im minterm von anderen (Restmenge) p4 ist aber einfacher zu 
+benutzen.\\
+entweder p5, oder p6 aufnehmen sehe oben. MINIMALE MENGE.
+2 HOCH 6 Kombinationen. durch impl und Wiedersprüche nur 8 sinnvoll. \\
+Beispiel : \\
+Typ = Road und Typ = Mountain ist ein Wiederspruch. Bike für beides geht nicht.\\
+Impl beispiel :
+Typ = road folgt nicht alle anderen Typen. alle Extrabedingungen mit nots reduzieren. \\ (Schritt 3)
+Fragmente bilden sehe Folie.\\
+homogen zugriff auf Fragment ?? Nutzung alle Tupel gleich. Zugriffshäufigkeit konform pro Fragment. \\
+wichtigsten Anwendung betrachte 20 Prozent 80 Prozent last.
+kleinste sinnvolle Einheit. \\
+
+\section{DHF}
+\begin{itemize}
+ \item ist eine horizontale Fragmentierung, die auf einer
+horizontalen Fragmentierung einer übergeordneten
+Relation basiert
+\item stellt sicher, dass Fragmente verschiedener
+Relationen, auf die häu g im Verbund zugegriffen
+wird, dem gleichen Knoten zugeteilt werden
+\item defnieren mit einem Semijoin (Dreieckzeichen) \footnote{Mit subqueries definiert: SELECT * FROM AUFTRÄGE WHERE 
+EXISTS (SELECT 1  FROM $KUNDEN_1$ WHERE $KUNDEN_1$.KNR = AUFTRÄGE.KNR) }: Kann als normalen Join geschrieben werden :
+Projektion $\pi_{knr,datum,auftrage.knr}$ (Aufträge $\ltimes $ $Kunden_1$) 
+
+\end{itemize}
+
+\pic{dhfbsp.png}
+
+
+\chapter{Vertikale Fragmentierung}
+
+Geht um ``ähnliche Nutzung''.
+\begin{itemize}
+
+\item Vertikale Fragmentierung einer einzelnen Relation
+\item Modellieren des Zugriffs auf die Relationen
+\subitem Welche Anwendungen (Queries)
+\subitem verwenden welche Attribute
+\item und werden auf welchen Knoten
+\item wie häufig ausgeführt
+\item mit dem Ziel zu entscheiden
+\subitem welche Attribute werden häufig zusammen verwendet
+\subitem und sollen deshalb zum selben Fragment gehöre
+\end{itemize}
+
+\pic{dbvf.png}
+\section{Zugriffseigenschaften}
+\pic{dbze.png}
+Die Verwendung (Usage) der Attribute durch diese
+Anwendungen (Queries) wird in einer Matrix dargestellt:
+Matrix U.
+eine 1 bedeutet: Query verwendet Attribut
+eine 0 bedeutet: Query verwendet Attribut nicht
+\begin{tabular}{c c c c c}
+ &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+$q_1$ & 1 & 0 & 0 & 1 \\
+$q_2$ & 0 & 1 &0 & 1 \\
+$q_3$ & 0 & 1 & 1 & 0 \\
+$q_4$ & 0 & 0 & 1 & 1 \\
+\end{tabular}
+
+Anwendung wird ebenfalls in einer Matrix festgehalten:
+Matrix Acc.
+
+\begin{tabular}{c c c c c}
+ &\textbf{S1} & \textbf{S2}  & \textbf{S3}\\
+$q_1$ & 15 & 20 & 10 \\
+$q_2$ & 5 & 0 & 0 \\
+$q_3$ & 25 & 25 & 25 \\
+$q_4$ 3 & 0 & 0 \\
+\end{tabular}
+
+die Zahl 15 oben links besagt z.B.: Query $q_1$ wird auf
+Knoten S1 15 Mal pro Tag ausgeführt
+
+\section{Cluster Methode}
+\begin{itemize}
+\item  Der Zugriff auf jede Attributsmenge durch die
+Anwendungen ist sehr unterschiedlich
+\subitem Dadurch würde jedes Attribut sein eigenes Fragment
+bilden, was wenig sinnvoll ist
+\subitem Besser wird nach Attributsmengen gesucht, auf die
+ähnlich zugegriffen wird
+\item Die Clustering Methode erkennt ähnliche Zugriffsmuster auf
+Attribute
+\subitem Für jedes Paar von Attributen bestimmen, wie oft auf
+sie gemeinsam zugegriffen wird
+\subitem Cluster bilden von Attributen mit hoher Affinität
+\end{itemize}
+
+\subsection{Affinität}
+\begin{framed}
+ \begin{equation}
+  aff (A_i,A_j) = \sum_{k : U_{k_i}=1,U_{k_j}=1} \sum_{l=1}^s acc_{k_l} 
+ \end{equation}
+
+\end{framed}
+
+\pic{affin.png}
+%todo tex extra workflowy.
+
+Matrix AA Zeigt Affinität zweier Attribute :
+\begin{tabular}{c c c c c}
+ &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+BName & 45 & 0 & 0 & 45 \\
+Preis & 0 & 80 &75 & 5 \\
+Typ & 0 & 75 & 78 & 3 \\
+Bestand & 45 & 5 & 3 & 53 \\
+\end{tabular}
+
+\begin{framed}
+ Skalarprodukt benachbarter Spalten
+misst die Ähnlichkeit des
+Zugriffsmusters: Affinität der
+Nachbarschaft (bond):
+\begin{equation}
+ \sum_{z=1}^{n} = aff(A_z,A_x)*aff(A_z,A_y)
+\end{equation}
+Die Summe über alle Skalarprodukte ist
+die globale Af nität der Nachbarschaft
+
+\end{framed}
+BName, Preis: 45 x 5 = 225\\
+Preis, Typ:\\
+80 x 75 + 75 x 78 + 5 x 3 = 11865\\
+Typ, Bestand:
+75 x 5 + 78 x 3 + 3 x 53 = 768\\
+
+globale Affinität: 12858\\
+
+\textbf{Vertauschen ist auch möglich:}
+
+\subsection{Vertauschen bei Affinität}
+Durch Austausch von Spalten (und den entsprechenden Zeilen) in
+der Matrix AA verändert sich die globale Af nität der
+Nachbarschaft:
+
+\begin{tabular}{c c c c c}
+  &\textbf{BName} & \textbf{Preis}  & \textbf{Typ} & \textbf{Bestand}\\
+BName & 45 & 0 & 0 & 45 \\
+Preis & 0 & 80 &75 & 5 \\
+Typ & 0 & 75 & 78 & 3 \\
+Bestand & 45 & 5 & 3 & 53 \\
+\end{tabular}
+
+
+Preis, BName: 5 x 45 = 225\\
+BName, Typ: 45 x 3 = 135\\
+Typ, Bestand:\\
+75 x 5 + 78 x 3 + 3 x 53 = 768\\
+Globale Affinität: 1128\\
+
+\section{Bond Energie Algorithmus}
+\begin{itemize}
+\item Gegeben $n \times n$ Matrix AA der Affinitäten
+\subitem Beliebige 2 Spalte aus AA wählen und in Resultats Matrix CA stellen
+\item Iteration:
+\subitem eine der übrigen $n - i$ Spalten so in Resultats Matrix
+positionieren ($i + 1$ mögliche Positionen), dass sich der
+grösste Beitrag an die globale Affinität der
+Nachbarschaft ergibt
+\subitem Die Zeilen entsprechend den Spalten anordnen
+\item Beitrag einer Spalte $A_k$ wenn zwischen $A_i$ und $A_j$ platziert:\\
+$ \text{cont} (A_i , A_k , A_j ) = \text{bond}(A_i , A_k ) + \text{bond}(A_k , A_j ) - bond(A_i , A_j )$
+\end{itemize}
+\section{VF - Vertical Fragmentation Example}
+\pic[Gegebene Matrix der AA Affinitäten]{vfb1.png}
+\pic[Aus der Affinitäts Matrix AA werden
+die Spalten BName und Typ beliebig
+gewählt]{vfb2.png}
+Spalte Preis an 1. Position
+platzieren und Beitrag an globaler
+Affinität berechnen:\\
+cont(\_, Preis, BName) =
+0 + 225 - 0 = 225\\
+Spalte Preis an 2. Position platzieren
+und Beitrag an globaler Af nität
+berechnen:\\
+cont(BName, Preis, Typ) =
+225 + 11865 - 135 = 11955\\
+Spalte Preis an 3. Position platzieren
+und Beitrag an globaler Af nität
+berechnen:\\
+cont(Typ, Preis, \_) = 11865 + 0 - 0 =
+11865  \\
+
+Preis an der 2. Position bietet den grössten Beitrag.
+
+\pic{vfb5.png}
+
+\section{VF : Cluster möglichketen}
+  \pic{vfcm.png}
+\begin{itemize}
+ \item Trennpunkt kann entlang der Diagonalen verschoben
+werden
+\item Für jede der Möglichkeiten berechnen, wie oft:
+\subitem ausschliesslich auf Attribute eines Fragments
+zugegriffen wird (gut)
+\subitem auf Attribute beider Fragmente zugegriffen wird
+(schlecht)
+\item Trennqualität $sq = acc(VF_1 ) \times acc(VF_2 ) - acc(VF_1 , VF_2 )^2$
+maximieren
+\subitem acc(VF 1 ): Summe Zugriffshäufigkeiten der Queries
+ausschliesslich auf VF 1
+\subitem acc(VF 2 ): Summe Zugriffshäufigkeiten der Queries
+ausschliesslich auf VF 2
+\subitem acc(VF 1 , VF 2 ): Summe Zugriffshäufigkeiten der Queries
+auf VF 1 und VF 2
+\end{itemize}
+\pic{vfse.png}
+
+\section{Schluss : VF}
+Aus der erhaltenen Clusterung der Attribute, ergänzt mit
+dem Primärschlüssel ergeben sich die Fragmente:\\
+BIKES 1 : $\pi_{\text{BNr, BName, Bestand}}$(BIKES)\\
+BIKES 2 : $\pi_{\text{BNr, Preis, Typ}}$ (BIKES)\\
+
+\chapter{Verteilte Anfrage Verarbeitung}
+
+\begin{framed}
+ Beispiel Query:
+$KUN_1$ = $\pi_{KNR,KNAME}(KUN)$ \\
+$KUN_2$ = $\pi_{KNR,ORT}(KUN)$\\
+$KUN = KUN_1 \bowtie KUN_2$ \\
+\end{framed}
+
+\section{Query Processor}
+Umformen der SQl Queries in ausführbare Operationen für den Datenzugriff:
+
+\pic{qproc.png}
+
+\section{Zentralisiert vs Dezentraliziert}
+\begin{description}
+ \item [Zentralisiertes System] 
+ \begin{itemize}
+  \item Umformen der SQL Anfrage in ausführbare Einheiten - Operationen der Rationalen Algebra.
+  \item Auswählen des besten Ausführungsplans
+ \end{itemize}
+ \item[verteiltes System] \begin{itemize}
+                           \item berücksichtigen der Kommunikationskosten
+                           \item auswählen des besten Knotens.
+                          \end{itemize}
+Relationen werden mit den ersten drei Buchstaben von der DB Tabellenname zukünftig benannt.
+\section{Überblick}
+\subsection{Ziel der Optimierung}
+\pic{zdo.png}
+
+\begin{itemize}
+ \item durch Umformen und Optimieren soll eine Kostenfunktion minimiert werden
+ \subitem CPU Zeit
+ \subitem IO Zeit
+ \subitem Comm Zeit
+ \item verschiedene Gewichte in unterschiedlich verteilten Umgebungen. WAN - Kommzeit LAN - ähnlich gewichtet.
+ 
+\end{itemize}
+
+\subsection{Komplexität}
+$ \theta \pi $ mit Duplikate : O(n) \\
+$ \pi$ Ohne Duplikate - GROUP O(n log n) \\
+$ \bowtie \cup \cap \div$ : O(n log n) \\
+$ \times $ : $O(n^2)$ 
+
+
+\end{description}
+
+\section{Methode}
+\subsection{Verteilte Verarbeitung}
+\pic{vab}
+
+\subsection{Zerlegung}
+Sql Query zerlegen und umformen in relationale Algebra unter Verwendung des globalen Schemas :
+\begin{itemize}
+ \item Normalisierung (Bedingung in Where Klausel)
+ \item Analyse um inkorrekte Queries zurückzuwechseln.
+ \subitem Analyse nach Typ
+ \subitem Analyse nach Semantik
+ \item Vereinfachung, Redundanz beseitigen.
+ \item Umformen in optimalen Ausdruck der relationalen Algebra.
+ 
+\end{itemize}
+
+\section{Lokalisierung}
+\begin{itemize}
+ \item verwenden des Fragmentierunggsschema.
+ \item verteilte Anfrage mit globalen Relationen abbilden in Anfragen mit Fragmenten:
+ \subitem Ersetzen der globalen Relation mit den Fragmenten :
+ \subitem $\cup$ für Horizontale Fragmentierung
+ \subitem $\bowtie$ für Vertikale Fragmentierung.
+ \item Optimierung der lokalisierten Anfrage durch Reduktion mit Selektion oder Join.
+\end{itemize}
+
+\subsection{PHF}
+\pic{phfr.png}
+\textbf{Bemerkung:} Eine Selektion auf einem Fragment mit einer Bedingung, die der Bedingung für die Fragmentierung 
+widerspricht , ergibt leere Resultatsrelationen.
+
+\subsection{Schritten für Lokalisierung PHF}
+\begin{description}
+ \item [Schritt 1] globaler Query Baum erstellen
+ \item[Schritt 2] globale Relation mit Fragmenten ersetzen.
+ \pic{phflok.png}
+ \item[Schritt 3] Reduktion: \\
+ \pic{phflok1.png}
+ Eine Reduktion ist möglich wenn die Fragmentierung mit dem Join Attribute erfolgte. Wenn sich die Bedingungen der 
+Fragmente widersprechen, resultiert eine leere Relation. Vor einer möglichen Reduktion wird das Distributivgesetz 
+angewendet : \\
+$ (R_1 \cup R_2) \bowtie S = (R1 \bowtie S) \cup (R_2 \bowtie S) $
+\end{description}
+
+\subsection{Reduktion mit Join für PHF}
+\pic{redjphf.png}
+\pic{redjphf2.png}
+\pic{redjphf3.png}
+\pic{redjphf4.png}
+
+
+\section{Reduktion für VF}
+\pic{redvf1.png}
+Eine Projektion auf einem Fragment ist nutzlos wenn die Attribute der Projektion nicht im Fragment enthalten sind.
+\pic{redvf2.png}
+\pic{redvf3.png}
+\pic{redvf4.png}
+  
+\chapter{Concurrency}
+
+\section{Notation + Definitionen für Concurrency}
+\begin{tabular}{|c|c|}
+\hline 
+ \textbf{Notation} & \textbf{Bedeutung} \\ \hline
+ $r_i[x]$ & Read(x) durch Transaktion $T_i$ \\ \hline
+ $w_i[x]$ & Write(x) durch Transaktion $T_i$ \\ \hline
+ $o_i[x]$ & Read(x) oder Write(x) durch $T_i$ \\ \hline
+ $c_i$ & Commit durch Transaktion $T_i$ \\ \hline
+ $a_i$ & Commit durch Transaktion $T_i$ \\ \hline
+ $e_i$ & Commit oder Abort durch $T_i$ \\ \hline
+ 
+\end{tabular}
+
+\begin{description}
+ \item [Transaktion] Folge von Read und Write Operationen auf beliebigen Datenelementen x. Letzte Operation entweder 
+Commit oder Abort.
+\item[Schedule,History] ist eine Folge von Datenbank Scheduler auf der Datenbank ausgeführten Lese und 
+Screiboperationen.Es besteht aus Operationen verschiedener Transaktionen.Ordnung der Operationen innerhalb einer 
+Transaktion muss beibehalten werden.
+\item[Serielle History] Eine History H heisst seriell, wenn jeweils alle Operationen einer Transaktion direkt 
+hintereinander ausgeführt werden (keine überlappte Ausführung der Transaktionen).
+\item[Konflikt Operation] Zwei Datenbank-Operationen $o_i$ und $o_k$ heissen Konflikt-Operationen wenn :
+\begin{itemize}
+ \item beide auf dasselbe Element x zugreifen.
+ \item sie zu verschieden Transaktionen gehören.
+ \item mindestens eine der beiden eine Schreiboperation ist.
+\end{itemize}
+\item[Konflikt Serialisierbarkeit] Eine History heisst konflikt-serialisierbar , wenn es eine serielle History mit 
+gleicher Reihenfolge der Konflikt-Operationen gibt.
+\item[Recoverable History] Eine History heisst Recoverable falls alle Commits der Transaktionen, von denen eine 
+Transaktion $T_i$ liest vor dem $c_i$ erfolgen.
+\item[Vermeiden von cascading Aborts] Eine History vermeidet cascading Aborts falls alle Commits der Transaktionen, von 
+denen eine Transaktion $T_i$ liest vor dem $r_i[x]$  erfolgen.
+\item[Strickte History] Eine History heisst strikt falls jedes $r_i[x]$ oder $w_i[x]$ einer Transaktion $T_i$ nach den 
+Commits aller anderen Transaktionen erfolgt, die auf $x$ geschreiben haben.
+\item[2 Phasen Sperrprotokoll] Two Phase Lock : Eine Transaktion folgt dem 2 Phasen Sperrprotokoll
+\begin{itemize}
+ \item vor einem Read bzw Write muss ein share Lock bzw exclusive lock verlangt und erlangt werden.
+ \item die Sperre darf erst freigegeben werden wenn die zugehörige Operation vollständig durchgeführt worden ist.
+ \item nach der ersten Freigabe einer Sperre darf keine neue Sperre verlangt werden.
+\end{itemize}
+\item[Striktes 2 Phasen Sperrprotokoll] 
+\begin{itemize}
+ \item Alle Sperren müssen auf einmal mit dem Commit atomar freigegeben werden.
+\end{itemize}
+
+
+\end{description}
+
+
+\section{Einführung}
+\begin{description}
+\item[Atomicity] Alles oder Nichts
+\item[Consistency] keine Verletzung von Integritätsregeln
+\item[Isolation] keine Nebeneffekte bei Nebenläufigkeit
+\item[Durability] Bestätigte Änderungen sind persistent
+\end{description}
+
+Transaktionen bieten :
+\begin{itemize}
+ \item unteilbare und zuverlässige Ausführung auch bei
+Ausfällen
+\item korrekte Ausführung auch bei gleichzeitigem Zugriff
+durch mehrere Benutzer
+\item korrekte Verwaltung von Replikaten (falls unterstützt)
+
+\subsection{Aspekte der Transaktionsverarbeitung}
+\begin{itemize}
+ \item Transaktionsstruktur (Transaktionsmodell)
+\subitem flache Transaktion, verschachtelte Transaktion
+\item Konsistenzerhaltung der Datenbank
+\item Zuverlässigkeitsprotokolle
+\subitem Unteilbarkeit, Dauerhaftigkeit
+\subitem lokale Wiederherstellung
+\subitem globale Commit Protokolle
+\item Nebenläufigkeitskontrolle
+\subitem Ausführung nebenläufiger Transaktionen (Korrektheit?)
+\subitem Konsistenzerhaltung zwischen Transaktionen, Isolation
+\item Kontrolle der Replikate
+\subitem Kontrolle der gegenseitigen Konsistenz von Replikaten
+\item One-Copy Equivalence, ROWA
+\end{itemize}
+
+\section{Arhitektur}
+\pic{dbarchcca.png}
+\pic{dbarchcc1.png}
+
+\section{Nebenläufigkeit}
+Nebenläufigkeitskontrolle wie in zentralisierten DBS
+\item Ablaufplan, History, Schedule
+\item serielle Ausführung, serielle History
+\item Äquivalenz von Histories
+\subitem Konflikt Äquivalenz
+\subitem Konflikt Operationen
+\item Serialisierbarkeit
+\item zwei verschiedene Arten Histories berücksichtigen
+\subitem lokale Ablaufpläne
+\subitem globaler Ablaufplan
+\item für Serialisierbarkeit des globalen Ablaufplans sind
+zwei Bedingungen nötig
+\subitem jeder lokale Ablaufplan muss serialisierbar sein
+\subitem zwei Konflikt Operationen müssen in der gleichen
+Reihenfolge auftreten in allen lokalen Ablaufplänen, in
+denen sie zusammen auftreten
+\end{itemize}
+
+\subsection{Beispiel : Global nicht serialisierbar}
+\pic{globalns.png}
+
+serialisierbar auf Knoten aber global nicht wegen verschiedene Reihenfolge.Wir wissen im Zentral wie man es macht, aber
+
+\section{Realisierung} % (fold)
+\label{sec:realisierung}
+\begin{itemize}
+  \item Basierend auf 2 Phasen Sperrprotokoll
+  \subitem Primary Copy 2PL.
+  \subitem Verteiltes 2PL
+  \item häufig mit Snapshot verfahren.
+  \subitem Read Constency bei Oracle
+  \subitem verwenden der SCN Synchronization bei verteilten DBS.\\
+  \pic{scn.png}
+
+\end{itemize}
+% section realisierung (end)
+\subsection{Zentrales 2PL} % (fold)
+\label{sub:zentrales_2pl}
+\begin{itemize}
+  \item einzelner Knoten verwaltet alle Sperrinformation.
+  \item ein Lock manager fur das gesmate DDBMS
+  \item jede Sperre muss beim zentralen Lock manger verlangt werden.
+  \item einfach zu relisieren.
+  \item Flachenhäls, weniger zuverlässig.
+\end{itemize}
+% subsection primary_copy_2pl (end)
+\subsection{Primary Copy 2pl} % (fold)
+\label{sub:primary_copy_2pl}
+\begin{itemize}
+
+\item Lock Manager auf einigen Knoten verteilt
+\item jeder Lock Manager verantwortlich für die Sperren einer Menge von Daten 
+\item bei Replikaten wird eine Kopie als Primary Copy bestimmt, die anderen sind dann slave copies.
+\item Schreibsperre nur auf Primary Copy.
+\item nach Änderung der Primary Copy,Änderungen zu den slaves bringen.
+\item komplexeres Deadlock Handling
+\item weniger Kommunikation bessere Performance. 
+\end{itemize}
+% subsection zentrales_2pl (end)
+\subsection{Verteiltes 2PL} % (fold)
+\label{sub:verteiltes_2pl}
+\begin{itemize}
+  \item Jeder Lock manager auf allen Knoten verteilt. 
+  \item jeder Lock anager vrantwortlich für die Sperren siner Daten
+  \item ohne Replikate gleich wie Primary Copy 2PL
+  \item mit Replikaten wird Read One Write All Protokoll implementiert. 
+  \subitem irgendeine Kopie kann zum Lesen verwendet werden  
+  \subitem alle Kopien erhalten Schreibsperre vor Änderung.
+  \item \textit{komplexeres Daeadlock Handling}
+  \item \textit{höhere Kommunikationskosten als Primary Copy 2PL}
+
+\end{itemize}
+% subsection verteiltes_2pl (end)
+ \section{Deadlocks} % (fold)
+ \label{sec:deadlocks}
+ Transaktionen sind im einem Deadlock wenn sie \texttt{blockiert} sind und \textbf{es bleiben bis das System eingreift.}\\
+ Deadlocks treten in 2PL auf zur Vermeidung von nicht serialiserbare Aufbaupläne.  Um einen Deadlock aufzulösen muss eine Transaktion abgebrochen werden.
+ In einem \textbf{Wait for Graph oder WFG} können Deadlocks erkannt werden.
+
+ WFG ist ein gerichtete Graph und stellt die "'warte auf"'-Beziehung zwischen Transaktionen dar. Transaktionen sind die Knoten im WFG.\\
+ \begin{framed}
+   Kante $T_i \leftarrow T_j$ bedeutet $T_i$ wartet auf die Freigabe der Sperre auf $T_j$ Zyklen in WFG sind dann deadlocks.  
+ \end{framed}
+
+\subsection{Deadlock Erkennung} % (fold)
+\label{sub:deadlock_erkennung}
+\begin{itemize}
+  \item Ansatz automatisch Deadlocks erkennen und eine Betroffene Transaktion abbrechen.
+  \item Bevorzugter Einsatz braucht viel Ressourcen ist aber ein einfaches Verfahren.
+  \item Timeout: Transaktion die zu lange blockiert ist abbrechen.
+  \subitem einfach zu realisieren. 
+  \subitem bricht Transaktionen unnötigerweise an.
+  \subitem Deadlocks können lange bestehen.
+\end{itemize}
+WFG kann benutzt werden um :
+\begin{itemize}
+  \item Deadlock zu finden -
+  \subitem  wird eine Transaktion blockiert, Kante in WFG einfügen 
+  \subitem WFG periodisch für Zyklen durchsuchen.
+  \item Wird ein Deadlock erkannt, eine Transaktion im Zyklus wählen und abbrechen.
+\end{itemize}
+% subsection deadlock_erkennung (end)
+
+\subsection{Verteilte Deadlocks} % (fold)
+\label{sub:verteilte_deadlocks}
+\begin{itemize}
+  \item Wenn Deadlock zwei Knoten umfasst, kann ihn \textbf{keiner der Knoten erkennen.}
+  \item Problem lokale und globaler WFG.
+  \item Szenario : $t_1 $ und $T_2$ auf Knoten 1 und $T_3,T_4$ auf Konten 2. $T_1 \rightarrow T_2 \rightarrow T_3 \rightarrow T_1 $
+\end{itemize}
+\pic{wfg.png}
+% subsection verteilte_deadlocks_ (end)
+ % section deadlocks (end)
+\chapter{Verteilte Transaktionen 2} % (fold)
+\label{cha:verteilte_transaktionen_2}
+
+Eine Datenbank ist zuverlässig wenn sie robust und zur Wiederherstellung fähig ist.
+Diese Idee steckt auch in den ACID Eigenschaften :
+\begin{description}
+  \item[Atomicity] requires that each transaction is "'all or nothing"': if one part of the transaction fails, the entire transaction fails, and the database state is left unchanged. An atomic system must guarantee atomicity in each and every situation, including power failures, errors, and crashes. To the outside world, a committed transaction appears (by its effects on the database) to be indivisible ("'atomic"'), and an aborted transaction does not happen.
+
+\item[Consistency] The consistency property ensures that any transaction will bring the database from one valid state to another. Any data written to the database must be valid according to all defined rules, including but not limited to constraints, cascades, triggers, and any combination thereof. This does not guarantee correctness of the transaction in all ways the application programmer might have wanted (that is the responsibility of application-level code) but merely that any programming errors do not violate any defined rules.
+
+\item[Isolation]The isolation property ensures that the concurrent execution of transactions results in a system state that would be obtained if transactions were executed serially, i.e. one after the other. Providing isolation is the main goal of concurrency control. Depending on concurrency control method, the effects of an incomplete transaction might not even be visible to another transaction.[citation needed]
+
+\item[Durability] Durability means that once a transaction has been committed, it will remain so, even in the event of power loss, crashes, or errors. In a relational database, for instance, once a group of SQL statements execute, the results need to be stored permanently (even if the database crashes immediately thereafter). To defend against power loss, transactions (or their effects) must be recorded in a non-volatile memory.
+\end{description}
+
+Wir werden auf \texttt{Atomicity} und \texttt{Durability} fokusieren.
+
+\textbf{Fehlerarten:}
+\begin{description}
+  \item[Transaktionsfehler] Transaktionssabbruch, einseitig, Deadlock
+  \item[System oder Kontenausfall] Ausfall von CPU , Haputsapeicher , Stromversogung - Hauptspeicherintervale gehen verloren. Teil oder Totalausfall.
+  \item[Plattenfehler] Plattenfehler führen zu Verlust gespeicherte Daten. Headcrash, Ausfall des Controllers.
+  \item[Verbindungsausfall] Verlorene oder unzustellbare Nachrichten. Trennung des Netzwerks.
+\end{description}
+
+\section{Lokale oder Verteilte Zuverlässigkeit} % (fold)
+\label{sec:lokale_oder_verteilte_zuverl_ssigkeit}
+
+\begin{description}
+  \item[Zentrales DBS] Behandelt Transaktionsfehler, System oder Knotenausfall und Plattenfehler. Bei Systemausfällen oder Plattenfehler handelt es immer um einen vollständigen Ausfall.
+  \item[Verteiltes DBS] \underline{Behandelt zusätzlich} Koordination bei Transaktionsfehler, System oder Knotenausfall, Plattenfehler \textit{Verbindungsausfall, erhöhte Verfügbarkeit.} 
+\end{description}
+% section lokale_oder_verteilte_zuverl_ssigkeit (end)
+
+\section{Lokale Widerherstellung} % (fold)
+\label{sec:lokale_widerherstellung}
+\pic{lres.png}
+Einzelne DBS sind fähig zur Wiederherstellung durch :
+\begin{itemize}
+  \item angemessene Schreibstrategie - force oder no force.
+  \item Angemessene Seitenersetzung (Paging Stategy) - Steal oder No Steal.
+  \item Protokollierung von Änderungen - undo/redo.
+  \item Write Ahead Logging (WAL) 
+  \subitem Vor Commit (Redo) Log Einträge sichern.
+  \subitem Vor Änderung der permanenten Datenbank (Undo) Log Einträge sichern.
+  \item Robustes verfahren benutzen
+  \subitem Undo, Redo indempotent.
+  \subitem ARIES
+\end{itemize}
+% section lokale_widerherstellung (end)
+\section{Zuverlässigkeit} % (fold)
+\label{sec:zuverl_ssigkeit}
+\begin{itemize}
+  \item Sicherstellen von Atomicity und Durability verteilter Transaktionen.
+  \item Jeder Knoten kann
+  \subitem lokaler Teil der Transaktion zuverlässig verarbeiten
+  \subitem nach Bedarf lokales Commit, Rollback, Recovery durchführen.
+  \item Übergeordnete Protokolle müssen sich mit der Koordination der beteiligten Knoten befassen.
+  \subitem Start der Transaktion beim Ursprungsknoten verarbeiten
+  \subitem  Read und Write an den Zielknoten verarbeiten, spezielle Vorkehrungen bei Replikation.
+  \subitem Abort, Commit, und Recover spezifisch für DDB.
+\end{itemize}
+\subsection{Komponenten} % (fold)
+\label{sub:komponenten}
+Unterschieden in :
+\begin{description}
+  \item[Coordinator Prozess]beim Ursprungsknoten, steuert die Ausführung.
+  \item[Participant Prozess] bei den anderen Knoten die an der Transaktion beteiligt sind. 
+\end{description}
+\textbf{Protokolle:}\\
+\begin{description}
+  \item[Commit Protokolle] Wie das Commit einer Transaktion verarbeiten
+wenn mehr als ein Knoten am Commit beteiligt ist?
+Regelt Atomicity und Durability einer verteilten Transaktion
+\item[Termination Protokolle] Verwendet von Knoten, die vom Ausfall anderer Knoten
+betroffen sind.
+Regelt für einen Knoten das Commit/Abort,
+wenn andere Knoten ausfallen.
+Blocking/Non-Blocking: Müssen Knoten auf Recovery anderer
+Knoten warten, um Transaktion abzuschliessen?
+\item [Recovery Protokolle]Verwendet von Knoten, die ausgefallen sind.
+Regelt das Recoveryverfahren beim Wiederanlauf
+nach einem Ausfall
+Unabhängig: Ein ausgefallener Knoten kann das Ergebnis einer
+Transaktion bestimmen, ohne Information von anderen Knoten
+zu haben.
+
+\end{description}
+% subsection komponenten (end)
+% section zuverl_ssigkeit (end)
+\section{2 Phase Commit} % (fold)
+\label{sec:2_phase_commit}
+\begin{enumerate}
+  \item Choice: Der Koordinator fragt alle Teilnehmer, ob sie bereit sind für ein
+Commit: Prepare.
+Jeder Teilnehmer teilt dem Koordinator seine Entscheidung mit:
+Vote-Commit oder Vote-Abort.
+\item Descision:Der Koordinator trifft endgültige Entscheidung:
+Commit: Falls alle Teilnehmer bereit zum Commit
+Abort: In allen anderen Fällen
+und teilt sie den Teilnehmern mit: Global-Commit oder
+Global-Abort.
+Diese müssen sich entsprechend verhalten und bestätigen:
+Acknowledge.
+\end{enumerate}
+\pic{2pcabl.png}
+
+\textbf{Beobachtungen}
+\begin{enumerate}
+\item Ein Teilnehmer kann einseitig Abort durchführen,
+vorausgesetzt, er hat nicht mit Vote-Commit geantwortet.
+\item Nachdem ein Teilnehmer mit Vote-Commit geantwortet hat,
+muss er zum Commit bereit sein und kann nicht mehr
+umentscheiden.
+\item Ein Teilnehmer im Ready-Zustand muss bereit sein zum
+Commit oder Abort, je nach Entscheid des Koordinators.
+\item Die endgültige Entscheidung ist Commit, falls alle
+Teilnehmer Vote-Commit geantwortet haben, oder Abort,
+falls irgendein Teilnehmer mit Vote-Abort geantwortet hat.
+\item Koordinator und Teilnehmer verwenden Time-Out
+Methoden, um möglichen Wartezustand zu verlassen.
+
+\end{enumerate}
+% section 2_phase_commit (end)
+\pic[Zentraliziertes 2pc]{z2pc.png}
+\pic[Lineares 2PC]{l2pc.png}
+\pic[Verteiltes 2PC]{v2pc.png}
+\subsection{Zustandsübergänge} % (fold)
+\label{sub:zustands_berg_nge and Termination Protocols}
+\pic[Zustandsübergänge 2PC]{zu2pc.png}
+\begin{itemize}
+  \item Time out des Koordinates im Zustand \texttt{wait,abort,commit} möglich.
+  \item \texttt{wait} Zustand :
+  \subitem Koordinator wartet auf Entscheid der Teilnehmer
+  \subitem \textit{Lösung:} Koordinator entscheidet Global-Abort der Transaktion.
+  \item \texttt{commit} oder \texttt{abort} : 
+  \subitem Koordinator ist nicht sicher ob das Cimmit oder Abort verfahren durch die LRMs\footnote{Local Recovery Manager} alle Teilnehmer durchgeführt wurde.
+  \subitem \textit{Lösung:} Global commit oder Global Abort an alle Teilnehmer die nicht geantwortet haben, erneut senden.
+  \item Time-Out eines Teilnehmers im Zustand \texttt{initial} oder \texttt{ready} möglich.
+  \item \texttt{initial} Zustand : 
+  \subitem Teilnehmer wartet auf das Prepare des Koordinators.
+  \subitem Lösung: Teilnehmer führt einseitig Abort durch. Falls Prepare später ankommt, mit Vote Abort antworten oder ignorieren.
+  \item \texttt{ready} Zustand : 
+  \subitem Teilnehmer darf nach dem Vote Commit sich nicht umentscheiden und einseitig Abort durchführen.
+  \subitem \textit{Lösung:} Teilnehmer ist \underline{blockiert} und muss auf den entgültigen Entscheid des Koordinators warten.
+\end{itemize}
+% subsection zustands_berg_nge (end)
+\subsection{Recovery Protocols} % (fold)
+\label{sub:recovery_protocols}
+Protokolle die ein Koordinator oder Teilnehmer nach einem Ausfall verwenden für die Wiederherstellung beim Neustart. \\
+Annahmen: 
+\begin{enumerate}
+  \item Logbeschreibungen und Versenden von Nachrichten sind atomare Aktionen.
+  \item Zustandsübergänge erfolgen nach Versenden der Nachricht.
+\end{enumerate}
+% subsection recovery_protocols (end)
+\subsection{Ausfälle} % (fold)
+\label{sub:ausf_lle}
+\begin{description}
+  \item[Koordinator] \hfill \\
+  \begin{itemize}
+     \item Koordinator im Zustand \texttt{initial} fällt aus - neustart der Transaktion
+     \item \texttt{wait} - Neustart des Commit Verfahrens mit nochmailigem Versenden der Prepare Nachricht.
+     \item \texttt{commit} oder \texttt{abort} 
+     \subitem Falls alle Acknowledge Meldungen erhalten sind nichts tun sonnst Termination Protokolls answenden.
+   \end{itemize} 
+   \item[Teilnehmer] \hfill \\
+   \begin{itemize}
+     \item \texttt{initial} Nach der Wiederherstellung führt Teilnehmer einseitig ein Abort der Transaktion durch.
+     \item \texttt{ready} Ablauf wie nach Time out im \texttt{ready} Zustand und Termination Protocols anwenden.
+     \item \texttt{commit, abort} Nichts tun.
+   \end{itemize}
+\end{description}
+% subsection ausf_lle (end)
+\subsection{Probleme mit 2pc} % (fold)
+\label{sub:probleme_mit_2pc}
+\begin{itemize}
+  \item Blockierend. Im Zustand \texttt{ready} muss Teilnehmer auf Entscheid des Koordinators warten. Fällt Koordinator aus, ist Teilnehmer blockiert. Verfügbarkeit reduziert.
+  \item Recovery eines Teilnehmers nach Ausfall im Zustand \texttt{ready }kann nicht unabhängig erfolgen.Verfügbarkeit des Koordinators oder eines Teilnehmers, der
+die Rolle des Koordinators übernimmt ist nötig.
+
+\end{itemize}
+% subsection probleme_mit_2pc (end)
+\section{3 Phase Commit} % (fold)
+\label{sec:3_phase_commit}
+\begin{itemize}
+  \item Nicht Blockierend.
+  \item Commit Protocol ist \textbf{nicht blockierend genau dann wenn:}
+  \subitem Synchron innerhalb Zustandsübergang
+  \subitem Keine Zustände hat die benachbart sind zu einem Commit und Abort Zustand. Oder die die zu einem Commit zustand \textit{nicht} benachbart sind aber nicht commitable sind.
+  \subitem Committable : Zustand in dem sichergestellt ist, dass alle
+Teilnehmer mit Vote-Commit geantwortet haben
+\end{itemize}
+% section 3_phase_commit (end)
+
+% chapter verteilte_transaktionen_2 (end)
+\chapter{Replikation I} % (fold)
+\label{cha:replikation_i}
+
+\section{Einleitung} % (fold)
+\label{sec:einleitung}
+\subsection{Grunde für Replikation} % (fold)
+\label{sub:grunde_f_r_replikation}
+\begin{description}
+  \item[Züverlassigkeit] vermeidet "'single points of failiure."'
+  \item[Perormance] Vermeidet Kommunikationskosten durch lokalen Zugriffe.
+  \item[Skalierbarkeit] Unterstützt Wachstum des Systems
+  \item[Andforderungen durch Anwendungen] Spezifikation??
+  \item[Probleme] \begin{itemize}
+    \item Transparenz der Replikation - Abbilden logische Zugriffe in Physische Zugriffe auf Kopien.
+    \item Fragen der Konsistenz : Kriterien und Sync der Kopieen.
+  \end{itemize} 
+\end{description}
+
+% subsection grunde_f_r_replikation (end)
+\subsection{Ausführungsmodell} % (fold)
+\label{sub:ausf_hrungsmodell}
+ Es gibt physische Kopien der logischen Objekte im System. Zugriffe betreffen logische Objekte, werden aber in Zugriffe auf physische Objekte umgesetzt.: \\
+ \pic{amodel.png}
+% subsection ausf_hrungsmodell (end)
+% section einleitung (end)
+\section{Konsistenzmodelle} % (fold)
+\label{sec:konsistenzmodelle}
+Wie wird die Konsistenz des globalen DB Zustands definiert?
+\begin{itemize}
+  \item Transaktionsbezogene Kriterien :
+  \subitem One Copy Serializability
+  \subitem Snapshot Isolation
+  \item Datenbezeogene Kritieren : Eventual Consistency
+  \item Begrentzte Inkonsistenz : Epsilon Serializability
+\end{itemize}
+Mit welchen Verfahren wird gegenseitige Konsistenz der Replikate erreicht?
+
+\begin{description}
+  \item[Transaktionsbezoegene Kriterien (Strong Consistency)] \hfill \\
+  \begin{itemize}
+     \item One Copy Equivalenz : Gegenseitige Konsistenz wenn alle Kopien identische Werte haben.Wirkung einer Transaktion auf replizierte Daten ist die gleiche, wenn sie auf einer einzelnen Datenmenge operierte.
+     \item One Copy Serializability : Wirkung von Transaktionen auf replizierte Daten ist die gleiche wenn sie eine nach der anderen auf eine einzelnen Datenmenge operierten. Histories sind Äquivalenz zu einer seriellen Ausführung auf nicht replizierten Daten.
+   \end{itemize} 
+   \item[Datenbezogene Kritieren] \hfill \\\
+   \begin{itemize}
+     \item Angeschwächte formen der Konsistenz:
+     \item Eventual Consistency : letzendlich oder später erreicht. Wenn weitere Updates ausblieben konvergieren die Replikate zu identischen Kopien.
+     \item Nur die Ausbreitung der Updates muss garantiert sein. Das ist kein problem solange die Nutzer immer auf das gleiche Replikat zugreifen :
+     \subitem Übergang zu Client-Centric Consistency. Guarantiert einem einzelnen Nutzer konsistenten Zugriff auf Daten.
+
+   \end{itemize}
+   \item[Client Centric Consistency] \hfill  \\
+   \begin{itemize}
+     \item Monotonic Reads - (gleichbleibend) Liest ein Prozess Datenelement $x$, dann gibt jedes nachfolgende Lesen von x durch diesen Prozess denselben oder neueren Wert zurück.
+     \item Monotonic Writes - Schreiboperation auf Datenelement x ist abgeschlossen, bevor derselbe Prozess nachfolgende Schreiboperationen auf x ausführt.
+     \item Read your Writes - Die Wirkung von Schreiboperation auf Datenelement x wird immer in nachfolgenden Leseoperationen auf x durch denselben Prozesse gesehen.
+     \item Writes follow Reads - Schreiboperationen auf Datenelement x, die auf ein Lesen durch denselben Prozess folgen, überschreiben immer denselben oder neueren Wert von x. 
+   \end{itemize}
+\end{description}
+% section konsistenzmodelle (end)
+\section{Update Propogation Strategies} % (fold)
+\label{sec:update_propogation_strategies}
+Können entweder \texttt{Eager(sync)} oder \texttt{Lazy(async)} im Kombination mit \texttt{Primary Copy (Master)} oder \texttt{Update Everywhere (Group)}.
+\pic{ups.png}
+\begin{description}
+  \item[Eager(Sync Replikation)] Jede Änderung wird sofort zu allen Kopien übertragen. Übertragung der Änderungen erfolgt innerhalb der Grenzen der Transaktion.ACID Eignenschaften gelten für alle Kopien.
+  \item[Lazy(Async Replikation) ] Zuerst werden die lokalen Kopien geändert. Anschliessend werden die Änderungen zu allen anderen Kopien übertragen \textit{Push/Pull}. Während der Übertragung sind Kopien inkonsistent. Zeitraum der Inkonsistenz kann in Abhängigkeit der Anwendung angepasst werden.
+  \item[Master/Primary Copy Replication] Es gibt eine einzige Kopie auf der Änderungen ausgeführt werden können (Master). Alle anderen Kopien (Slaves) übernehmen die Änderungen vom Master. Für verschiedene Datenelemente können verschiedene Knoten Master sein.
+  \item[Group/Update everywhere Replication] Änderungen können auf jeder Kopie ausgeführt werden. D.h jeder Knoten der eine Kopie besitzt, kann auf ihr Änderungen ausführen.
+
+\end{description}
+% section update_propogation_strategies (end)
+
+\section{Replikationsstrategieen} % (fold)
+\label{sec:replikationsstrategieen}
+\pic{ups1.png}
+\begin{description}
+  \item[Eager Master (Synchronous Primary Copy) Replication] \hfill \\
+  \begin{itemize}
+    \item Primary Copy 
+    \subitem \textbf{Read}  Lokales lesen (eigene Kopie), Resultat zurückgeben.
+    \subitem \textbf{Write}  lokales Schreiben, \textbf{Write an alle slaves weiterleiten (FIFO/Timestamp reihenfolge)}, Kontrolle sofort dem Nutzer zurückgeben.
+    \subitem \textbf{Commit} verwende 2PC als Koordinator
+    \subitem \textbf{Abort} lokales Abort, slaves informieren.
+    \item Slave:
+      \subitem \textbf{Read}  Lokales lesen (eigene Kopie), Resultat zurückgeben.
+    \subitem \textbf{Write}  \textbf{Write von Master :} ausführen der writes in richtiger Reihenfolge,\textbf{Writes von Client:} zurückweisen oder an Master weiterleiten. 
+    \subitem Slave ist Teilnehmer an 2PC der Transaktionen vom Master.
+    \item Vorteile : 
+    \subitem Änderungen müssen nicht koordiniert werden.
+\subitem Keine Inkonsistenzen.
+\item Nachteile:
+\subitem Längste Antwortzeit
+\subitem Nur bei wenigen Updates sinnvoll (Master ist
+Flaschenhals)
+\subitem Lokale Kopien sind beinahe nutzlos
+\subitem selten eingesetzt
+
+  \end{itemize}
+\item[Eager Group (Synchronous Update Everywhere) Replication] \hfill  \\
+\begin{itemize}
+  \item Read One Write All (ROWA)
+\subitem jeder Knoten verwendet 2 Phasen Sperrprotokoll
+\subitem Leseoperationen werden lokal durchgeführt
+\subitem Schreiboperationen werden auf allen Knoten
+ausgeführt mithilfe eines verteilten Sperrprotokolls
+
+\item Vorteile:
+\subitem Keine Inkonsistenzen
+\subitem elegante Lösung (symmetrisch)
+\item Nachteile:
+\subitem Vielzahl von Nachrichten
+\subitem Antwortzeiten der Transaktionen sind sehr lang
+\subitem beschränkte Skalierbarkeit (Deadlock
+Wahrscheinlichkeit wächst mit Anzahl Knoten)
+\end{itemize}
+\item[Lazy Master (Asynchronous Primary Copy) Replication] \hfill \\
+\begin{itemize}
+  \item Primary Copy
+\subitem \textbf{Read:} lokales Lesen (eigene Kopie), Resultat
+zurückgeben
+\subitem \textbf{Write:} lokales Schreiben Kontrolle dem Nutzer
+zurückgeben
+\subitem \textbf{Commit, Abort:} Transaktion lokal beenden
+Irgendwann nach dem Commit: an alle Knoten die
+Änderungen in einer einzigen Nachricht übermitteln
+(FIFO oder Timestamp Reihenfolge)
+\item Slave
+\subitem \textbf{Read:} lokales Lesen (eigene Kopie), Resultat
+zurückgeben
+\subitem Nachricht von Master: Änderungen in richtiger
+Reihenfolge (FIFO oder Timestamp) anwenden
+\subitem \textbf{Write von Client:} zurückweisen oder an Master
+weiterleiten
+\subitem \textbf{Commit, Abort:} nur für lokale Read-only Transaktionen
+\item Vorteile:
+\subitem Keine Koordination nötig
+\subitem kurze Antwortzeiten (Transaktionen sind lokal)
+\item Nachteile
+\subitem lokale Kopien sind nicht aktuell
+\subitem Inkonsistenzen (verschiedene Knoten haben
+unterschiedliche Werte für das gleiche Datenelement)
+\end{itemize}
+\item[Lazy Group (Asynchronous Update Everywhere) Replication] jeder Knoten:
+\begin{itemize}
+\item textbf{Read:} lokales Lesen (eigene Kopie), Resultat
+zurückgeben
+\item \textbf{Write:} lokales Schreiben Kontrolle dem Nutzer
+zurückgeben
+\item \textbf{Commit, Abort:} Transaktion lokal beenden
+Irgendwann nach dem Commit: an alle Knoten die
+Änderungen in einer einzigen Nachricht übermitteln
+(FIFO oder Timestamp Reihenfolge)
+\item Nachricht von anderem Knoten:
+\subitem Erkennen von Konflikten
+\subitem Änderungen anwenden
+\subitem Reconciliation (Abgleichen)
+\item Vorteile:
+\subitem Keine Koordination nötig
+\subitem kürzeste Antwortzeiten
+\item Nachteile
+\subitem Inkonsistenzen
+\subitem Änderungen könne verloren gehen (Abgleich)
+
+\end{itemize}
+\end{description}
+% section replikationsstrategieen (end)
+
+% chapter replikation_i (end)
+
+\chapter{Replikation II ( Mat Views)} % (fold)
+\label{cha:replikation_ii}
+Eine Updatable Materialized View Replication entspricht einer Lazy Group (asynchronous,
+update everywhere) Replikation.
+Eine Materialized View ist ein Replikat einer Master Tabelle bezogen auf einen bestimmten
+Zeitpunkt. Durch sog. Refreshs werden die Materialized View und bei einer Updatable Ma-
+terialized View Replication auch die Master Tabelle auf den neusten Stand gebracht, indem
+alle Änderungen seit dem letzten Refresh angewendet werden. Die Refreshs werden mit
+einem Pull/Push Verfahren auf der Seite der Materialized View durchgeführt.
+
+\section{Komponenten} % (fold)
+\begin{itemize}
+  \item Zur Replikationsumgebung gehören verschiedene Komponenten:
+\item Replication Objects
+\subitem Tables
+\subitem Materialized Views
+\item Replication Groups
+\subitem Master Groups
+\subitem Materialized View Groups
+\item Replication Sites
+\subitem Master Sites
+\subitem Materialized View Sites
+\end{itemize}
+\label{sec:komponenten}
+
+% section komponenten (end)
+\section{Komponenten} % (fold)
+\label{sec:komponenten}
+
+\begin{description}
+  \item[Replication Objects]sind Datenbankobjekte, die auf mehreren Knoten eines verteilten Da-
+tenbanksystems vorhanden sind. Änderungen an einem Objekt auf einem Knoten werden
+auf die Kopien an allen anderen Knoten angewendet. In einer Updatable Materialized View
+Replication Umgebung werden Tables und Materialized Views als Replication Objects un-
+terschieden.
+\item[Replication Groups] dienen der Verwaltung von Replication Objects. Eine Replication Group
+ist eine Sammlung von logisch zusammengehörenden Replication Objects. Typischerweise
+wird eine Replication Group erzeugt, um die Schema Objekte einer bestimmten Anwendung
+zu organisieren.
+\item[Replication Sites] sind die Instances, die an einer oder mehreren Replication Groups betei-
+ligt sind. Es werden zwei Grundtypen von Replication Sites unterschieden: Master Sites und
+Materialized View Sites. Eine Replication Group auf einem Master Site wird als Master Group
+bezeichnet. Eine Replication Group auf einem Materialized View Site basiert auf einer Mas-
+ter Group und wird als Materialized View Group bezeichnet. Zudem hat jede Master Group
+einen Master Definition Site. Von dort aus werden die Replication Group und die Replication
+Objects verwaltet.
+\end{description}
+% section komponenten (end)
+\section{Benutzer und Rollen} % (fold)
+\label{sec:benutzer_und_rollen}
+Die verschiedenen Aufgaben für den Betrieb einer Replikationsumgebung werden durch
+bestimmte Rollen wahrgenommen. Für eine Updatable Materialized View Replication Um-
+gebung sind dies:
+\begin{itemize}
+  \item Master Site
+  \subitem – Replication Administrator
+ \subitem Proxy Materialied View Administrator
+\subitem  Proxy Refresher
+\item Materialized View Site
+\subitem MView Administrator
+\subitem MView Propagator
+\subitem Refresher
+\end{itemize}
+% section benutzer_und_rollen (end)
+\section{Master Site Strukturen} % (fold)
+\label{sec:master_site_strukturen}
+Die Master Table ist die Grundlage der Materialized View. Änderungen an einer Master Table
+werden im Materialized View Log aufgezeichnet, um bei einem Refresh zu der Materialized
+View übertragen zu werden.
+Ein interner After-Row-Trigger fügt bei jedem Insert, Update oder Delete der Master Table
+eine Zeile in das Materialized View Log ein.
+Im Materialized View Log werden die Änderungen an der Master Table aufgezeichnet. Das
+Log muss explizit erstellt werden, dabei wird eine zugrundeliegende Log-Tabelle erzeugt
+mit dem Namen:
+\begin{verbatim}
+   $_Master_Table_Name
+\end{verbatim}
+% section master_site_strukturen (end)
+\section{Materilized View Site Strukturen} % (fold)
+\label{sec:materilized_view_site_strukturen}
+Wird eine Materialized View erstellt, werden weitere Strukturen auf dem Materialized View
+Site angelegt.
+Zu jeder Materialized View wird ein Index mit Namen Materialized\_View\_Name\_PK angelegt,
+der dem Primärschlüssel der Master Table entspricht.
+Ein Updatable Materialized View Log:\\
+\begin{verbatim}
+   ( USLOG$_Materialized_View_Name)
+ \end{verbatim}  wird verwendet um
+zu bestimmen, welche Zeilen der Materialized View überschrieben oder entfernt werden
+müssen.
+Ein interner Trigger zeichnet die Änderungen an der Updatable Materialized View im Log
+auf.
+% section materilized_view_site_strukturen (end)
+\section{Konfliktauflösung} % (fold)
+\label{sec:konfliktaufl_sung}
+Werden Änderungen sowohl auf der Master Site als auch auf der Materialized View Si-
+te durchgeführt, kann es zu Konflikten kommen. Oracle bietet die Möglichkeit, für ver-
+schiedene Anforderungen spezielle Regeln zur Konfliktauflösung zu hinterlegen. Siehe da-
+zu das Kapitel 6 in Oracle Database Advanced Replication Management API Reference:
+\begin{verbatim}
+http://download.oracle.com/docs/cd/E11882_01/server.112/e10707/toc.htm
+\end{verbatim}
+% section konfliktaufl_sung (end)
+% chapter replikation_ii (end)
+
+\chapter{Nosql}
+
+\section{Einführung} % (fold)
+\label{sec:einf_hrung}
+A blogger, often referred to as having made the term popular is Rackspace employee Eric Evans who later
+described the ambition of the NoSQL movement as “the whole point of seeking alternatives is that you
+need to solve a problem that relational databases are a bad fit for” (cf. [Eva09b]).
+This section will discuss rationales of practitioners for developing and using nonrelational databases and
+display theoretical work in this field. Furthermore, it will treat the origins and main drivers of the NoSQL
+movement.
+
+\subsection{Motivation} % (fold)
+\label{sub:motivation}
+\begin{description}
+  \item[Avoidance of unneeded complexity:]  databases provide a variety of features and strict data
+consistency. But this rich feature set and the ACID properties implemented by RDBMSs might be more
+than necessary for particular applications and use cases.
+As an example, Adobe's ConnectNow holds three copies of user session data; these replicas do not neither
+have to undergo all consistency checks of a relational database management systems nor do they have to
+be persisted. Hence, it is fully sufficient to hold them in memory (cf. [Com09b]).
+\item[High Throughput]Some NoSQL databases provide a significantly higher data throughput than traditional
+RDBMSs. For instance, the column-store Hypertable which pursues Google's Bigtable approach allows the
+local search engine Zvent to store one billion data cells per day [Jud09]. To give another example, Google
+is able to process 20 petabyte a day stored in Bigtable via it's MapReduce approach [Com09b].
+\item[Horizontal Scalability and Running on Commodity Hardware ] NoSql trying to address problems such as Data Scaling, Performance of single servers, Rigid schema design.Nosql databases are designed to scale well in the horizontal direction and not rely on highly available hardware. Sharding is easier.
+\item[Avoidance of expensive Object Relational Mapping]Most of the NoSQL databases are designed
+to store data structures that are either simple or more similar to the ones of object-oriented program-
+ming languages compared to relational data structures. They do not make expensive object-relational
+mapping necessary (such as Key/Value-Stores or Document-Stores). This is particularly important for
+applications with data structures of low complexity that can hardly benefit from the features of a re-
+lational database. Dare Obasanjo claims a little provokingly that “all you really need [as a web de-
+veloper] is a key<->value or tuple store that supports some level of query functionality and has de-
+cent persistence semantics.” (cf. [Oba09a]). The blogger and database-analyst Curt Monash iterates
+on this aspect: ”SQL is an awkward fit for procedural code, and almost all code is procedural. [For
+data upon which users expect to do heavy, repeated manipulations, the cost of mapping data into
+SQL is] well worth paying [. . . ] But when your database structure is very, very simple, SQL may not
+seem that beneficial.“ Jon Travis, an engineer at SpringSource agrees with that: “Relational databases
+give you too much. They force you to twist your object data to fit a RDBMS.” (cited in [Com09a]).
+\item[Complexity and Cost of Setting up Database Clusters] See easier sharding.
+\item[Compromising Reliability for better performance]  “different scenarios
+where applications would be willing to compromise reliability for better performance.” As an example of
+such a scenario favoring performance over reliability, he mentions HTTP session data which “needs to be
+shared between various web servers but since the data is transient in nature (it goes away when the user
+logs off) there is no need to store it in persistent storage.”
+\item[Porblems with one size fits all thinking] \begin{enumerate}
+  \item Continuous growth of data
+  \item Process large amounts of data in short amounts of time.
+  \item Social media example - unrelated islands of data, low user/transaction value - no need for string data integrity.
+\end{enumerate}
+\item[Myth of Efffortless Dist and Partitioning of centralised data models] and nor work correct any longer. The professionals of Ajatus agree with this in a blog post stating that
+if a database grows, at first, replication is configured. In addition, as the amount of data grows further,
+the database is sharded by expensive system admins requiring large financial sums or a fortune worth of
+money for commercial DBMS-vendors are needed to operate the sharded database (cf. [Aja09]).Shalom concludes that in his opinion relational database management systems will not disappear soon.
+However, there is definitely a place for more specialized solutions as a ”one size fits all“ thinking was and
+is wrong with regards to databases.
+\item[Developments in Programming] ORMs\footnote{Object Relational Mappers} hide SQL in many frameworks.The NoSQL databases react on this trend and try to provide data structures in their APIs that are closer to the ones of programming languages (e. g. key/value-structures, documents, graphs).
+\item[Cloud Computing] \begin{enumerate}
+  \item High -> inf scalability. 
+  \item Low admin/overhead.
+\end{enumerate}
+Following databases work well:
+\begin{itemize}
+  \item Data warehousing specific dbs
+  \item Simple scalable and fast key value stores.
+ \item %todo
+\end{itemize}
+\item The RDBMS plus Caching-Layer Pattern/Workaround vs. Systems Built from Scratch with Scalability in Mind : As scalability requirements grow and these technologies are less and less capable to suit with them. In
+addition, as NoSQL datastores are arising Hoff comes to the conclusion that “[with] a little perspective,
+it's clear the MySQL + memcached era is passing. It will stick around for a while. Old technologies
+seldom fade away completely.” (cf. [Hof10c]). As examples, he cites big websites and players that have
+moved towards non-relational datastores including LinkedIn, Amazon, Digg and Twitter. Hoff mentions
+the following reasons for using NoSQL solutions which have been explained earlier in this paper:
+\begin{itemize}
+  \item  Relational databases place computation on reads, which is considered wrong for large-scale web
+applications such as Digg. NoSQL databases therefore do not offer or avoid complex read operations.
+\item The serial nature of applications1 often waiting for I/O from the data store which does no good to
+scalability and low response times.
+\item  Huge amounts of data and a high growth factor lead Twitter towards facilitating Cassandra, which
+is designed to operate with large scale data.
+\item  Furthermore, operational costs of running and maintaining systems like Twitter escalate. Web ap-
+plications of this size therefore “need a system that can grow in a more automated fashion and be
+highly available.” (cited in [Hof10c]).
+\end{itemize}
+\item[Yesterday vs Today]by Stonebraker, see below). In the 1960s and 1970s databases have been designed for single, large high-
+end machines. In contrast to this, today, many large (web) companies use commodity hardware which will
+predictably fail. Applications are consequently designed to handle such failures which are considered the
+“standard mode of operation”, as Amazon refers to it (cf. [DHJ+ 07, p. 205]). Furthermore, relational
+databases fit well for data that is rigidly structured with relations and allows for dynamic queries expressed
+in a sophisticated language. Lehnhardt and Lang point out that today, particularly in the web sector, data
+is neither rigidly structured nor are dynamic quieries needed as most applications already use prepared
+statements or stored procedures. Therefore, it is sufficient to predefine queries within the database and
+assign values to their variables dynamically (cf. [PLL09]).
+Furthermore, relational databases were initially designed for centralized deployments and not for distribu-
+tion. Although enhancements for clustering have been added on top of them it still leaks through that
+traditional were not designed having distribution concepts in mind at the beginning (like the issues adverted
+by the “fallaclies of network computing” quoted below). As an example, synchronization is often not im-
+plemented efficiently but requires expensive protocols like two or three phase commit. Another difficulty
+Lehnhardt and Lang see is that clusters of relational databases try to be “transparent” towards applications.
+This means that the application should not contain any notion if talking to a singly machine or a cluster
+since all distribution aspects are tried to be hidden from the application. They question this approach to
+keep the application unaware of all consequences of distribution that are e. g. stated in the famous eight
+fallacies of distributed computing (cf. [Gos07]2 :
+\begin{enumerate}
+  \item  The network is reliable
+\item  Latency is zero
+\item  Bandwidth is infinite
+\item  The network is secure
+\item  Topology doesn't change
+\item  There is one administrator
+\item  Transport cost is zero
+\item  The network is homogeneous
+
+\end{enumerate}
+\end{description}
+% subsection motivation (end)
+% section einf_hrung (end)
+\section{Cassandra} % (fold)
+\label{sec:cassandra}
+\begin{enumerate}
+  \item \textbf{Welches sind die wichtigsten Gründe, die zur Entwicklung Ihres NoSQL Systems führten? Welche Anforderungen erfüllen diese Systeme?}\\
+  \begin{itemize}
+    \item Verarbeitung von grossen Datenmengen
+\item Availability
+\item Reliability   
+\item Kein Single Point of Failure
+\item Läuft auf Cheap Comodity Hardware
+\item High Write Output
+\item Inbox Search Support (Suche durch die Facebook Inbox)
+\item Geographisch verteilt
+
+  \end{itemize}
+\item \textbf{Welches „logische“ Datenmodell bietet das System? Welches API bietet das System? Wie werden Daten manipuliert und abgefragt?}\\
+\begin{description}
+  \item[Datenmodell:] Eine Instanz von Cassadra besteht aus nur 1 Tabelle, die eine verteilte, multidimensionale Map bezeichnet, die durch einen Schlüssel indexiert ist. Schlüssel: 16-36 Bytes, Value: Object.
+Struktur:\\
+ Zeilen mit String als Schlüssel\\
+Spalten: haben Namen und speichern eine Anzahl Werte, die durch einen Zeitstempel identifiziert sind. Jede Zeile kann eine unterschiedliche Zahl von Spalten haben.\\
+ Spaltenfamilien: willkürliche Zahl Spalten pro Zeile können zu Familien zusammengefasst werden. Es können beliebig viele Familien spezifiziert werden, aber effektiv nur wenige. Familien können dynamisch zur Laufzeit mit Spalten und Superspalten ergänzt werden.\\
+-Superspalten: weitere Gruppierung: Name und willkürliche Anzahl Spalten
+Ansprache von Daten über Tripel (Zeilenschlüssel, Spaltenschlüssel, Zeitstempel). Zeilenschlüssel über column-family:supercolumn:column
+Sortierung nach Zeitstempel oder Name möglich
+\item[API:] drei Operationen:\\
+- get(table, key, columnName)\\
+- insert(table, key, rowMutation)\\
+- delete(table, key, columnName) à Familie, Superzeile, Zeile\\
+Operationen sind atomar per replica, Anzahl betroffene Spalten ist egal.\\
+-read: Konsistenzgarantie kann spezifiziert werden (nächster Knoten, Antworten verschiedener Knoten)\\
+-insert/update: „a quorum of replica nodes has to acknowledge the completion of the writes“. Weiterleitung zu willkürlichem Server eines Cassandra Clusters, so dass Partitionierung und Redistribution ermöglicht werden. 
+\end{description}
+\item \textbf{Verteilungsarchitektur}\\
+Ringarchitektur mit allen Knoten. Jedem Knoten ist ein bestimmter Range der Hashkeys zugeteilt.
+Replikation\\
+\textbf{SimpleStrategy:} Replikation auf den N-1 nächsten Knoten\\
+\textbf{NetworkTopologyArchiteture:} definierbare Anzahl Replikate pro Datencenter\\
+\item \textbf{ Wie werden Daten repliziert? Wie wird die Konsistenz der Daten sichergestellt?}\\
+\begin{itemize}
+  \item Auf jeder Instanz ist ein Replikationsfaktor N definiert, wobei alle Daten auf N Hosts repliziert werden
+\item Jeder Schlüsser wird an einen "'Coordinator Node"' zugewiesen, welcher einerseits die Daten dazu lokal speichert und andererseits die Daten auf N-1 Knoten verteilt
+\item Daten können nach verschiedenen Richtlinien verteilt werden z.B. Rack Unaware, Rack Aware und Datacenter Aware um Risiken besser zu vermindern
+\item Cassandra bestimmt mit hilfe von Zookeeper einen Leader, welcher die Verantwortlichkeit für Datenbereiche an die Knoten verteilt
+\item Metadaten werden lokal und fehlertolerant in Zookeeper gespeichert
+\item Die Daten werden über mehrere Datacenter repliziert und sollten auch bei Ausfall eines ganzen Datacenters verfügbar sein.
+\item Konsistenz wird sichergestellt indem ein Quorum festgelegt wird, wieviel Knoten einen Schreibvorgang bestätigen müssen, auch für Lesevorgänge kann ein Quorum festgelegt werden, muss aber nicht
+\end{itemize}
+\item \textbf{Welche Vorkehrungen werden für die Verfügbarkeit und Ausfallsicherheit getroffen?} \\
+\begin{itemize}
+  \item Daten bzw. Nodes sind geographisch verteilt und werden über mehrere Datencenter repliziert. Dadurch wird gewährleistet, dass die Latenzzeiten klein gehalten werden und der Ausfall eines Knotenpunktes keinen Einfluss auf das System hat. Durch das abschwächen des Quorum-System, der die Konsistenz aufrecht erhalten soll, wird die Beständigkeit des Systems garantiert.
+\item Fehlerdetektion durch Accrual Failure Detector: Jedem Knoten wird ein Wert zugeteilt, anhand dessen man abschätzen kann, wie hoch die Chance ist, dass dieser Knoten ausfällt, statt diesem Knoten einen boolean-Wert zuzuteilen.
+\item Der Knoten wählt beim Starten ein Random-Token, um seine Position auf dem Ring zu ermitteln. Beim joinen in ein Cluster, wird der Node dessen Config-File lesen. Bei einem Ausfall eines Teilsystems, wird nun aber kein Re-Balancing vorgenommen, da angenommen wird, dass es wieder online kommen wird. Um vorzubeugen, dass nicht erreichbare Nodes anderen Instanzen beitreten, wird beim Kommunizieren der Cluster-Name der Cassandra-Instanz mitgeschickt, um seinen Quellort zu bestimmen. Das hinzufügen oder entfernen eines Knoten aufgrund eines manuellen Fehlers im Konfiguration-File muss ebenfalls manuell über ein Command Line Tool erfolgen.
+\end{itemize}
+\item \textbf{Wie werden die Daten lokal auf den einzelnen Knoten gespeichert?} Eine Schreiboperation schreiben in ein Commit-Log. Auf jeder Maschine befindet sich eine Disk welche nur dem Commit-Log zugeteilt ist (dedicated). Das Write-Log ist dabei sequentiell. Konnten die Daten erfolgreich in's Commit-Log geschreiben werden, werden die Daten zusätzlich in eine In-Memory Struktur geladen. Ab einer gewissen Speichergrösse, wird die In-Memory-Datenstruktur auf eine Disk geschrieben. Alle Schreiboperationen sind dabei sequentiell und die Daten werden gleichzeitig für einen schnelleren Zugriff indexiert. Mit der Zeit entstehen somit mehrere Files mit den entsprechenden Dump Daten. Ein Merge Prozess fügt die verschiedenen Dump-Files wieder zu einer Datei zusammen.
+
+Ein Query auf den Daten arbeitet Primär auf den In-Daten-Memory. Ein Lookup auf den Files geht von neueren Files über zu den älteren Files. Die Daten werden dabei mit Hilfe eines keys gesucht. Um zu verhindern, dass Files durchsucht werden, welche den Filter nicht enthalten wird ein Bloom Filter über die vorhandenen Keys verwendet. Eine Tabelle der Bloom Filter wird sowohl auf jedem Dump-File als auch In-Memory gehalten.
+\end{enumerate}
+% section cassandra (end)
+
+\section{Neo4J} % (fold)
+\label{sec:neo4j}
+\begin{enumerate}
+  \item \textbf{Welches sind die wichtigsten Gründe, die zur Entwicklung Ihres NoSQL Systems führten? Welche Anforderungen erfüllen diese Systeme?}\\
+  Neo4j gehört in die Kategorie der Graphendatenbanken und wurde ursprünglich für die Echtzeitsuche von verschlagworteten(indexierten) Dokumenten in einem Online Dokumentationssystem entwickelt.
+„Viele aktuelle Anwendungen müssen stark vernetzte, rekursive Daten behandeln, welche sich nur unzureichend auf relationalen Datenbanken abbilden lassen. Ein gutes Beispiel dafür sind soziale Netzwerke. Auch ist es schwierig, das exakte Schema der Daten bereits zur Entwurfszeit zu kennen, speziell im Umgang mit Benutzergesteuertem Inhalt.“
+Frei übersetzt aus: http://highscalability.com/neo4j-graph-database-kicks-buttox
+Neo4j ist in Java implementiert und sowohl als Bibliothek in die JVM eingebettet als auch als Server-Version verfügbar. Die Datenbank nutzt einen eigenen, optimierten Persistenzmechanismus für die Speicherung und Verwaltung der Graphen.
+Neo4j ist als open source und kommerzielle Version verfügbar.
+Die Datenbank ist gut dokumentiert und verfügt über einen breiten Community Support
+Verfügt über Schnittstellen zu diversen Programmiersprachen, ein REST Interface ist der empfohlene Zugriffs-weg.
+Hoch skalierbar.
+Das .jar ist kleiner als 500kb und hat nur eine dependency.
+Einfaches API.
+\item \textbf{Welches „logische“ Datenmodell bietet das System? Welches API bietet das System? Wie werden Daten manipuliert und abgefragt?}\\
+Das Datenmodell hinter neo4j ist ein Graph Datenbank System.Dabei gibt es Knoten und Kanten welche in einem Property Graphen das System ausmachen. Das heisst, zwischen den Knoten gibt es Relationships und die Kanten und Knoten haben verschiedene Properties :
+\pic{n4jkk.png}
+Um die Daten zu erhalten, spielt die Traversierung eine wesentliche Rolle. Jeder Knoten und jede Kante speichert einen “Mini-Index” mit den eigenen verbundenen Objekten. Globale Indizes werden als Startpunkte für die Traversierung festgelegt. Weiter werden Indizes benötigt um schnell Knoten mit bestimmten Werten zu erhalten. Danach wird nach bestimmten Mustern im Graphen gesucht.\newpage
+\textbf{API:}  \pic{n4japi.png} 
+\item \textbf{Wie werden Daten über mehrere Knoten verteilt (Verteilungsarchitektur)?}\\
+\pic{n4jvt.png}
+\item \textbf{Wie werden Daten repliziert? Wie wird die Konsistenz der Daten sichergestellt?} \\
+Replikationen sind nur mit Neo4j Enterprise möglich. Dabei werden Cluster eingesetzt, die aus einem Master und mehreren Slaves bestehen. Die Daten werden automatisch auf die Slaves repliziert. Es sollte dabei aber darauf geachtet werden, dass Schreibvorgänge nur auf dem Master passieren. Die Replikation kann auf zwei Arten geschehen:
+\begin{itemize}
+\item Automatisch durch Abruf der Schreibtransaktionen seitens des Slaves auf dem Master (Millisekunden - paar Minuten)
+\item  Automatisch durch Propagieren der Schreibtransaktionen seitens des Master auf eine vorgegebene Anzahl an Slaves (sofort). Dies wird über den push-factor definiert.
+Jeder Slave besitzt die ganze Datenbank. Die Skalierbarkeit ist somit nahezu linear (Read-Scaling), da Lesevorgänge beliebig auf die Slaves verteilt werden können.
+Bei Graphen Datenbanken ist nie die ganze Datenbank im Arbeitsspeicher, sondern nur der Teil, welcher bei der letzten Abfrage geladen wurde. Dies bietet nun die Möglichkeit über ein intelligentes und konsistentes Routing dieselben Klassen von Anfragen auf die gleichen Empfänger weiterzuleiten. So müssen nicht nach jeder Anfrage neue Teile geladen werden (Cache Sharding).
+\end{itemize}
+\item \textbf{Welche Vorkehrungen werden für die Verfügbarkeit und Ausfallsicherheit getroffen?}\\
+Dies ist nur bei einem Cluster möglich. Es sind zwei Arten des Ausfalls möglich.
+Fällt ein Slave aus, wird dies von den anderen Datenbankinstanzen im Netzwerk erkannt und er wird als vorübergehend nicht verfügbar gekennzeichnet. Sobald er wieder verfügbar ist, sorgt er selbst dafür, dass er wieder auf dem aktuellen Stand des Masters ist.
+
+Fällt der Master aus, sieht das ganze etwas anders aus. Der Cluster entscheidet, welcher Slave zum neuen Master wird. Bedingung ist lediglich, dass der Slave zum Master werden darf. Somit ist ein Failover kein Problem. Sobald der Master nicht mehr verfügbar ist, werden alle laufenden Schreibtransaktionen zurück gerollt. Der Wechsel vom Slave zum Master geschieht dann im Normalfall innert Sekunden. Während dieser Zeit sind keine Schreibtransaktionen möglich.
+Die einzige Ausnahme ist, wenn auf dem alten Master noch Schreibvorgänge vorhanden sind, die noch auf keine andere Datenbankinstanz repliziert werden konnten und bereits Änderungen am neuen Master gemacht wurden. In diesem Fall wird der alte Master zwei „Branches“ führen. Der erste „Branch“ ist seine alte Datenbank. Dieser „Branch“ wird abgezogen, da er nicht mehr aktuell ist, jedoch noch nicht replizierte Änderungen enthält. Dann lädt er sich für den zweiten „Branch“ eine komplette Kopie des aktuellen Zustands herunter und wird dann selbst zum Slave.
+\item \textbf{Wie werden die Daten lokal auf den einzelnen Knoten gespeichert?}Nodes, Properties und Relationships werden separat voneinander gespeichert. (*.nodestore.db, *.relationshipstore.db, *.propertystore.db)
+\end{enumerate}
+% section neo4j (end)
+\section{Bigtable} % (fold)
+\label{sec:bigtable}
+\begin{enumerate}
+  \item \textbf{Welches sind die wichtigsten Gründe, die zur Entwicklung Ihres NoSQL Systems führten?}\\
+  Google brauchte ein unterliegendes System für Ihre Dienste. Diese Dienste arbeiten mit grossen Datenmengen (Petabytes), sind auf viele tausende Server im Cluster verteilt und generieren viele neue Einträge, aber wenige Änderungen an vorhandenen Einträgen. 
+Eingesetzt u. a. für folgende Produkte: Google Suche (web indexing)
+Google Earth
+Google Finance\\
+
+\textbf{Welche Anforderungen erfüllen diese Systeme?} \\
+breite Anwendungspalette\\
+Skalierbarkeit\\
+Hochverfügbarkeit\\
+Hochleitungsfähigkeit\\
+\item \textbf{Speicherung und Verteilungsarchitektur:}\\
+\begin{description}
+  \item[Speicherung im Dateisystem:] A Bigtable is a sparse, distributed, persistent multidimensional sorted map.
+Der Schlüssel für den Index besteht aus:\\
+row key\\
+column key\\
+timestamp\\
+Jeder Wert ist ein Array aus beliebigen Bytes (String).\\
+(row:string, column:string, time:int64) -> string 
+\item [Speicherung der Tabellen:]Tabellen werden in „tablets“ unterteilt und so gespeichert. Die Grösse eines solchen Segments ist etwa 200 MB. Dies ist optimiert für das Google File System (GFS). Wenn viele Daten vorhanden sind werden diese komprimiert. Es wird das „SSTable file format“ verwendet.
+\item[Zugriff auf die Daten]Pro Tabelle existiert ein Index, der komplett(?) in den Speicher geladen wird. Das auffinden der Daten im Dateisystem ist als Binär-Suche möglich. Der Index bezieht sich direkt auf den Block auf der HDD, so dass Zugriffe auf HDD optimiert werden können.
+Die Daten sind grundsätzlich unveränderbar (SSTable ist immutable). Somit ist Zugriff immer Thread-Safe. Es werden Serien von SSTables verwendet, so dass Änderungen möglich sind. Änderungen kommen aber zuerst ins änderbare „memtable“. Darin sind also immer die neuesten Änderungen gespeichert. Zugriff ist hier immer noch parallel möglich dank Copy-On-Write.
+Ein Tablet-Server verwaltet etwa 10-1000 Tablets.
+\item[Garbage Collection]Das GFS hat eine GC (Mark-And-Sweep). Der Master-Server muss sich darum kümmern.
+\item[Verteilung der Daten:] Speziell ist hier dass das GFS bereits verteilt ist. BigTable benötigt ein Cluster-Management-System zum Scheduling, Resourcen-Management und für Erkennung und Verarbeitung von Fehlern. 
+Es gibt einen Master-Server und mehrere Tablet-Server. Solche Tablet-Servers können dynamisch entfernt oder hinzugefügt werden. Chubby wird verwendet damit Tablet-Server sich im Cluster anmelden können.
+\item[Datenmodell:]persistent multidimensional sorted map.\\
+Zeilen werden lexographisch sortiert. (Row Keys 64KB)\\
+Tabelle wird unterteilt in Tablets. Mehrere Rows ergeben ein Tablet. Diese werden auf verschiedene Server verteilt.\\
+Keine Limitierung in der Anzahl Spalten\\
+\item[Gruppierung der Spalten -> Column Families]\hfill \\
+Auf den Column Families werden die Access Control Rules definiert\\
+Lesbarer Name\\
+best Practice: wenige Column Families. Keine Änderungen an diesen.\\
+Eine Gruppe -> Ein file\\
+\item[Timestamps]Jede Zelle kann mehrer Versionen der selben Daten beinhalten. Daher wird jeder Eintrag mit einem 64bit timestamp versehen.\\
+\pic{tsbt.png}
+\item[API] \hfill \\
+Read Operations: Row by Key, Limitation of Column Families + TimeStamps, Column iterators\\
+Write for Rows: create, delete values of column\\
+Write for Columns Familiies: create, delete\\
+Administration: cluster, table, column family metadata --> Access Control jede read/write operation in einer Zeile ist atomar\\
+\end{description}
+\item \textbf{Wie werden Daten repliziert? Wie wird die Konsistenz der Daten sichergestellt?} BigTable verwendet ein Cluster-Management-System (Chubby) um mit verteilten Knoten zu interagieren. Jede Chubby Instanz besitzt einen Cluster von 5 aktiven Kopien, von welchem jeweils einer der Master ist und Anfragen bearbeitet. Um die Kopien konsistent zu halten wird der Paxos Algorithmus verwendet. Die gesplitteten Tablets werden auf die verschiedenen Konten verteilt.
+
+Chubby ist ein verstreuter Lock-Service, der ein BigTable Cluster mit mehrere tausenden
+Knoten koordiniert und 5 Replikationen hat. Der Klient verbindet sich jeweils zu Chubby um mit den Daten zu arbeiten. Falls für eine bestimmte Zeit Chubby unerreichbar wird, wird BigTable auch unerreichbar.
+ 
+Für Bigtable sind zurzeit zwei Replikationsmechanismen verfügbar. Einerseits die Master/Slave Replikation, bei der ein Datacenter als Master ausgewählt wird, und sämtliche Schreibzugriffe über dieses Center abgewickelt werden. Hierbei werden die Änderungen asynchron auf andere Datacenter repliziert. 
+
+Andererseits wird der High Replication Datastore angeboten, der mittels des sog. axos-Algorithmus die Schreibanfragen auf verschiedene Datacenter verteilt und diese dann synchron auf andere Datacenter repliziert. Bigtable besitzt eigene Algorithmen, die eine automatische Lastanpassung (Skalierung) durchführen, daher ist kein manueller Eingriff notwendig.
+
+HBase selbst kennt keine Replikation. Dort wird mit Hilfe von Hadoop die Replikation durchgeführt. 
+\begin{description}
+  \item[Verfügbarkeit]    Jeder TabletServer schreibt seine CommitLogs durch 2 Threads, jeder Thread schreibt ins eigene LogFile. Zu 1 Zeitpunkt ist nur 1 Thread aktiv. Wenn Writes durch den aktiven Thread zu langsam werden, wird der andere Thread als der aktive gesetzt. Alle Commits auf der Queue, die auf Write beim langsamen Thread gewartet haben, werden vom neuen Thread übernommen.
+·         Performance: Caching! The Scan Cache is a higher-level cache that caches the key-value pairs returned by the SST able Interface to the tablet server code (bestens geeignet fürs Lesen der gleichen Daten). The Block Cache is a lower-level cache that caches SST ables blocks that were read from GFS (bestens geeignet für Lesen der Daten, die in der Nähe der neulich gelesenen Daten sind, d.h. sequentielles Lesen oder Lesen im gleichen Block).
+\item[Ausfallsicherheit] Wenn ein Tablet Server stirbt: Seine Tablets werden auf die andere Server verteilt. Um den State jedes Tablets nachzubauen, muss der CommitLog durchgesucht werden auf betreffende Commits, um diese auf den Tablets auszuführen. D.h. 100 Server – 100 Reads auf 1 File. Da es schlechtes Vorgehen ist: Der CommitLog wird sortiert nach Table-Key. CommitLog wird zuerst auf 64 MB grosse Blocks aufgeteilt, das Sortieren der Blöcke passiert parallel. Das sortierte Output ermöglicht blockweises sequentielles Lesen der nötigen Daten.
+\end{description}
+\end{enumerate}
+% section bigtable (end)
+\section{MongoDB} % (fold)
+Bemerkung : Entschuldigung für CAPS LOCK.
+\label{sec:mongodb}
+\begin{enumerate}
+  \item \textbf{Welches sind die wichtigsten Gründe, die zur Entwicklung Ihres NoSQL Systems führten? Welche Anforderungen erfüllen diese Systeme?}\\
+  \begin{description}
+    \item[DOKUMENTORIENTIERT:] Verwendet BSON (Binary JSON), da sehr effizient
+   - Bessere Interaktion mit modernen (objektorientierten) Programmiersprachen als Relationale Datenbanken
+   \item[FLEXIBILITÄT:]  Schemaloses Datenmodell.\\
+   - Dokumente können jederzeit erweitert werden ohne dass hohe Aufwände entstehen (Einfaches hinzufügen von Feldern und Listen, kein Fehler beim Lesen von noch nicht existierenden Datenbanken).\\
+   - Iterative Entwicklung möglich \\
+   \item[MÄCHTIGKEIT] - Hoher Funktionsumfang\\
+   - Komplexe Datentypen möglich (Strukturen mit dynamischen Attributen, Arrays, usw.)
+   \item[GESCHWINDIGKEIT/SKLAIERBARKEIT]    Schneller als SQL-Systeme durch:
+   - Key-Value Prinzip: Zugriff direkt auf den Key anstatt diesen via Indexierung zu suchen
+   - Vermeidung von Joins. Alle Daten können direkt über die aktuelle Liste im Dokument abgefragt werden
+   - In-Memory lesen/schreiben
+  \end{description}
+  \item \textbf{Welches „logische“ Datenmodell bietet das System?} \hfill  \\
+  \begin{itemize}
+    \item MongoDB-Server besteht  aus mehrere MongoDB Datenbanken
+\item MongoDB Datenbank besteht aus einer odere mehreren Sammlungen
+eine Sammlung (hat einen Namen) besteht aus einem oder mehreren Dokumenten.
+\item Es ist möglich eine hierarchische Struktur der Sammlung zu bilden, indem ein Punkt eingefügt wird. Dies wird jedoch nicht so logisch abgebildet.
+\item ein Dokument besteht aus mehreren Feldern (Werte, Arrays, binär Daten, sub-Dokumente)
+\item Jedes Dokument in der gleichen Sammlung kann verschiedene Felder haben.
+\item Das Format wird BSON genannt und ist ähnlich wie JSON, jedoch in binärer Form damit es schneller Verarbeitet werden kann.
+\item \pic{mdbapi.png}
+\item \pic{mdbapi2.png}
+\item \pic{mdbapiextra.png}
+\item \pic{mdbsh.png}
+  \end{itemize}
+\item \textbf{Wie werden Daten repliziert? Wie wird die Konsistenz der Daten sichergestellt?}\\
+a) MASTER-SLAVE-REPLIKATION (Alte Variante)\\
+MongoDB unterstützt die Master-Slave-Replikation. Ein Master kann Lese- („Reads“) und Schreibzugriffe („Writes“) ausführen. Ein Slave kopiert die Daten vom Master und kann nur für Lesezugriffe oder Backups eingesetzt werden, nicht aber für Schreibzugriffe. Fällt der Masterknoten aus, so kann einer der Slaveknoten zum neuen Masterknoten umgewandelt werden (muss manuell erfolgen, Administrationsaufwand).
+
+b) REPLICA SET (Neue Variante)\\
+Ein Replica Set ist eine Gruppe von von Knoten, die Kopien voneinander sind. Einer dieser Gruppe wird als PrimärerKnoten gewählt. Nur über diesen werden Schreiboperationen abgewickelt. Der Primärknoten reicht diese an die anderen Knoten der Gruppe weiter. Wenn der Primärknoten ausfällt, übernimmt ein beliebiger anderer Knoten aus der Gruppe dessen Rolle (dies kann automatisch erfolgen, kein Administrationsaufwand). Vorteile der neuen Variante sind z.B:
+- Geringerer Administrationsaufwand\\
+- Konsistenzbedingungen können einfach gesetzt werden (z.B. Schreiben ist erfolgreich wenn mehr als die Hälfte des Replica Sets die Änderungen übernommen hat)\\
+- Grosse Skalierbarkeit, da nahezu jeder Knoten aus einem Replica Set für Leseoperationen verwendet werden kann\\
+\item \textbf{Welche Vorkehrungen werden für die Verfügbarkeit und Ausfallsicherheit getroffen?} \\
+\begin{description}
+\item[REPLICATION]
+Operationen welche die Datenbank auf dem PRIMARY verändern, werden in einem Log namens
+oplog gespeichert. Der 'oplog' enthält eine geordnete Menge von idempotenten Operationen,
+welche auf den "'Secondaries"' repliziert werden. Die Grösse des oplogs beträgt standardmässig 5%
+des freien Festplattenspeichers. Der oplog enthält Änderungen einiger Stunden.
+Sollte ein Secondary ausfallen, kann er so wieder "'aufholen"'. Sollte ein Secondary länger als
+die Periode vom oplog beträgt ausfallen, dann werden mittels "'initial synchronization"' alle Datenbanken usw. komplett
+repliziert.
+
+\item[ELECTIONS AND FAILOVER]
+Falls der Primary aus irgendeinem Grund ausfallen sollte, dann bestimmen die Secondaries unter sich
+einen neuen Primary. Dieser Prozess wird "'Election"' genannt. Sobald der neue Primary bestimmt wurde,
+konfigurieren sich die anderen Seconaries selber, so dass sie nun Updates vom neuen Primary erhalten.
+Sollte der ausgefallene Primary wieder online kommen, erkennt er, dass er nicht mehr der Primary ist
+und wird zu einem Secondary.
+
+\item[ELECTION PRIORITY] Der "'Election"' Prozess kann mit einer Prioritäts-Konfiguration beinflusst werden. Der Secondary
+mit der höchsten Priorität wird dann Primary. Zum Beispiel könnte man alle Instanzen in
+einem "'Secondary Data Center"' so konfigurieren, dass nur wenn das komplette "'Primary Data Center"' ausfällt,
+einer der Secondarys dann Primary wird.
+
+\item[CONFIGURABLE WRITE AVAILABILITY]
+MongoDB besitzt die Möglichkeit, dass ein Client bei jeder Abfrage einen "'write concern"' mitteilen kann.
+Dieser gibt an, wann der Client eine Antwort erhält. Der Client wartet dann solange auf eine Antwort bis der
+gewünschte "'write concern"' eingetreten ist und kann so z.B. sicherstellen, dass die Daten definitiv geschrieben wurden.
+
+Folgende Optionen sind z.B. möglich: \\
+- Client braucht keine Antwort, (One-Way) -> Keine Garantie, dass Daten geschrieben werden\\
+- Client will eine Bestätigung sobald die Änderungen auf mehreren Replicas vollzogen worden sind.\\
+- Client will eine Bestätigung sobald die Änderungen auf der Mehrheit der Replicas vollzogen worden sind.\\
+- Client will eine Bestätigung sobald die Änderungen auf allen Replicas vollzogen worden sind.\\
+- Und weitere, einstellbare, Möglichkeiten wären z.B: Mind. 2 Replicas enthalten die Änderungen im Primary-Datacenter und min. 1 Replica im Secondary Datacenter.\\
+
+\end{description}
+\item \textbf{Abspeicherung Lokal} \pic{extents.png}
+\end{enumerate}
+% section mongodb (end)
+
+\chapter{Semantic Web} % (fold)
+\label{cha:semantic_web}
+\section{World Wide Web} % (fold)
+\label{sec:world_wide_web}
+\begin{itemize}
+  \item HTTP als Protokoll, mit dem der Browser
+Informationen vom Webserver anfordern kann.
+\item HTML als Dokumentenbeschreibungssprache, die
+festlegt, wie die Information gegliedert ist und wie die
+Dokumente verknüpft sind (Hyperlinks).
+\item URLs als eindeutige Adresse bzw. Bezeichnung einer
+Ressource (z. B. einer Webseite), die in Hyperlinks
+verwendet wird.
+\end{itemize}
+\pic{sweb.png}
+%\pic{sweb.png}
+
+\section{Idee des Semantic Webs} % (fold)
+\label{sec:idee_des_semantic_webs}
+Das Semantic Web unterstützt ein verteiltes Netz auf der
+Ebene der Daten und der Beschreibung der Daten statt nur
+auf der Ebene der Dokumente.
+Dies wird u. a. erreicht, indem nicht mehr zwischen den
+Daten und ihrer Beschreibung (Metadaten) unterschieden
+wird.Aber beide bleiben wichtig:
+Ohne Metadaten gibt es nichts,
+worüber man reden kann und
+ohne Daten gibt es nichts zu sagen!
+
+%\pic{sweb2.png}
+%\pic{sweb3.png}
+\pic{sweb2.png}
+\pic{sweb3.png}
+
+\section{Ziele des Semantic Webs} % (fold)
+\label{sec:ziele_des_semantic_webs}
+\begin{itemize}
+  \item Informationen im Web sollen für Maschinen
+verständlich sein
+Bereitstellen eines semantischen Modells, um das
+\item Wissen eines Fachbereichs auszudrücken
+Informationsaustausch zwischen Fachbereichen
+ermöglichen.
+\end{itemize}
+% section ziele_des_semantic_webs (end)
+% chapter semantic_web (end)
+\section{Datenmodell WWW und semantic web} % (fold)
+\label{sec:datenmodell_www}
+\pic{dmweb.png}
+
+
+% section datenmodell_www (end)
+
+\section{Technologieen} % (fold)
+\label{sec:technologieen}
+
+\subsection{RDF - Resource Description Framework} % (fold)
+\label{sub:rdf_resource_description_framework}
+\begin{itemize}
+  \item einfaches Datenmodell
+\item formale Semantik und Schlussfolgerung
+\item erweiterbares Vokabular mit URI
+\item XML Syntax
+\item unterstützt XML Schema Datentypen
+\item Jeder kann Aussagen über beliebige Ressourcen
+machen
+\item Alles, was benannt werden kann, ist eine Ressource
+\item Global eindeutige Namen durch URI
+\item Konstruktion von Aussagen mit Subjekt, Prädikat und
+Objekt
+\item Subjekt und Prädikat sind immer Ressourcen.
+\item Das Objekt kann entweder eine Ressource oder ein
+Literal sein
+\item Dargestellt als gerichteter Graph\\
+Knoten: Subjekt, Objekt\\
+Kanten: Prädikat\\
+
+\end{itemize}
+\pic[RDF Beispiel]{rdf.png}
+
+\textbf{Weitere Elemente:}
+\begin{itemize}
+  \item rdf:type
+\item rdf:ID
+\item rdf:Statement
+\item rdf:Property
+\item rdf:subject
+\item rdf:predicate
+\item rdf:object
+\end{itemize}
+% subsection rdf_resource_description_framework (end)
+\section{RDF und OWL} % (fold)
+\label{sec:rdf_und_owl}
+RDFS: RDF Schema\\
+OWL: Web Ontology Language\\
+RDF bietet allein keine Möglichkeit anzugeben, was
+die Aussagen bedeuten.
+Es braucht:
+ein gemeinsames Vokabular von Begriffen,
+eine hierarchische Organisation der Begriffe
+(Taxonomie),
+Regeln und Beschreibungen, wie Klassen und
+Eigenschaften verwendet werden und wie sie mit
+einander in Beziehung stehen können.
+
+\textbf{Elemente:}
+
+\begin{itemize}
+  \item rdfs:Class
+\item rdfs:domain
+\item rdfs:range
+\item rdfs:subPropertyOf
+\item rdfs:subClassOf
+\item owl:inverseOf
+\item owl:SymmetricProperty
+\item owl:TransitiveProperty
+\item owl:FunctionalPropety
+
+\end{itemize}
+% section rdf_und_owl (end)
+% section technologieen (end)
+
+\part{Labs} % (fold)
+\label{prt:labs_}
+\chapter{Lab 1 - Trigger}
+\section{Event Logging}
+\subsection{Aufgabenstellung}
+Manipulationen auf der Tabelle REGISTRIERUNGEN loggen. Trigger und Log-Tabelle befinden sich auf dem gleichen System wie REGISTRIERUNGEN.\\
+\subsection{Lösung}
+\begin{lstlisting}[style=sql, title=Log-Tabelle]
+-- Erste Möglichkeit
+CREATE TABLE registrierungen_log (
+  username VARCHAR2(15) NOT NULL,
+  systemdate DATE NOT NULL,
+  maniptype VARCHAR2(3) NOT NULL,
+  oldval VARCHAR(15), 
+  newval VARCHAR(15)
+);
+-- Zweite Möglichkeit
+CREATE TABLE registrierungen_log (
+  username VARCHAR2(15) NOT NULL,
+  systemdate DATE NOT NULL,
+  maniptype VARCHAR2(3) NOT NULL,
+  oldmnr VARCHAR2(4) NULL,
+  newmnr VARCHAR2(4) NULL,
+  oldfnr VARCHAR2(3) NULL,
+  newfnr VARCHAR2(3) NULL,
+  oldanr VARCHAR2(4) NULL,
+  newanr VARCHAR2(4) NULL,
+  olddatum DATE NULL,
+  newdatum DATE NULL
+);
+\end{lstlisting}
+\begin{lstlisting}[style=sql, title=Trigger]
+-- Erste Möglichkeit
+CREATE OR REPLACE TRIGGER registrierungen_change
+  BEFORE 
+    INSERT OR
+    UPDATE OR
+    DELETE
+  ON registrierungen
+  FOR EACH ROW
+  
+  DECLARE 
+    username VARCHAR(15);
+    maniptype VARCHAR2(3);
+    systemdatum DATE := SYSDATE;
+  BEGIN
+    SELECT USER INTO username FROM DUAL;
+    CASE
+      WHEN INSERTING THEN
+        maniptype := 'INS';
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, NULL, :NEW.mnr);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, NULL, :NEW.fnr);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, NULL, :NEW.anr);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, NULL, TO_CHAR(:NEW.datum, 'DD.MM.YYYY'));
+      WHEN DELETING THEN
+        maniptype := 'DEL';
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.mnr, NULL);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.fnr, NULL);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.anr, NULL);
+        INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, TO_CHAR(:OLD.datum, 'DD.MM.YYYY'), NULL);
+      WHEN UPDATING THEN
+        maniptype := 'UPD';
+        CASE
+          WHEN :OLD.mnr != :NEW.mnr THEN
+            INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.mnr, :NEW.mnr);
+          WHEN :OLD.fnr != :NEW.fnr THEN
+            INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.fnr, :NEW.fnr);
+          WHEN :OLD.anr != :NEW.anr THEN
+            INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, :OLD.anr, :NEW.anr);
+          WHEN :OLD.datum != :NEW.datum THEN
+            INSERT INTO registrierungen_log(username, systemdate, maniptype, oldval, newval) VALUES(username, systemdatum, maniptype, TO_CHAR(:OLD.datum, 'DD.MM.YYYY'), TO_CHAR(:NEW.datum, 'DD.MM.YYYY'));
+        END CASE;
+    END CASE;
+  END;
+
+-- Zweite Möglichkeit
+CREATE OR REPLACE TRIGGER registrierungen_change
+  AFTER 
+    INSERT OR
+    UPDATE OR
+    DELETE
+  ON registrierungen
+  FOR EACH ROW
+  DECLARE
+    log_action VARCHAR2(3);
+  BEGIN
+    IF INSERTING THEN
+      log_action := 'INS';
+    ELSIF UPDATING THEN
+      log_action := 'UPD';
+    ELSIF DELETING THEN
+      log_action := 'DEL';
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
+    INSERT INTO registrierungen_log(username, systemdate, maniptype, oldmnr, newmnr, oldfnr, newfnr, oldanr, newanr, olddatum, newdatum) 
+    VALUES (USER, SYSDATE, log_action, :OLD.mnr, :NEW.mnr, :OLD.fnr, :NEW.fnr, :OLD.anr, :NEW.anr, :OLD.datum, :NEW.datum);
+  END
+;
+\end{lstlisting}
+\subsection{Lösungsbeschrieb}
+\begin{tabular}{| p{5cm} | p{5cm} | p{5cm} |}
+\hline
+Code & Zweck & Kommentar\\ \hline
+BEFORE, AFTER, INSTEAD OF & Das Timing des Triggers, wobei INSTEAD OF die auslösende Operation auf eine View mit Operationen des Triggers ersetzt.&\\ \hline
+FOR EACH ROW & Der Trigger soll für jede Reihe einzeln ausgelöst werden, statt für ein Statement. & Für diesen Trigger sehr wichtig, da Manipulationen auf der Granularität von Zeilen geloggt werden müssen. Dadurch hat man auch Zugriff auf alte und neue Werte.\\ \hline
+systemdatum DATE := SYSDATE;\newline
+SELECT USER INTO username FROM DUAL; & Zwei verschiedene Möglichkeiten Systemvariablen in einer Variable zu speichern. & FROM DUAL muss verwendet werden, da ein SELECT nicht ohne FROM verwendet werden darf. Dabei wird DUAL als eine DUMMY Tabelle verwendet und enthaltet keine Informationen.\\ \hline
+:NEW.mnr\newline
+:OLD.mnr & Falls die Granularität des Triggers auf Zeilenebene fest gelegt ist, kann durch :NEW und :OLD auf die Werte zugegriffen werden, die vor und nach der Manipulation in der Tabelle stehen würden.&\\ \hline
+INSERTING, DELETING, UPDATING & Können in einem WHEN-CASE verwendet werden, um abzufragen, bei welcher Operation der Trigger ausgelöst wurde. & Ist nur nötig, falls der Trigger bei mehr als eine Operation triggert.\\ \hline
+\end{tabular}
+\section{Referential Integrity}
+\subsection{Aufgabenstellung}
+In einer zentralisierten Datenbank (sämtliche Tabellen auf einem System) wird die referentielle Integrität vom Datenbanksystem überprüft. In einer verteilten Datenbank ist dies nicht mehr möglich, da die Datenbanksysteme voneinander getrennt sind. Die referentielle Integrität muss somit manuell über Trigger überprüft werden.\\
+Für die Aufgabe werden die Tabellen Filialen[PK:FNr] und DVDKopien[PK:DVDNr, FK1:FNr] behandelt.
+\subsection{Lösung}
+\begin{lstlisting}[style=sql, title=Link ananke <=> helios]
+CREATE DATABASE LINK orion.helios.fhnw.ch
+CONNECT TO mvdbs00 IDENTIFIED BY mvdbs00
+USING 'orion';
+
+-- Mit Views, filialen-Trigger auf ananke
+CREATE OR REPLACE VIEW filialen AS
+SELECT * FROM filialen@orion.helios.fhnw.ch;
+
+-- Ohne Views, filialen-Trigger auf helios
+CREATE SYNONYM filialen FOR filialen@orion.helios.fhnw.ch;
+
+CREATE SYNONYM dvdkopien FOR dvdkopien@ananke.hades.fhnw.ch;
+\end{lstlisting}
+\begin{lstlisting}[style=sql, title=FILIALEN-Trigger auf ananke]
+CREATE OR REPLACE TRIGGER dvdkopien_ref_check_ins_upd
+  BEFORE
+    INSERT OR
+    UPDATE
+  ON dvdkopien
+  FOR EACH ROW
+  DECLARE
+    msg VARCHAR2(100) := 'Integritäts-Constraint verletzt - übergeordneter Schlüssel nicht gefunden';
+    cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO cnt FROM filialen WHERE filialen.fnr = :NEW.fnr;
+    IF (cnt = 0) THEN RAISE_APPLICATION_ERROR(-20000, msg); END IF;
+  END;
+\end{lstlisting}
+\begin{lstlisting}[style=sql, title=DVDKOPIEN-Trigger auf helios]
+CREATE OR REPLACE TRIGGER filialen_del_upd
+  BEFORE DELETE OR UPDATE ON filialen
+  FOR EACH ROW
+  DECLARE 
+    msg VARCHAR2(100) := 'Integritäts-Constraint verletzt - untergeordneter Datensatz gefunden';
+    cnt NUMBER;
+  BEGIN
+    SELECT COUNT(*) INTO cnt FROM dvdkopien WHERE dvdkopien.fnr = :OLD.fnr;
+    IF (cnt > 0) THEN RAISE_APPLICATION_ERROR(-20000, msg);
+    END IF;
+  END;
+\end{lstlisting}
+\subsection{Lösungsbeschrieb}
+\begin{tabular}{| p{5cm} | p{5cm} | p{5cm} |}
+\hline
+Voraussetzungen & Synonym von FILIALEN auf ananke & Auf dem ursprünglichen System muss eine  ein Synonym (inkl. Datenbanklink) zu FILIALEN auf helios bestehen, damit auf dessen Daten zugegriffen werden kann, um die Integrität zu überprüfen.\\ \hline
+Trigger-Lokalität & \multicolumn{2}{p{10cm}|}{Die Trigger sollten auf den Systemen installiert werden, auf denen sich ebenfalls die Tabellen befinden. Sämtliche Trigger können aber auch auf einem System installiert werden. Dann müssen die Trigger jedoch auf Views der entfernten Tabellen triggern und die Operation durch INSTEAD OF ersetzen, damit zuerst die Integrität überprüft und danach die ursprüngliche Operation ausgeführt werden kann.}\\ \hline
+RAISE\_APPLICATION\_ERROR(-20000, msg); & Hier wird eine Fehlermeldung erzeugt. & Der Code ist dabei entscheidend, was angezeigt wird. -20000 ist nicht obligatorisch für dieses Lab, ein Besseres konnte jedoch nicht auf die Schnelle gefunden werden.\\ \hline
+BEFORE & Logik des Triggers wird vor der Ausführung der Operation ausgeführt & In diesem Lab ist ein BEFORE-Trigger nötig, da durch das Werfen eines Fehlers die folgende Operationen abgebrochen wird.\\ \hline
+\end{tabular}
+\chapter{Lab 3 - Verteilter Datenbankentwurf}
+\section{Aufgabenstellung}
+Anhand von Anwendungen und deren Ausführungshäufigkeiten eine verteilte Datenbank entwerfen.\\
+\begin{lstlisting}[style=sql, title=Anwendungen]
+-- Anwendung q1
+SELECT name, typ, maxmiete
+FROM kunde;
+-- Anwendung q2
+SELECT telefonnummer, name, typ
+FROM kunde
+WHERE maxmiete <= 2000;
+-- Anwendung q3
+SELECT telefonnummer, maxmiete
+FROM kunde;
+-- Anwendung q4
+SELECT DISTINCT(typ)
+FROM kunde;
+-- Anwendung q5
+SELECT telefonnummer, name
+FROM kunde
+WHERE typ = 'Wohnung';
+\end{lstlisting}
+\textbf{Ausführungshäufigkeiten}\\
+\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+Anwendung & System & Zugriffshäufigkeit\\ \hline
+q1 & ananke & 10\\ \hline
+q1 & telesto & 20\\ \hline
+q2 & ananke & 5\\ \hline
+q2 & calypso & 10\\ \hline
+q3 & telesto & 35\\ \hline
+q3 & calypso & 5\\ \hline
+q4 & telesto & 10\\ \hline
+q5 & telesto & 15\\ \hline
+\end{tabular}
+\section{Lösung}
+\bigpic[Globale Affinität]{Labs/Lab3_VertikaleFragmentierung/lab3_global_aff.PNG}{17cm}
+\bigpic[Bond Energy Algorithm]{Labs/Lab3_VertikaleFragmentierung/lab3_bea.PNG}{18cm}
+\bigpic[Bond Energy Algorithm]{Labs/Lab3_VertikaleFragmentierung/lab3_bea2.PNG}{8cm}
+\bigpic[Bond Energy Algorithm]{Labs/Lab3_VertikaleFragmentierung/lab3_bea3.PNG}{7cm}
+\bigpic[Hilfsmatrizen]{Labs/Lab3_VertikaleFragmentierung/lab3_help.PNG}{17cm}
+\bigpic[Splitting und Fragmentierung]{Labs/Lab3_VertikaleFragmentierung/lab3_splitting_fragments.PNG}{18cm}
+\bigpic[Korrektheit]{Labs/Lab3_VertikaleFragmentierung/lab3_correctness.PNG}{18cm}
+\section{Lösungsbeschrieb}
+\subsection{Weg zur globalen Affinität}
+Als Grundlage für die Usage Matrix dienen die Anwendung/Queries. Bei jedem Attribut, auf die ein Query zugreift, wird das Flag[1=true,0=false] in der Matrix gesetzt. Beim Zusammentragen der Attribute muss man sich darauf achten, dass nicht nur der Select berücksichtigt wird, sondern auch andere Zugriffe, wie zum Beispiel im Where.\\
+Die Zugriffshäufigkeitsmatrix wird durch das Zusammentragen der Informationen aus der Ausführungshäufigkeit der einzelnen Queries auf den einzelnen Systemen gebildet. Es ist ratsam für weitere Anwendung gleich eine Summe zu bilden, wie viel mal auf ein Query zugegriffen wird.\\
+Die Attributs-Affinität Matrix bildet nun sämtliche Attribute ab. Diese Matrix kann wie folgt ausgefüllt werden:
+\begin{itemize}
+\item Parameter Zeile / Spalte => Name / Telefon
+\item In der Usage Matrix prüfen welche Queries auf diese Attribute zugreifen, also eine 1 in beiden \item Feldern stehen haben => q2, q5
+\item Zugriffshäufigkeit dieser Queries aufsummieren => 15 + 15 = 30
+\item In der AA-Matrix unter Zeile / Spalte und Spalte / Zeile eintragen
+\end{itemize}
+Da die AA-Matrix symmetrisch an der Diagonale aufgebaut ist, können meistens Zeile und Spalte vertauscht werden, um das gleiche Resultat in der Matrix einzutragen.\\
+\textbf{Achtung!} Der Bond Energy Algorithmus ist hier vereinfacht dargestellt, da mit Excel gearbeitet wurde. Beim korrekten Vorgehen muss der Beitrag einer Änderung berechnet werden. Dabei kann wie folgt überlegt werden:
+\begin{itemize}
+\item Die "'lokale Affinität"' zweier benachbarter Spalten kann berechnet werden indem Werte der benachbarten Spalten in einer Zeile multipliziert und anschliessend zeilenweise aufsummiert werden. Beispiel Name Telefon: 60*30 + 30*70 + 60*30 + 45*55 = 8175.
+\item Wird bei BEA nun eine Änderung durch das Hinzufügen einer weiteren Spalte bewirkt, wird der Beitrag wie folgt berechnet:
+\begin{itemize}
+\item bestehende Nachbarschaften werden nicht aufgelöst: "'lokale Affinität"' berechnen; das ist der Beitrag; dies ist der Fall, wenn der neue Nachbar links oder rechts der Matrix hinzugefügt wird
+\item bestehende Nachbarschaften werden aufgelöst: "'lokale Affinität"' der aufgelösten Nachbarn berechnen (z.B. Name-Telefon), dieser Wert wird vom Beitrag abgezogen; "'lokale Affinität"' des neuen Nachbarn jeweils mit der rechten und linken Spalte berechnen (z.B. Name-Typ, Typ-Telefon); diese Werte werden zum Beitrag addiert
+\end{itemize}
+\item Die Änderung mit dem grössten Beitrag wird durchgeführt und die nächste Iteration beginnt.
+\item Sind alle Iterationen durch, können die Zeilen entsprechend den Spalten angeordnet werden.
+\end{itemize}
+Es wurde die Matrix berechnet, die die grösste globale Affinität besitzt. Nun muss noch berechnet werden, wie die Fragmente dieser Tabelle gebildet werden sollen. Dazu wird entlang der Diagonalen der Matrix der Trennpunkt verschoben. Es muss nun die Fragmentierung mit der grössten Trennqualität gefunden werden. Der Algorithmus acc berechnet sich wie folgt:
+\begin{itemize}
+\item ein Parameter: falls in einer Zeile/Query in der Usage Matrix in irgend einer Spalte des Parameters/des Fragments eine 1 steht und in allen Spalten, die nicht zum Fragments gehören, eine 0, dann wird die Zugriffshäufigkeit des Queries zum Resultat addiert
+\item zwei Parameter: gleich wie bei einem Parameter, nur muss mindestens die Bedingung für Spalten des ersten UND des zweiten Fragments zutreffen
+\end{itemize}
+Für das Splitting wählt man ebenfalls die Variante mit dem höchsten Wert aus und drückt es anschliessend in relationaler Algebra aus.
+
+\chapter{Lab 8 - Replikation und Konflikte}
+
+\section{Setup Master Site} % (fold)
+\label{sec:setup_master_site}
+\begin{enumerate}
+  \item Connect as System at Master Site
+  \item Replication Administrator anlegen
+  \item Rechte an Admin geben
+  \item Proxy User angeben
+\end{enumerate}
+
+\textbf{Bemerkung
+Diese Schritte sind schon durchgeführt worden! in der Übung aber könnten relevant sein}
+
+\begin{lstlisting}[style=sql,title=Master Site Setup]
+  ONNECT system@telesto
+ CREATE USER repadmin IDENTIFIED BY &password
+DEFAULT TABLESPACE studspace
+TEMPORARY TABLESPACE temp;
+BEGIN
+DBMS_REPCAT_ADMIN.GRANT_ADMIN_ANY_SCHEMA (
+username => 'repadmin');
+END;
+
+BEGIN
+DBMS_REPCAT_ADMIN.REGISTER_USER_REPGROUP (
+username => 'repadmin',
+privilege_type => 'receiver',
+list_of_gnames => NULL);
+END;
+
+CREATE USER proxy_mviewadmin IDENTIFIED BY &password
+DEFAULT TABLESPACE studspace
+TEMPORARY TABLESPACE temp;
+-- any GRANTS?
+BEGIN
+DBMS_REPCAT_ADMIN.REGISTER_USER_REPGROUP (
+username => 'proxy_mviewadmin',
+privilege_type => 'proxy_snapadmin',
+list_of_gnames => NULL);
+END;
+
+CREATE USER proxy_refresher IDENTIFIED BY &password
+DEFAULT TABLESPACE studspace
+
+TEMPORARY TABLESPACE temp;
+
+GRANT CREATE SESSION TO proxy_refresher;
+GRANT SELECT ANY TABLE TO proxy_refresher;
+\end{lstlisting}
+% section setup_master_site (end)
+
+\section{Setup Materialized View Site} % (fold)
+\label{sec:setup_materialized_view_site}
+\begin{enumerate}
+  \item  Connect as System at Materialized View Site
+\item Users anlegen
+\item  Database Links erstellen
+\item  Schedule Purge
+\end{enumerate}
+
+\textbf{Bemerkung
+Diese Schritte sind schon durchgeführt worden! aber könnten relevant sein}
+
+
+\begin{lstlisting}[caption=Setup Materilized View Site (Updateable),style=sql]
+CONNECT system@calypso
+ CREATE USER mviewadmin IDENTIFIED BY &password
+DEFAULT TABLESPACE studspace
+TEMPORARY TABLESPACE temp;
+
+BEGIN
+DBMS_REPCAT_ADMIN.GRANT_ADMIN_ANY_SCHEMA (
+username => 'mviewadmin');
+END;
+
+GRANT COMMENT ANY TABLE TO mviewadmin;
+GRANT LOCK ANY TABLE TO mviewadmin;
+
+
+CREATE USER propagator IDENTIFIED BY &password
+DEFAULT TABLESPACE studspace
+TEMPORARY TABLESPACE temp;
+
+BEGIN
+DBMS_DEFER_SYS.REGISTER_PROPAGATOR (
+username => 'propagator');
+END;
+
+--Create DB Links: as SYSTEM on calypso
+CREATE PUBLIC DATABASE LINK telesto.janus.fhnw.ch
+USING 'telesto';
+
+-- for mviewadmin db link to proxy_mviewadmin on master site
+CONNECT mviewadmin@calypso;
+
+CREATE DATABASE LINK telesto.janus.fhnw.ch
+CONNECT TO proxy_mviewadmin IDENTIFIED BY &password;
+
+-- for propagator db link to repadmin on master site
+CONNECT propagator@calypso
+
+CREATE DATABASE LINK telesto.janus.fhnw.ch
+CONNECT TO repadmin IDENTIFIED BY &password;
+-- as mviewadmin on calypso
+CONNECT mviewadmin@calypso;
+
+BEGIN
+DBMS_DEFER_SYS.SCHEDULE_PURGE (
+next_date => SYSDATE,
+interval => 'SYSDATE + 1/24',
+delay_seconds => 0,
+rollback_segment => '');
+END;  
+\end{lstlisting}
+
+
+\section{Erstellen von Master Group} % (fold)
+\label{sec:erstellen_von_master_group}
+\begin{enumerate}
+  \item Schema an der Master Site erstellen
+\item Master Group erstellen
+\item  Objekte zur Master Group hinzufügen
+\item Replication Support einrichten
+\item  Replikation starten
+\end{enumerate}
+\begin{lstlisting}[caption=Erstellen von Master Group,style=sql]
+--  Diese Schritte müssen für neue Situation durchgeführt werden!
+CONNECT repadmin@telesto
+
+BEGIN
+DBMS_REPCAT.CREATE_MASTER_REPGROUP (
+gname => 'mvdbsx2_repg');
+END;
+
+BEGIN
+DBMS_REPCAT.CREATE_MASTER_REPOBJECT (
+gname => 'mvdbsx2_repg',
+type => 'TABLE',
+oname => 'filialen',
+sname => 'mvdbsx2',
+use_existing_object => TRUE,
+Copy_rows => FALSE);
+END;
+
+BEGIN
+DBMS_REPCAT.GENERATE_REPLICATION_SUPPORT (
+sname => 'mvdbsx2',
+oname => 'filialen',
+type => 'TABLE',
+min_communication => TRUE);
+END;
+
+BEGIN
+DBMS_REPCAT.RESUME_MASTER_ACTIVITY (
+gname => 'mvdbsx2_repg');
+END;
+
+\end{lstlisting}
+% section erstellen_von_master_group (end)
+
+\section{Erstellen von Master View Group} % (fold)
+\label{sec:erstellen_von_master_view_group}
+\begin{enumerate}
+  \item Materialized View Logs an der Master Site erstellen
+\item Repliziertes Schema und Database Links erstellen
+\item  Materialized View Group erstellen
+\item  Refresh Group erstellen
+\item Objekte zur Materialized View Group hinzufügen
+\item Objekte zur Refresh Group hinzufügen
+\item Manuell Refresh durchführen
+\end{enumerate}
+\begin{lstlisting}[caption=Master View Group erstellen,style=sql]
+  -- Bemerkung Diese Schritte müssen für neue Situation durchgeführt werden!
+-- use dvd rental sample user mvdbsx2
+CONNECT mvdbsx2@telesto
+
+ CREATE MATERIALIZED VIEW LOG ON mvdbsx2.filialen;
+ -- for all owner db link to proxy_refresher on master site
+CONNECT mvdbsx2@calypso
+
+CREATE DATABASE LINK telesto.janus.fhnw.ch
+CONNECT TO proxy_refresher IDENTIFIED BY &password;
+-- create materialized view group
+CONNECT mviewadmin@calypso
+
+BEGIN
+DBMS_REPCAT.CREATE_MVIEW_REPGROUP (
+gname => 'mvdbsx2_repg',
+master => 'telesto.janus.fhnw.ch',
+propagation_mode => 'ASYNCHRONOUS');
+END;
+/
+-- create refresh group
+-- with scheduled refresh
+BEGIN
+DBMS_REFRESH.MAKE (
+name => 'mviewadmin.mvdbsx2_refg',
+list => '',
+next_date => SYSDATE,
+interval => 'SYSDATE + 1/24',
+implicit_destroy => FALSE,
+rollback_seg => '',
+push_deferred_rpc => TRUE,
+refresh_after_errors => FALSE);
+END;
+/
+-- Add objects to the materialized view group
+-- as mvdbsx2
+CONNECT mvdbsx2@calypso
+
+CREATE MATERIALIZED VIEW mvdbsx2.filialen
+REFRESH FAST WITH PRIMARY KEY FOR UPDATE
+AS SELECT * FROM mvdbsx2.filialen@telesto.janus.fhnw.ch;
+
+-- add to rep group
+-- as mviewadmin
+CONNECT mviewadmin@calypso
+
+BEGIN
+DBMS_REPCAT.CREATE_MVIEW_REPOBJECT (
+gname => 'mvdbsx2_repg',
+sname => 'mvdbsx2',
+oname => 'filialen',
+type => 'SNAPSHOT',
+min_communication => TRUE);
+END;
+/
+-- as mviewadmin
+BEGIN
+DBMS_REFRESH.ADD(
+name => 'mviewadmin.mvdbsx2_refg',
+list => 'mvdbsx2.filialen',
+lax => TRUE);
+END;
+/
+-- refresh on demand
+-- as mviewadmin
+BEGIN
+DBMS_REFRESH.REFRESH (
+name => 'mviewadmin.mvdbsx2_refg' );
+end;
+/
+\end{lstlisting}
+
+\section{Lösungen der Konflikte} % (fold)
+\label{sec:l_sungen_der_konflikte}
+
+\subsection{Update Konflikt Lösung}
+Im folgenden soll eine Update-Konflikt-Lösung definiert werden, damit bei einem Update, ein allfälliger Konflikt automatisch behoben wird.
+
+Zusätzlich wird überprüft, dass bei einem INSERT- oder DELETE-Statement die Lösungsstrategie nicht angewendet wird.
+\begin{lstlisting}[style=sql, title=Definiton der Update-Konflikt-Lösung als repadmin auf telesto]
+BEGIN
+   DBMS_REPCAT.SUSPEND_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+
+BEGIN
+   DBMS_REPCAT.MAKE_COLUMN_GROUP (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      column_group => 'fil_cg',
+      list_of_column_names => 'fnr,ort,plz');
+END;
+/
+BEGIN
+   DBMS_REPCAT.ADD_UPDATE_RESOLUTION (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      column_group => 'fil_cg',
+      sequence_no => 1,
+      method => 'DISCARD',
+      parameter_column_name => 'fnr,ort,plz');
+END;
+/
+BEGIN 
+    DBMS_REPCAT.GENERATE_REPLICATION_SUPPORT (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      type => 'TABLE',
+      min_communication => TRUE); 
+END;
+/
+BEGIN
+   DBMS_REPCAT.RESUME_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+\end{lstlisting}
+
+\subsection{Uniqueness Konflikt Lösung}
+\begin{lstlisting}[style=sql, title=Definition der Uniqueness-Konflikt-Lösung als repadmin auf telesto]
+BEGIN
+   DBMS_REPCAT.SUSPEND_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+
+BEGIN
+   DBMS_REPCAT.ADD_UNIQUE_RESOLUTION (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+    constraint_name => 'fl_pk',
+      sequence_no => 1,
+      method => 'DISCARD',
+      parameter_column_name => 'fnr');
+END;
+/
+BEGIN 
+    DBMS_REPCAT.GENERATE_REPLICATION_SUPPORT (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      type => 'TABLE',
+      min_communication => TRUE); 
+END;
+/
+BEGIN
+   DBMS_REPCAT.RESUME_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+\end{lstlisting}
+
+\subsection{Delete Konflikt}
+Im folgenden soll eine Delete-Konflikt-Lösung definiert werden, damit bei einem DELETE-Statement, welches einen Konflikt auslöst, diesen automatisch behebt. Bei der Delete-Konflikt-Lösung wir eine User-Funktion\footnote{\url{http://docstore.mik.ua/orelly/oracle/bipack/ch16_05.htm}} benötigt, die den Konflikt löst.
+\begin{lstlisting}[style=sql, title=Definiton des Konflikt-Lösungs-Handler als repadmin auf telesto]
+CREATE OR REPLACE FUNCTION mvdbs02_fl_delete_handler (
+    old_fnr IN OUT VARCHAR2,
+    old_ort IN OUT VARCHAR2,
+    old_plz IN OUT VARCHAR2,
+    ignore_discard_flag OUT BOOLEAN ) RETURN BOOLEAN IS
+
+  BEGIN
+    DELETE FROM mvdbs02.filialen
+    WHERE fnr = old_fnr;
+
+    ignore_discard_flag := TRUE;
+
+    RETURN TRUE;
+  END mvdbs02_fl_delete_handler;
+\end{lstlisting}
+
+\begin{lstlisting}[style=sql, title=Definiton der Delete-Konflikt-Lösung als repadmin auf telesto]
+BEGIN
+   DBMS_REPCAT.SUSPEND_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+BEGIN
+  DBMS_REPCAT.ADD_DELETE_RESOLUTION(
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      sequence_no => 1,
+      parameter_column_name => 'fnr,ort,plz',
+      function_name => 'mvdbs02_fl_delete_handler');
+END;
+/
+BEGIN 
+    DBMS_REPCAT.GENERATE_REPLICATION_SUPPORT (
+      sname => 'mvdbs02',
+      oname => 'filialen',
+      type => 'TABLE',
+      min_communication => TRUE); 
+END;
+/
+BEGIN
+   DBMS_REPCAT.RESUME_MASTER_ACTIVITY (
+      gname => 'mvdbs02_repg');
+END;
+/
+\end{lstlisting}
+
+% section l_sungen_der_konflikte (end)
+
+% section erstellen_von_master_view_group (end)
+\chapter{Lab 11 - Relationale Operationen mit Map Reduce}
+\section{Aufgabenstellung}
+Tabellen werden im csv-Format abgegeben. Nun können SQL-Befehler als Map/Reduce-Funktionen in einer Hadoop Umgebung realisiert werden.
+\section{Group by mit Count}
+\begin{lstlisting}[style=sql]
+SELECT mnr, COUNT(*)
+FROM registrierungen
+GROUP BY mnr;
+\end{lstlisting}
+\lstinputlisting[language=java,style=java,firstline=18,style=java]{Labs/Lab11_MapReduce/GroupByWithCount.java}
+\section{Join}
+\begin{lstlisting}[style=sql]
+SELECT *
+FROM registrierungen JOIN mitglieder USING (mnr);
+\end{lstlisting}
+\lstinputlisting[language=java,style=java,firstline=19,style=java]{Labs/Lab11_MapReduce/Join.java}
+\lstinputlisting[language=java,style=java,firstline=8,style=java]{Labs/Lab11_MapReduce/DatasetTagger.java}
+\subsection{Lösungsbeschrieb}
+\subsubsection{Group by mit Count}
+In diesem Algorithmus muss ausgerechnet werden, wie viel mal eine bestimmte Spalte im csv-File vorkommt.\\
+Der Mapper bekommt nun jede Reihe vom csv-File einzeln. Somit kann diese Linie aufgesplittet und der gewünschte Index extrahiert werden. Dieser extrahierte Wert wird in ein Text-Objekt gewrappt und mit einer 1, gewrappt in ein IntWritable, in den Context geschrieben.\\
+Der Reducer bekommt als key-value Paar ein Text, der den gewünschte Index erhaltet und eine List von Einsen, die der Mapper in den Context geschrieben hat. Aus dieser Liste kann nun ermittelt werden, wie viel mal das Wort im csv-File vorgekommen ist. Als Resultat wird wiederum der Text mit der Summer in den Context geschrieben. Dieser Wert wird dann auf der Konsole ausgegeben.
+\subsection{Join}
+Der Reduce-Side Join verlangt, dass der eigentliche Join im Reducer durchgeführt werden muss. Der Mapper ist somit für die Zuordnung der Datensätze zum Join-Key zuständig. Damit zusätzlich ein Left-Join erreicht werden kann, muss der ValueOut des Mappers gekennzeichnet werden, von welcher Seite, bzw. welchem File die Zeile stammt. Dies setzt eine eigene Datenstruktur voraus, die zusätzlich vom Hadoop erkannt werden muss. Als Attribute muss ein Datenelement einen String, sowie eine Enumeration beinhalten. Die Enumeration definiert dabei von welcher Seite des Joins es stammt. Dadurch ist es möglich, im Reducer das Konkatenieren des Endresultats nach den Regeln eines Left-Joins durchzuführen. Damit Hadoop diese Datenstruktur als ValueOut des Mappers erkennt, muss dieser als MapOutputValue konfiguriert werden.
+% part labs_ (end)
+\end{document}

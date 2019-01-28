@@ -1,0 +1,58 @@
+\select@language {german}
+\contentsline {part}{\numberline {I}Theorie}{4}
+\contentsline {chapter}{\numberline {1}Applikationsmodell}{5}
+\contentsline {section}{\numberline {1.1}Applikation Lebenszyklus Begriffe}{5}
+\contentsline {subsection}{\numberline {1.1.1}Zustands\IeC {\"u}berg\IeC {\"a}nge}{5}
+\contentsline {subsection}{\numberline {1.1.2}Aufbau einer App}{6}
+\contentsline {subsubsection}{Verzeichnisstruktur des Projektes}{6}
+\contentsline {subsubsection}{App.xamls(.cs)}{6}
+\contentsline {subsubsection}{MainPage.xaml(.cs)}{6}
+\contentsline {subsection}{\numberline {1.1.3}XAML Guide}{7}
+\contentsline {subsection}{\numberline {1.1.4}Navigation}{7}
+\contentsline {section}{\numberline {1.2}Data Binding}{8}
+\contentsline {subsection}{\numberline {1.2.1}Bemerkungen f\IeC {\"u}r Entwicklung}{8}
+\contentsline {chapter}{\numberline {2}MVVM}{9}
+\contentsline {section}{\numberline {2.1}Einf\IeC {\"u}hrung}{9}
+\contentsline {section}{\numberline {2.2}MVVM}{9}
+\contentsline {subsection}{\numberline {2.2.1}MVC vs MVVM}{10}
+\contentsline {subsection}{\numberline {2.2.2}Alternativen zu MVVM}{10}
+\contentsline {section}{\numberline {2.3}MVC in Cardbox}{10}
+\contentsline {section}{\numberline {2.4}MVVM muss das sein? (Denzler)}{11}
+\contentsline {chapter}{\numberline {3}Persistenz}{12}
+\contentsline {section}{\numberline {3.1}Vorteile/Nachteile Isolated Storage}{12}
+\contentsline {section}{\numberline {3.2}Isolated Storage API}{12}
+\contentsline {subsection}{\numberline {3.2.1}Settings}{12}
+\contentsline {subsection}{\numberline {3.2.2}Files}{13}
+\contentsline {section}{\numberline {3.3}Datenbank}{13}
+\contentsline {section}{\numberline {3.4}Deployment Hinweise bez\IeC {\"u}glich Speichern}{14}
+\contentsline {chapter}{\numberline {4}Networking}{15}
+\contentsline {section}{\numberline {4.1}Anbindung ins Internet}{15}
+\contentsline {section}{\numberline {4.2}WebClient Klasse}{15}
+\contentsline {subsection}{\numberline {4.2.1}OnCompleted Delegate}{16}
+\contentsline {chapter}{\numberline {5}Tasks (Datenaustausch zwischen Apps)}{17}
+\contentsline {section}{\numberline {5.1}Tombstoning und Tasks}{17}
+\contentsline {chapter}{\numberline {6}Push Notifications}{19}
+\contentsline {section}{\numberline {6.1}Notification Typen}{19}
+\contentsline {section}{\numberline {6.2}Funktionsweise}{20}
+\contentsline {subsection}{\numberline {6.2.1}Schritte}{20}
+\contentsline {section}{\numberline {6.3}Multitaking}{21}
+\contentsline {section}{\numberline {6.4}Push vs Polling}{21}
+\contentsline {chapter}{\numberline {7}Multitasking}{22}
+\contentsline {section}{\numberline {7.1}Fast Application Switiching}{22}
+\contentsline {section}{\numberline {7.2}Scheduled Tasks}{22}
+\contentsline {subsection}{\numberline {7.2.1}Background Agents}{23}
+\contentsline {subsection}{\numberline {7.2.2}Task Einshr\IeC {\"a}nkungen}{23}
+\contentsline {section}{\numberline {7.3}Scheduled Notifications}{24}
+\contentsline {section}{\numberline {7.4}Background Audio}{24}
+\contentsline {section}{\numberline {7.5}Background File Transfer}{25}
+\contentsline {subsection}{\numberline {7.5.1}Limitierungen}{25}
+\contentsline {section}{\numberline {7.6}Fazit}{25}
+\contentsline {part}{\numberline {II}Code}{26}
+\contentsline {chapter}{\numberline {8}Binding + Property Changed}{27}
+\contentsline {section}{\numberline {8.1}Binding mit Converters (vom Internet - nicht abgedeckt von Denzler)}{28}
+\contentsline {chapter}{\numberline {9}Layout}{29}
+\contentsline {section}{\numberline {9.1}Grid Beispiel}{29}
+\contentsline {chapter}{\numberline {10}Isolated Storage}{30}
+\contentsline {chapter}{\numberline {11}App Lifecycle}{33}
+\contentsline {chapter}{\numberline {12}File Transfers}{36}
+\contentsline {chapter}{\numberline {13}Periodic + Resource Intensive Task}{39}

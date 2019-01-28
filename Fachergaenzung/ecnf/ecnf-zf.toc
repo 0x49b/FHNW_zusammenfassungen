@@ -1,0 +1,141 @@
+\select@language {german}
+\contentsline {section}{\numberline {1}Essenzielle Sachen}{4}
+\contentsline {subsection}{\numberline {1.1}Feature Vergleich}{4}
+\contentsline {subsection}{\numberline {1.2}Echte Unterschiede}{4}
+\contentsline {subsection}{\numberline {1.3}Typ Baum}{4}
+\contentsline {subsection}{\numberline {1.4}Boxing and Unboxing}{5}
+\contentsline {subsection}{\numberline {1.5}Klassen}{5}
+\contentsline {subsection}{\numberline {1.6}Properties}{5}
+\contentsline {subsubsection}{\numberline {1.6.1}Automatische Properties}{5}
+\contentsline {subsection}{\numberline {1.7}C\# modifiers}{6}
+\contentsline {subsection}{\numberline {1.8}Indexers}{6}
+\contentsline {subsection}{\numberline {1.9}Abstract Classes}{6}
+\contentsline {subsection}{\numberline {1.10}Interfaces}{7}
+\contentsline {subsection}{\numberline {1.11}Standard Collections}{8}
+\contentsline {subsection}{\numberline {1.12}Switch Anweisungen}{8}
+\contentsline {subsection}{\numberline {1.13}Control Statements}{9}
+\contentsline {subsection}{\numberline {1.14}Arrays}{9}
+\contentsline {subsection}{\numberline {1.15}Variablen - Stack + Heap}{9}
+\contentsline {subsubsection}{\numberline {1.15.1}Dynamische Variablen}{10}
+\contentsline {subsection}{\numberline {1.16}Parameter}{10}
+\contentsline {subsection}{\numberline {1.17}Partial Classes}{10}
+\contentsline {subsection}{\numberline {1.18}Typechecking und Casting}{10}
+\contentsline {subsection}{\numberline {1.19}Vererbung}{10}
+\contentsline {subsection}{\numberline {1.20}Override /Methoden\IeC {\"u}berschreibung}{11}
+\contentsline {subsection}{\numberline {1.21}Methoden verstecken}{11}
+\contentsline {subsubsection}{\numberline {1.21.1}Base Konstruktor aufrufen}{12}
+\contentsline {subsection}{\numberline {1.22}Generics}{12}
+\contentsline {subsubsection}{\numberline {1.22.1}Generics und Vererbung}{13}
+\contentsline {subsubsection}{\numberline {1.22.2}Generic Methods}{13}
+\contentsline {subsection}{\numberline {1.23}FILE/IO}{14}
+\contentsline {section}{\numberline {2}Delegates}{14}
+\contentsline {subsection}{\numberline {2.1}Java vs c\# Delegate}{14}
+\contentsline {subsection}{\numberline {2.2}Nutzung von Delegates}{15}
+\contentsline {subsection}{\numberline {2.3}Delegate Characteristics}{15}
+\contentsline {subsection}{\numberline {2.4}Observer Pattern}{16}
+\contentsline {subsection}{\numberline {2.5}Predicate Delegates}{17}
+\contentsline {subsection}{\numberline {2.6}Func + Action Delegates}{18}
+\contentsline {subsection}{\numberline {2.7}Exceptions}{18}
+\contentsline {subsubsection}{\numberline {2.7.1}Exception Characteristics}{18}
+\contentsline {section}{\numberline {3}Operator Overloading}{19}
+\contentsline {section}{\numberline {4}Extension Methods}{19}
+\contentsline {subsection}{\numberline {4.1}Objekt erweitern (vorsicht)}{20}
+\contentsline {section}{\numberline {5}Yield}{20}
+\contentsline {subsection}{\numberline {5.1}Yield Einshr\IeC {\"a}nkungen}{20}
+\contentsline {section}{\numberline {6}Sicher und Unsicheren code}{21}
+\contentsline {subsection}{\numberline {6.1}Pointer Operations}{21}
+\contentsline {subsection}{\numberline {6.2}Pinning Objects}{21}
+\contentsline {section}{\numberline {7}Reflection}{22}
+\contentsline {subsection}{\numberline {7.1}Reflection Grundkonzepte}{22}
+\contentsline {subsection}{\numberline {7.2}Type Info zur Laufzeit}{22}
+\contentsline {subsection}{\numberline {7.3}Laden von Assemblies}{22}
+\contentsline {subsection}{\numberline {7.4}Innerhalb Typinfo}{23}
+\contentsline {subsubsection}{\numberline {7.4.1}MemberInfo}{23}
+\contentsline {subsection}{\numberline {7.5}Bigger Picture}{24}
+\contentsline {section}{\numberline {8}Attributes}{24}
+\contentsline {subsection}{\numberline {8.1}Benutzer definierte Attributen}{24}
+\contentsline {subsection}{\numberline {8.2}AttributeUsage}{25}
+\contentsline {section}{\numberline {9}LINQ + Lambda}{25}
+\contentsline {subsection}{\numberline {9.1}Lambda}{25}
+\contentsline {subsubsection}{\numberline {9.1.1}Lambda Execution Context}{26}
+\contentsline {subsection}{\numberline {9.2}LINQ}{26}
+\contentsline {subsection}{\numberline {9.3}Advantages and bla bla}{26}
+\contentsline {subsubsection}{\numberline {9.3.1}LINQ General Syntax}{27}
+\contentsline {subsubsection}{\numberline {9.3.2}LINQ Key Features}{27}
+\contentsline {subsubsection}{\numberline {9.3.3}Query Chaining}{27}
+\contentsline {subsubsection}{\numberline {9.3.4}Formulating LINQ Expressions}{28}
+\contentsline {subsubsection}{\numberline {9.3.5}LINQ and objects}{28}
+\contentsline {subsubsection}{\numberline {9.3.6}Local vs Interpreted Query}{28}
+\contentsline {subsubsection}{\numberline {9.3.7}Feature Summary}{28}
+\contentsline {section}{\numberline {10}Dynamic Programming}{28}
+\contentsline {subsection}{\numberline {10.1}Dynamic vs Static Languages}{28}
+\contentsline {subsection}{\numberline {10.2}Dynamic Language Architecture}{29}
+\contentsline {subsection}{\numberline {10.3}DLR Concepts}{29}
+\contentsline {subsection}{\numberline {10.4}Using Dynamic}{30}
+\contentsline {subsection}{\numberline {10.5}Implementing Dynamic}{30}
+\contentsline {subsubsection}{\numberline {10.5.1}API}{30}
+\contentsline {subsection}{\numberline {10.6}Dynamic Language Integration - Python}{30}
+\contentsline {subsubsection}{\numberline {10.6.1}Data Passing}{31}
+\contentsline {subsection}{\numberline {10.7}COM Interop}{31}
+\contentsline {subsection}{\numberline {10.8}Native Code}{31}
+\contentsline {subsubsection}{\numberline {10.8.1}DLL Import Structure}{32}
+\contentsline {subsubsection}{\numberline {10.8.2}Parameter Marschling}{32}
+\contentsline {subsubsection}{\numberline {10.8.3}Passing Structs}{32}
+\contentsline {subsection}{\numberline {10.9}Implicit P Invoke C++}{32}
+\contentsline {section}{\numberline {11}Diagnostics and Garbage Collection}{33}
+\contentsline {subsection}{\numberline {11.1}General}{33}
+\contentsline {subsection}{\numberline {11.2}Object Creation}{33}
+\contentsline {subsection}{\numberline {11.3}GC in .net}{34}
+\contentsline {subsubsection}{\numberline {11.3.1}Reachability}{34}
+\contentsline {subsubsection}{\numberline {11.3.2}Cleaning up objects}{34}
+\contentsline {subsubsection}{\numberline {11.3.3}The collection process}{34}
+\contentsline {subsubsection}{\numberline {11.3.4}Finilisation guidelines}{34}
+\contentsline {subsection}{\numberline {11.4}Explicit Rescource Management}{35}
+\contentsline {subsubsection}{\numberline {11.4.1}Semantics}{35}
+\contentsline {subsubsection}{\numberline {11.4.2}Dispose Pattern}{35}
+\contentsline {subsubsection}{\numberline {11.4.3}Finalise vs Dispose}{36}
+\contentsline {subsection}{\numberline {11.5}System.GC}{36}
+\contentsline {subsection}{\numberline {11.6}GC Explained}{36}
+\contentsline {section}{\numberline {12}Assembly and CIL}{37}
+\contentsline {subsection}{\numberline {12.1}Role of Assemblies}{37}
+\contentsline {subsection}{\numberline {12.2}Tools}{37}
+\contentsline {subsection}{\numberline {12.3}Assembly Info}{38}
+\contentsline {subsection}{\numberline {12.4}Managing Private Assemblies}{38}
+\contentsline {subsection}{\numberline {12.5}Make assembly available publicly}{38}
+\contentsline {subsubsection}{\numberline {12.5.1}Signing Assembly}{39}
+\contentsline {subsection}{\numberline {12.6}What is CIL}{39}
+\contentsline {subsection}{\numberline {12.7}CIL}{39}
+\contentsline {subsubsection}{\numberline {12.7.1}Hello world example}{39}
+\contentsline {subsubsection}{\numberline {12.7.2}CIL Programming model}{40}
+\contentsline {subsubsection}{\numberline {12.7.3}Execution State}{40}
+\contentsline {subsubsection}{\numberline {12.7.4}Base Instruction Set}{40}
+\contentsline {subsubsection}{\numberline {12.7.5}Names and Directives in CIL}{41}
+\contentsline {subsubsection}{\numberline {12.7.6}Value Classes /Structs}{41}
+\contentsline {subsubsection}{\numberline {12.7.7}Class Declarations}{42}
+\contentsline {subsubsection}{\numberline {12.7.8}Defining Methods}{42}
+\contentsline {subsubsection}{\numberline {12.7.9}Method bodies}{43}
+\contentsline {section}{\numberline {13}Concurrency}{43}
+\contentsline {subsection}{\numberline {13.1}Basic Concepts}{43}
+\contentsline {subsection}{\numberline {13.2}.Net Async Concepts}{43}
+\contentsline {subsection}{\numberline {13.3}Threads vs Tasks}{43}
+\contentsline {subsection}{\numberline {13.4}Task class API}{44}
+\contentsline {subsubsection}{\numberline {13.4.1}Task Based Async Pattern /TAP}{44}
+\contentsline {subsubsection}{\numberline {13.4.2}Task Combinators}{44}
+\contentsline {subsection}{\numberline {13.5}Low Level Threading API}{44}
+\contentsline {subsubsection}{\numberline {13.5.1}Background Threads}{45}
+\contentsline {subsubsection}{\numberline {13.5.2}Passing Data to Threads}{45}
+\contentsline {subsubsection}{\numberline {13.5.3}Thread Recycling with Threadpools}{45}
+\contentsline {subsubsection}{\numberline {13.5.4}AsyncDelegates}{46}
+\contentsline {section}{\numberline {14}Parallel Programming}{46}
+\contentsline {subsection}{\numberline {14.1}Partitioning Strategies}{46}
+\contentsline {subsection}{\numberline {14.2}Overview}{46}
+\contentsline {subsection}{\numberline {14.3}Parallel Considerations}{47}
+\contentsline {subsection}{\numberline {14.4}Task Parallel Library}{47}
+\contentsline {section}{\numberline {15}Code Contracts}{48}
+\contentsline {subsection}{\numberline {15.1}Contract Principles}{48}
+\contentsline {subsection}{\numberline {15.2}Precondition Guidelines}{48}
+\contentsline {subsection}{\numberline {15.3}Object invariants}{49}
+\contentsline {subsection}{\numberline {15.4}Quantifeiers}{49}
+\contentsline {subsection}{\numberline {15.5}Contract inheritance}{49}
+\contentsline {subsection}{\numberline {15.6}Contracts and Interface}{49}
+\contentsline {subsection}{\numberline {15.7}Static analysis}{49}

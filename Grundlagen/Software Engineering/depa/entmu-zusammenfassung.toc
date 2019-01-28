@@ -1,0 +1,58 @@
+\select@language {ngerman}
+\contentsline {section}{\numberline {1}Java Collection Framework}{1}
+\contentsline {subsection}{\numberline {1.1}Die Interfaces}{1}
+\contentsline {subsection}{\numberline {1.2}Der Iterator}{1}
+\contentsline {subsection}{\numberline {1.3}Die Implementierung}{1}
+\contentsline {section}{\numberline {2}Design Pattern}{3}
+\contentsline {subsection}{\numberline {2.1}Types of Patterns}{3}
+\contentsline {subsection}{\numberline {2.2}Pattern Classification}{3}
+\contentsline {section}{\numberline {3}Observer Pattern}{4}
+\contentsline {subsection}{\numberline {3.1}Ziel}{4}
+\contentsline {subsection}{\numberline {3.2}Motivation}{4}
+\contentsline {subsection}{\numberline {3.3}Struktur}{4}
+\contentsline {subsection}{\numberline {3.4}Beispiel}{5}
+\contentsline {section}{\numberline {4}State Pattern}{6}
+\contentsline {subsection}{\numberline {4.1}Ziel}{6}
+\contentsline {subsection}{\numberline {4.2}Motivation}{6}
+\contentsline {subsection}{\numberline {4.3}Struktur}{6}
+\contentsline {subsection}{\numberline {4.4}Beispiel}{6}
+\contentsline {section}{\numberline {5}Strategy Pattern}{8}
+\contentsline {subsection}{\numberline {5.1}Ziel}{8}
+\contentsline {subsection}{\numberline {5.2}Struktur}{8}
+\contentsline {subsection}{\numberline {5.3}Beispiel}{8}
+\contentsline {section}{\numberline {6}Null Object Pattern}{9}
+\contentsline {subsection}{\numberline {6.1}Beschreibung}{9}
+\contentsline {subsection}{\numberline {6.2}Beispiel}{9}
+\contentsline {section}{\numberline {7}Composite Pattern}{10}
+\contentsline {subsection}{\numberline {7.1}Ziel}{10}
+\contentsline {subsection}{\numberline {7.2}Motivation}{10}
+\contentsline {subsection}{\numberline {7.3}Struktur}{10}
+\contentsline {subsection}{\numberline {7.4}Beispiel}{10}
+\contentsline {section}{\numberline {8}Prototype Pattern}{12}
+\contentsline {subsection}{\numberline {8.1}Ziel}{12}
+\contentsline {subsection}{\numberline {8.2}Motivation}{12}
+\contentsline {subsection}{\numberline {8.3}Struktur}{12}
+\contentsline {subsection}{\numberline {8.4}Beispiel}{12}
+\contentsline {subsection}{\numberline {8.5}Unterschiedliche Clone Varianten}{13}
+\contentsline {section}{\numberline {9}Immutability Pattern}{14}
+\contentsline {subsection}{\numberline {9.1}Ziel}{14}
+\contentsline {subsection}{\numberline {9.2}Regeln}{14}
+\contentsline {subsection}{\numberline {9.3}Beispiel}{14}
+\contentsline {section}{\numberline {10}Decorator Pattern}{15}
+\contentsline {subsection}{\numberline {10.1}Ziel}{15}
+\contentsline {subsection}{\numberline {10.2}Struktur}{15}
+\contentsline {subsection}{\numberline {10.3}Dynamics}{15}
+\contentsline {subsection}{\numberline {10.4}Beispiel}{16}
+\contentsline {section}{\numberline {11}Command Pattern}{17}
+\contentsline {subsection}{\numberline {11.1}Ziel}{17}
+\contentsline {subsection}{\numberline {11.2}Beteiligte}{17}
+\contentsline {subsection}{\numberline {11.3}Struktur}{17}
+\contentsline {section}{\numberline {12}Factory Pattern}{18}
+\contentsline {subsection}{\numberline {12.1}Idee}{18}
+\contentsline {subsubsection}{\numberline {12.1.1}Verwendung}{18}
+\contentsline {subsection}{\numberline {12.2}Struktur}{18}
+\contentsline {section}{\numberline {13}Singleton}{19}
+\contentsline {subsection}{\numberline {13.1}Idee}{19}
+\contentsline {subsection}{\numberline {13.2}Motivation}{19}
+\contentsline {subsection}{\numberline {13.3}Struktur}{19}
+\contentsline {subsection}{\numberline {13.4}Implementierung}{19}

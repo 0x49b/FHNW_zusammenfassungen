@@ -1,0 +1,535 @@
+\documentclass[a4paper, 11pt]{article}
+
+
+%Math
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{ulem}
+\usepackage{stmaryrd} %f\UTF{00FC}r Blitz!
+
+%PageStyle
+\usepackage[ngerman]{babel} % deutsche Silbentrennung
+\usepackage[utf8]{inputenc} 
+\usepackage{fontenc}
+\usepackage{fancyhdr, graphicx} %for header/footer
+\usepackage{wasysym}
+\usepackage{fullpage}
+\usepackage{textcomp}
+
+% Listings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+
+% Code listenings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\definecolor{DarkPurple}{rgb}{0.4,0.1,0.4}
+\definecolor{DarkCyan}{rgb}{0.0,0.5,0.4}
+\definecolor{LightLime}{rgb}{0.4,0.6,0.5}
+\definecolor{Blue}{rgb}{0.0,0.0,1.0}
+ 
+\lstdefinestyle{JavaStyle}{
+ language=Java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left,               % Ort der Zeilennummern
+ numberstyle=\tiny,          % Stil der Zeilennummern
+ stepnumber=5,              % Abstand zwischen den Zeilennummern
+ numbersep=5pt,              % Abstand der Nummern zum Text
+ tabsize=2,                  % Groesse von Tabs
+ extendedchars=true,         %
+ breaklines=true,            % Zeilen werden Umgebrochen
+ frame=b,         
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false,           % Leerzeichen anzeigen ?
+ showtabs=false,             % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=3pt,
+ framexbottommargin=2pt,
+ showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+
+%Config
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{15.2pt}
+\pagestyle{plain}
+
+
+%Metadata
+\title{
+	\vspace{5cm}
+	Hardwarenahe Programmierung
+}
+\author{Jonas Schwambi Schwammberger}
+\date{4. Semester (FS 2013)}
+
+\begin{document}
+\maketitle
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Register}
+\begin{itemize}
+	\item \%esp = stack pointer
+	\item \%ebp = base pointer
+	\item \%eax = accumulator, return Werte von Funktionen werden hier abgelegt.
+	\item \%ebx = base index (array manipulation)
+	\item \%ecx = counter (array manipulation)
+	\item \%edx = data / general register
+	\item \%esi = source index (string manipulation)
+	\item \%edi = destination index (string manipulation)
+	\item \%eip = instruction pointer
+\end{itemize}
+Ausser \%eip und \%esp sind alles General Purpose Register, man kann auch \%ebx für eine Array-Manipulation verwenden.
+
+\subsection{MOV Instruktion}
+movl kann in drei Varianten verwendet werden:
+\begin{itemize}
+	\item movl "register", "register"
+	\item movl "register, [Expression]
+	\item movl [Expression], "register"
+\end{itemize}
+
+\subsection{Expression}
+Generelle Funktion für Expressions: $D(Rb,Ri,S)= Mem[Reg[Rb]+S \cdot Reg[Ri]+D]$\\
+\begin{itemize}
+	\item D: Konstante in Byte(4 Byte für 64b)
+	\item Rb: Base Register
+	\item Ri: Index Register, können alle sein ausser \%esp und \%ebp
+	\item S: Skalar in Zweierpotenz
+\end{itemize}
+
+Beispiele:
+\begin{tabular}{|c|c|c|}
+	\hline
+	Ausdruck & Berechnung & Adresse im Hauptspeicher \\\hline\hline
+	0x8(\%edx) & 0xf000 + 0x8 & 0xf008 \\\hline
+	(\%edx,\%ecx,4)&0xf000 + 4*0x100&0xf400\\\hline
+	0x80(,\%edx,2)&2*0xf000 + 0x80 & 0x1e080\\\hline
+\end{tabular}
+
+\section{Function Call}
+\subsection{Stack Frame}
+\%ebp zeigt immer auf die "Basis" des stacks, heisst alle Adressen kleiner als \%ebp gehören zur momentan ausgeführten Methode. Die Parameter dieser Methode sind dabei auf den Adressen grösser als \%ebp abgespeichert. Die Speicherstelle, auf die \%ebp hinzeigt, ist der \&ebp Wert der vorherigen Methode. 4(\%ebp) beinhaltet die Return-Adresse für diese Methode, alles höher als 4(\%ebp) sind Parameter der momentanen Methode.\\
+\begin{tabular}{|c|c}
+	$\vdots$&\\\cline{0-0}
+	yp\\\cline{0-0}
+	xp\\\cline{0-0}
+	ret addr\\\cline{0-0}
+	\%ebp & $\leftarrow$ pushl \%ebp 			\%ebp\\\cline{0-0}
+ 	\%ebx\\\cline{0-0}
+\end{tabular}
+
+\subsection{Function Call Setup}
+Nachdem der Aufrufer die Parameter auf den Stack abgelegt und "Call Function" ausgeführt hat.
+\begin{lstlisting}
+	pushl %ebp
+	movl %esp, %ebp
+\end{lstlisting}
+
+ 
+\subsection{Function Call Teardown}
+Falls die Methode einen Rückgabewert hat, muss dieser vorher noch in\%eax abgelegt werden.
+\begin{lstlisting}
+	movl %ebp, %esp
+	pop %ebp
+	return
+\end{lstlisting}
+
+
+\section{Instruktionen}
+\subsection{Arithmetische Operatoren}
+
+\subsection{Instruktionen für den Methodenaufruf}
+\begin{tabular}{|c|c|}
+	push Src &  \\\hline
+	pop Dest & \\\hline
+	call (label) &  \\\hline
+	ret &  \\\hline
+\end{tabular}
+
+
+\subsubsection{Binäre Operatoren}
+Alle binären Operatoren lesen aus dem Source Register und den berechneten Wert in das Destination Register.
+
+\begin{tabular}{|c|c|}
+	\hline
+	Befehl & Beschreibung\\\hline\hline
+	addl & Dest += Source\\\hline
+	subl & Dest -= Source \\\hline
+	imull & Dest *= Source \\\hline
+	sall & Dest $<<$ Source\\\hline
+	sarl & Dest $>>$ Source, füllt mit 1 auf falls MSB = 1 \\\hline
+	shrl & Dest $>>$ Source, füllt immer mit 0 auf\\\hline
+	leal & siehe LEA Instruction. \\\hline
+	xorl & \ldots \\\hline
+	andl &\ldots  \\\hline
+	orl & \ldots \\\hline
+\end{tabular}
+
+\subsubsection{Unäre Operatoren}
+\begin{tabular}{|c|c|}
+	\hline
+	Befehl & Beschreibung\\\hline\hline
+	incl & increment \\\hline
+	decl & decrement \\\hline
+	negl & negate \\\hline
+	notl & not operator\\\hline
+\end{tabular}
+
+\subsubsection{LEA Instruction}
+Vom Internet: LEA, the only instruction that performs memory addressing calculations but doesn't actually address memory. LEA accepts a standard memory addressing operand, but does nothing more than store the calculated memory offset in the specified register, which may be any general purpose register.\\
+What does that give us? Two things that ADD doesn't provide:\\
+the ability to perform addition with either two or three operands, and
+the ability to store the result in any register; not just one of the source operands.
+
+\section{Vergleiche und Konditionen}
+Alle Compare Operationen werden durchgeführt, indem verschiedene Flags überprüft werden. Diese Flags werden von den arithmetischen Operationen selber gesetzt, oder durch die Befehle testl oder cmpl. Zum Beispiel überprüft die JUMP ZERO Instruktion, ob das ZERO FLAG von einer anderen Instruktion zuvor gesetzt wurde.
+
+\subsection{Flags}
+\begin{tabular}{|c|c|c|}
+	\hline
+	Abkürzung & Name & wird gesetzt durch \\\hline 
+	ZF & Zero Flag & wird von testl gesetzt.\\\hline
+	SF & Signed Flag & wird von testl gesetzt.\\\hline
+	OF & Overflow Flag & von arithmetischen Operationen gesetzt.\\\hline
+	CF & Carry Flag & von arithmetischen Operationen gesetzt.\\\hline
+\end{tabular}
+
+\subsection{Vergleichsoperatoren}
+\begin{tabular}{|c|c|}
+	\hline
+	cmpl Var1, Var2 & Rechnet Var2 - Var1, ohne das Resultat in Var2 zu speichern.\\ 
+	& Nur die Flags werden verändert. Heisst Var1 == Var2, \\
+	& dann ist das Zero Flag gesetzt.\\\hline
+	testl & Macht das gleiche wie cmpl, mit dem Unterschied dass es Bitwise AND\\
+	& anstatt einer Substraktion macht.\\\hline
+	{\color{red}cmovle} & move src to dest if condition c is true(less or equal).\\\hline
+\end{tabular}\\ \\
+SetX Befehle verändern die Flags direkt, falls man das möchte:\\
+\begin{tabular}{|c|c|c|}
+	\hline
+	Befehl & Ausdruck & Beschreibung\\\hline 
+	sete & $ZF$ & Equal / Zero\\\hline 
+	setne & $\sim ZF$ & Not Equal / Not Zero\\\hline 
+	sets & $SF$ & Negative\\\hline 
+	setns & $\sim SF$ & Nonnegative\\\hline  
+	setg & $\sim(SF^\wedge OF)\&\sim ZF$ & Greater (Signed)\\\hline 
+	setge & $\sim(SF^\wedge OF)$ & Greater or Equal (Signed)\\\hline 
+	setl & $(SF^\wedge OF)$ & Less (Signed)\\\hline 
+	setle & $(SF^\wedge OF)\mid ZF$ & Less or Equal (Signed)\\\hline 
+	seta & $\sim CF\&\sim ZF$ & Above (unsigned)\\\hline 
+	setb & CF & Below (unsigned)\\\hline
+\end{tabular}
+
+\subsection{Jump}
+\begin{tabular}{|c|c|c|}
+	\hline
+	Befehl & Flags & Beschreibung\\\hline
+	jmp (label) & 1 & Bedingungsloser jump\\\hline
+	je (label) & ZF & jump equal or zero \\\hline
+	jne (label) & ~ZF & jump not equal or not Zero  \\\hline
+	js (label) & SF & jump negative \\\hline
+	jns (label) & ~SF & jump not negative  \\\hline
+	jg (label) & ~(SF\^OF)\&~ZF & jump greater \\\hline
+	jge (label) & ~(SF\^OF) & jump greater or equal \\\hline
+	jl (label) & (SF\^OF)& jump less  \\\hline
+	jle (label) & (SF\^0F)\textbackslash ZF & jump less or equal \\\hline
+	ja (label) & \~CF \& \~ZF & jump above (unsigned) \\\hline
+	jb (label) & CF & jump below (unsigned) \\\hline
+\end{tabular}
+
+
+\section{Loops und If's}
+
+\subsection{If Statement}
+\subsubsection{Unter 32Bit}
+C Code:
+\begin{lstlisting}
+	int absdiff(int x,int y)
+	{
+		int result;
+		
+		if(x > y)
+			result = x-y;
+		else
+			result y-x;
+			
+		return result;
+	}
+\end{lstlisting}
+Assembler:
+\begin{lstlisting}
+	absdiff:
+		pushl %ebp
+		movl %esp,%ebp
+		
+		movl 8(%ebp),%edx
+		movl 12(%ebp),%eax
+		cmpl %eax,%edx
+		jle .L7			 
+		movl %edx,%eax 
+	.L8:
+		movl %ebp,%esp
+		popl %ebp
+		ret
+	.L7:
+		subl %edx, %eax
+		jmp .L8
+\end{lstlisting}
+
+\subsubsection{Unter 64Bit}
+C Code, der Selbe wie unter 32 Bit.
+Assembler:
+\begin{lstlisting}
+	absdiff:
+		pushl %ebp
+		movl %esp,%ebp
+		
+		movl %edi, %eax	# v = x
+		movl %esi, %edx	# ve = y
+		subl %esi, %eax # v -= y
+		subl %edi, %edx # ve -= x
+		cmpl %esi, %edi # x:y
+		cmovle %edx %eax # v=ve if <=
+		movl %ebp,%esp
+		popl %ebp
+		ret
+\end{lstlisting}
+
+\subsection{Loops}
+\subsubsection{Do While Loops}
+C Code:
+\begin{lstlisting}
+	int fact(int x)
+	{
+		int result = 1;
+		do
+		{
+			result *= x;
+			x = x-1;
+		} while(x > 1);
+		
+		return result;
+	}
+\end{lstlisting}
+Intermediate Code, bevor der Code zu Assembler übersetzt wird:
+\begin{lstlisting}
+	int fact(int x)
+	{
+		int result = 1;
+		
+		loop:
+			result *= x;
+			x = x-1;
+			if (x > 1)
+		 		goto loop;
+		
+		return result;
+	}
+\end{lstlisting}
+Assembler:
+\begin{lstlisting}
+	fact:
+		pushl %ebp
+		movl %espm%ebp
+		movl $1,%eax
+		movl 8(%ebp),%edx
+	L11:
+		imull %edx,%eax
+		decl %edx		# Compare x : 1
+		cmpl $1,%edx	# if > goto loop
+		jg L11
+		
+		movl %ebp,%esp
+		popl %ebp
+		ret
+\end{lstlisting}
+
+\subsubsection{while loops}
+While loops werden vom GCC in einen Do While loop übersetzt.\\
+\paragraph{Alte Übersetzungsart}
+Pseudocode While:
+\begin{lstlisting}
+	while(TEST)
+		Body
+\end{lstlisting}
+Pseudo intermediate Code:
+\begin{lstlisting}
+	if(TEST)
+		goto DONE
+	LOOP:
+		Body
+		if(TEST)
+			goto LOOP;
+	DONE:
+\end{lstlisting}
+
+\paragraph{Neue Übersetzungsart}
+In der neuen Übersetzungsart wird der unnötige Test vor dem eigentlichen Loop weggelassen, heutige Prozessoren haben keine Performance einbussen bei unconditional jumps\\
+Pseudocode:
+\begin{lstlisting}
+	goto MIDDLE
+	LOOP:
+		Body
+	MIDDLE:
+		if(TEST)
+			goto LOOP
+\end{lstlisting}
+
+\subsubsection{For Loops}
+For loops sind eigentlich nur While loops mit einer speziellen letzten Zeile. For loops werden in einen While loop umgewandelt, der wieder in einen do while \dots\\
+Pseudocode for:
+\begin{lstlisting}
+	for(INIT;TEST;UPDATE)
+		body
+\end{lstlisting}
+Pseudocode in while übersetzt:
+\begin{lstlisting}
+	INIT
+	while(TEST)
+	{
+		body
+		UPDATE
+	}
+\end{lstlisting}
+
+\subsection{Select Case}
+Ein Select Case gibt es zwei Möglichkeiten, entweder es wird als eine Reihe von if then else Anweisungen implementiert, was bei vielen Cases sehr langsam wird, oder mittels einer Jump Table. Der GCC entscheidet selbst, was er macht.\\
+Beispiel C Code:
+\begin{lstlisting}
+	typedef enum {ADD,MULT,MINUS,DIV,MOD,BAD} op_type;
+	char unparse_symbol(op_type op) {
+		switch(op)
+		{
+			case ADD:
+				return '+';
+			case MULT:
+				return '*';
+			case MINUS:
+				return '-';
+			case DIV:
+				return '/';
+			case MOD:
+				return '%';
+			case BAD:
+				return '?';
+		}
+	}
+\end{lstlisting}
+Jump Table
+\begin{lstlisting}
+	.section .rodata
+		.align 4
+	.L57:
+		.long .51	//Addresse fuer Case 0
+		.long .L52	//Addresse fuer Case 1
+		...
+		.long .L56  //Addresse fuer Case 5
+\end{lstlisting}
+Eigentlicher Switch wird ungefähr so übersetzt. Jeder Case bekommt ein eigenes Label. Ebenso wird hier ein weiteres Label hinzugefügt, mitdem wir zu den Instruktionen springen können, die nach dem Switch ausgeführt werden sollen.
+\begin{lstlisting}
+	.L51
+		movl $43,\%eax  //'+'
+		jmp .L49
+	.L52
+		movl $42,\%eax  //'*'
+		jmp .L49
+	.L53
+		movl $45,\%eax  //'-'
+		jmp .L49
+	...
+	
+	.L49
+		movl %ebp, %esp
+		popl %ebp
+		ret
+\end{lstlisting}
+Methodenaufruf, wie die Jump Tabelle und die
+\begin{lstlisting}
+	unparse_symbol:
+		pushl %ebp
+		movl %esp,%ebp
+		
+		movl 8(%ebp), %eax  #eax = op
+		cmpl $5,%eax 		
+		ja	.L49			# if > goto end
+		jmp *.L57(,%eax,4)	#  .L57[%eax]
+\end{lstlisting}
+Erklärung der Letzten Instruktion:
+$(,\%eax,4)$ wird übersetzt in $(0+ \%eax)\cdot4$, somit haben wir unseren Offset für die Jump Tabelle. Der Rest des Ausdrucks bedeutet: \"Gehe zur Memory Adresse, die das Label L57 hat, addiere den Offset dazu und springe dan zum Wert, der diese Adresse beinhaltet." Dieser Wert ist dann zum Beispiel die Adresse des Labels .L51.
+\section{Bitwise Magix}
+\begin{lstlisting}
+	int bitXor(int x, int y) {
+		return ~x & y;
+	}
+	
+	int isEqual(int x, int y) {
+		return !(x ^ y);
+	}
+\end{lstlisting}
+
+\newpage
+\section{Recursion}
+Die Rekursion wird anhand des Beispiels Fakultät gezeigt.\\
+\subsection{Einfache Rekursion}
+\begin{lstlisting}
+int rfact(int x)
+{
+  int rval;
+  if (x <= 1) return 1;
+  rval = rfact(x - 1);
+  return rval * x;
+}
+\end{lstlisting}
+in Assembler:
+\begin{lstlisting}
+rfact:
+    pushl %ebp
+    movl %esp, %ebp
+    pushl %ebx
+    movl 8(%ebp), %ebx 		// ebx = x
+    cmpl $1, %ebx		// Compare x : 1
+    jle .L78			// If <= goto Term
+    leal -1(%ebx), %eax		// eax = x - 1
+    pushl %eax			// Push x- 1
+    call rfact			// rfact (x - 1)
+    imull %ebx, %eax		// rval * x
+    jmp .L79			// Goto done
+    .align 4
+.L78: 				// Term:
+    movl $1, %eax		// return val = 1
+.L79:				// Done:
+    movl -4(%ebp), %ebx
+    movl %ebp, %esp
+    popl %ebp
+    ret
+\end{lstlisting}
+Linien die mit ``.'' beginnen sind Assembler Ordner
+\subsection{Multi-Way recursion}
+sinnvolles Beispiel ist Quicksort
+\begin{lstlisting}
+int r_prod(int from, int to) {
+	int middle, prodA, prodB;
+	if (from >= to) return from;
+	middle = (from + to) >> 1;
+	prodA = r_prod(from, middle);
+	prodB = r_prod(middle+1, to);
+	return prodA * prodB;
+}
+\end{lstlisting}
+
+
+\end{document}

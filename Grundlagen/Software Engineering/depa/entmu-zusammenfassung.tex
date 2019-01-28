@@ -1,0 +1,390 @@
+\documentclass[a4paper, 11pt]{article}
+
+%Math
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{ulem}
+\usepackage{stmaryrd} %f\UTF{00FC}r Blitz!
+
+%PageStyle
+\usepackage[ngerman]{babel} % deutsche Silbentrennung
+\usepackage[ansinew]{inputenc} % wegen deutschen Umlauten
+\usepackage{fontenc}
+\usepackage{fancyhdr, graphicx} %for header/footer
+\usepackage{wasysym}
+\usepackage{fullpage}
+\usepackage{textcomp}
+
+% Listings
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+
+% Code listenings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\definecolor{DarkPurple}{rgb}{0.4,0.1,0.4}
+\definecolor{DarkCyan}{rgb}{0.0,0.5,0.4}
+\definecolor{LightLime}{rgb}{0.4,0.6,0.5}
+\definecolor{Blue}{rgb}{0.0,0.0,1.0}
+ 
+\lstdefinestyle{JavaStyle}{
+ language=Java,
+ basicstyle=\footnotesize\ttfamily, % Standardschrift
+ numbers=left,               % Ort der Zeilennummern
+ numberstyle=\tiny,          % Stil der Zeilennummern
+ stepnumber=5,              % Abstand zwischen den Zeilennummern
+ numbersep=5pt,              % Abstand der Nummern zum Text
+ tabsize=2,                  % Groesse von Tabs
+ extendedchars=true,         %
+ breaklines=true,            % Zeilen werden Umgebrochen
+ frame=b,         
+ %commentstyle=\itshape\color{LightLime}, Was isch das? O_o
+ %keywordstyle=\bfseries\color{DarkPurple}, und das O_o
+ basicstyle=\footnotesize\ttfamily,
+ stringstyle=\color[RGB]{42,0,255}\ttfamily, % Farbe der String
+ keywordstyle=\color[RGB]{127,0,85}\ttfamily, % Farbe der Keywords
+ commentstyle=\color[RGB]{63,127,95}\ttfamily, % Farbe des Kommentars
+ showspaces=false,           % Leerzeichen anzeigen ?
+ showtabs=false,             % Tabs anzeigen ?
+ xleftmargin=17pt,
+ framexleftmargin=17pt,
+ framexrightmargin=3pt,
+ framexbottommargin=2pt,
+ showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+
+%Config
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{15.2pt}
+\pagestyle{plain}
+
+%Metadata
+\title{Entwurfsmuster}
+\author{Jan Fässler}
+\date{3. Semester (HS 2012)}
+\fancyfoot[C]{If you use this documentation for a exam, you should offer a beer to the authors!}
+
+% hier beginnt das Dokument
+\begin{document}
+
+% Titelbild
+\maketitle
+\thispagestyle{fancy}
+
+\newpage
+
+% Inhaltsverzeichnis
+\pagenumbering{Roman}
+\tableofcontents	  	
+
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+% Inhalt Start
+
+\section{Java Collection Framework}
+\subsection{Die Interfaces}
+\begin{center}
+\includegraphics[scale=0.3]{jcf-interfaces.png}
+\end{center}
+
+\subsection{Der Iterator}
+Ein Iterator ist immer zwischen zwei Elemente. Es gibt also in einer Collection mit n Elementen, n + 1 mögliche Positionen an denen der Iterator stehen kann.
+\lstinputlisting[language=java,caption=Iterator,style=JavaStyle]{iterator-interface.java}
+
+\subsection{Die Implementierung}
+\includegraphics[scale=0.46]{jcf-implementations.png} 
+\begin{description}
+	\item[ArrayList] \hfill \\ Eine Implementierung welche ein Array darstellt bei dem man die Grösse verändern kann.
+	\item[LinkedList] \hfill \\ Eine doppelt verkettete Liste.
+	\item[HashSet] \hfill \\ Die Elemente werden in einer Hash-Tabelle gespeichert.
+	\item[TreeSet] \hfill \\ Die Elemente werden in einer Baumstruktur gespeichert.
+	\item[Maps] \hfill \\ Eine Map ist wie ein Wörterbuch aufgebaut. Jeder Eintrag besteht aus einem Schlüssel (key) und dem zugehörigen Wert (value). Jeder Schlüssel darf in einer Map nur genau einmal vorhanden sein.
+\end{description}
+Wenn eine Klasse ein Interface implementiert, müssen immer alle Funktionen des Interface implementiert werden. In einer abstrakten Collection-Klasse können alle Funktionen bis auf zwei realisiert werden. Für das Hinzufügen und für den Iterator benötigt es Kentnisse über die Datenstruktur. Hier das ein Beispiel einer Abstrakten Klasse:
+\lstinputlisting[language=java,caption=Abstract Collection,style=JavaStyle]{abstract-collection.java}
+
+\newpage
+\section{Design Pattern}
+Entwurfsmuster (englisch design patterns) sind bewährte Lösungsschablonen für wiederkehrende Entwurfsprobleme sowohl in der Architektur als auch in der Softwarearchitektur und -entwicklung. Sie stellen damit eine wiederverwendbare Vorlage zur Problemlösung dar, die in einem bestimmten Zusammenhang einsetzbar ist.
+
+\subsection{Types of Patterns}
+\begin{description}
+	\item[Software Pattern] \hfill
+		\begin{itemize}
+			\item Architectural Pattern (system design)
+			\item Design Pattern (micro architectures)
+			\item Coding Pattern / Idioms (low level)
+		\end{itemize}
+	\item[Analysis Pattern] \hfill
+		\begin{itemize}
+			\item Recurring \& reusable analysis models used in requirements engineering
+		\end{itemize}
+	\item[Organizational Patterns] \hfill
+		\begin{itemize}
+			\item Structure of organizations \& projects: XP, SCRUM
+		\end{itemize}
+	\item[Domain-Specific patterns] \hfill
+		\begin{itemize}
+			\item UI patterns, security patterns
+		\end{itemize}
+	\item[Anti-Patterns] \hfill
+		\begin{itemize}
+			\item Refactoring
+		\end{itemize}
+\end{description}
+
+\subsection{Pattern Classification}
+
+\includegraphics[scale=0.5]{pattern-classification.png}
+
+\newpage
+\section{Observer Pattern}
+Also Known As \textbf{Publish-Subscribe} or \textbf{Listener Pattern}.
+
+\subsection{Ziel}
+\begin{itemize}
+	\item 1:*-Relation between objects which allows to inform the dependent objects about state changes
+	\item Consistency assurance between cooperating objects without connecting them too much
+	\item Notification of a dependent object without knowing it
+\end{itemize}
+
+\subsection{Motivation}
+\begin{center}
+	\includegraphics[scale=0.4]{observer-motivation.png}
+\end{center}
+
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.9]{observer-structure.png}
+\end{center}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Observer Pattern,style=JavaStyle]{observer.java}
+
+\newpage
+\section{State Pattern}
+
+\subsection{Ziel}
+Die Auslagerung von zustandsspezifischem Verhalten in einer Klasse. Ermöglicht mit dem Wechsel des Zustandes eines Objektes auch leicht das Verhalten zu ändern.
+
+\subsection{Motivation}
+Die View des Grafikeditors hat eine Referenz auf ein abstraktes Tool-Interface. Diese Referenz definiert:
+\begin{itemize}
+	\item[a.] Der aktuelle Zeichenmodus
+	\item[b.] Verhalten wenn Maus gedrückt wird
+\end{itemize}
+
+\subsection{Struktur}
+Das zustandsabhängige Verhalten des Objekts wird in separate Klassen ausgelagert, wobei für jeden möglichen Zustand eine eigene Klasse eingeführt wird, die das Verhalten des Objekts in diesem Zustand definiert. Damit der Kontext die separaten Zustandsklassen einheitlich behandeln kann, wird eine gemeinsame Abstrahierung dieser Klassen definiert. Bei einem Zustandsübergang tauscht der Kontext das von ihm verwendete Zustandsobjekt aus.
+\begin{center}
+	\includegraphics[scale=0.6]{state-structure.png}
+\end{center}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel State Pattern,style=JavaStyle]{state.java}
+
+\newpage
+\section{Strategy Pattern}
+
+\subsection{Ziel}
+Eine Familie von Algorithmen definieren, von dem restlichen Programmcode abtrennen. Diese ermöglicht die Auswahl aus verschiedenen Implementierungen und dadurch erhöht sich die Flexibilität und die Wiederverwendbarkeit.
+
+
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.7]{strategy-structure.png}
+\end{center}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Strategy Pattern,style=JavaStyle]{strategy.java}
+
+\newpage
+\section{Null Object Pattern}
+
+\subsection{Beschreibung}
+Das Entwurfsmuster Nullobjekt findet Anwendung bei der Deaktivierung von Referenzen auf Variablen und besteht darin, der Referenz ein Objekt zuzuweisen, das keine Aktion ausführt, anstatt die Referenz zu invalidieren. Dadurch wird erreicht, dass die Referenz auf die Variable zu jedem Zeitpunkt auf ein gültiges Objekt verweist, was Behandlungen von Sonderfällen (das Nichtvorhandensein) erübrigt.
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Null Object Pattern,style=JavaStyle]{null.java}
+
+
+\newpage
+\section{Composite Pattern}
+\subsection{Ziel}
+Das Kompositionsmuster wird angewendet, um Teil-Ganzes-Hierarchien zu repräsentieren, indem Objekte zu Baumstrukturen zusammengefügt werden.Die Grundidee des Kompositionsmusters ist, in einer abstrakten Klasse sowohl primitive Objekte als auch ihre Behälter zu repräsentieren. Somit können sowohl einzelne Objekte, als auch ihre Kompositionen einheitlich behandelt werden. 
+
+\subsection{Motivation}
+Ein klassisches Beispiel sind hierarchische Dateisysteme, bzw ihre Repräsentation innerhalb von Dateimanagern oder Filebrowsern als Verzeichnisse und Dateien. \\
+Ein modernes Beispiel sind die Klassendefinitionen der grafischen Benutzeroberfläche von Java. Alle Elemente wie Schaltflächen und Textfelder sind Spezialisierungen der Klasse Component. Die Behälter für diese Elemente sind aber ebenfalls Spezialisierungen derselben Klasse.
+
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.3]{composite-structure.png}
+\end{center}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Composite Pattern,style=JavaStyle]{composite.java}
+
+\newpage
+\section{Prototype Pattern}
+\subsection{Ziel}
+Neue Instanzen werden aufgrund prototypischer Instanzen erzeugt. Dabei wird die Vorlage kopiert und an neue Bedürfnisse angepasst
+
+\subsection{Motivation}
+\begin{itemize}
+	\item Copy und Paste funktion in einem Editor
+	\item Tool palette mit Prototyp-Objekten welche kopiert werden können
+\end{itemize}
+
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.45]{prototype-structure.png}
+\end{center}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Prototype Pattern,style=JavaStyle]{prototype.java}
+
+\subsection{Unterschiedliche Clone Varianten}
+\begin{center}
+	\includegraphics[scale=0.5]{java-clone.png}
+\end{center}
+
+\newpage
+\section{Immutability Pattern}
+\subsection{Ziel}
+Das Immutable Pattern stellt sicher, dass eine Instanz der Klasse nach der Initialisierung nicht
+mehr geändert werden kann.
+
+\subsection{Regeln}
+\begin{itemize}
+	\item[1.] Die Methoden der Klasse dürfen die Daten der Klasse nicht ändern.
+	\item[2.] Die Felder müssen privat oder final deklariert sein, falls es sich um Referenzen auf immutable Objekte oder Felder von primitiven Datentypen handelt.
+	\item[3.] Nur Getter-Methoden definieren, keine Setter Methoden
+	\item[4.] Alle Rückgabe-Werte von Getter-Methoden müssen kopiert werden, falls es nicht Referenzen auf immutable Objekte oder Resultate mit primitivem Datentyp sind.
+	\item[5.] Klassen als final deklarieren damit nicht in der Unterklasse die Regeln verletzt werden können.
+	\item[6.] Parameter in den Konstruktoren, die nicht immutable oder von primitiven Datentypen sind müssen geklont werden
+\end{itemize}
+
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Immutability Pattern,style=JavaStyle]{immutability.java}
+
+\newpage
+\section{Decorator Pattern}
+\subsection{Ziel}
+Das Muster ist eine flexible Alternative zur Unterklassenbildung, um eine Klasse um zusätzliche Funktionalitäten zu erweitern. Die Vorteile bestehen darin, dass mehrere Dekorierer hintereinandergeschaltet werden können; die Dekorierer können zur Laufzeit und sogar nach der Instanzierung ausgetauscht werden. Die zu dekorierende Klasse ist nicht unbedingt festgelegt (wohl aber deren Schnittstelle). Zudem können lange und unübersichtliche Vererbungshierarchien vermieden werden.
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.7]{decorator.png}
+\end{center}
+\subsection{Dynamics}
+\begin{center}
+	\includegraphics[scale=0.4]{decorator-dynamics.png}
+\end{center}
+\subsection{Beispiel}
+\lstinputlisting[language=java,caption=Beispiel Decorator Pattern,style=JavaStyle]{decorator.java}
+
+\newpage
+\section{Command Pattern}
+\subsection{Ziel}
+\begin{itemize}
+	\item Eine Aktion zu einem Objekt machen, damit man sie weiterleiten und zu einem beliebigen späteren Zeitpunkt ausführen kann. 
+	\item Eine Aktion aufrufen von der der Aufrufer weder den Empfänger noch die exakte Methode kennen muss.
+	\item Eine Entkoppelung des Objektes, welches eine Operation aufruft vom Objekt, das weiss, wie die Operation ausgeführt werden soll.
+\end{itemize}
+\subsection{Beteiligte}
+\begin{description}
+	\item[Klient] \hfill \\ Instanziert ein Kommando und füllt es mit Informationen um später eine Aktion ausführen zu können.
+	\item[Aufrufer] \hfill \\ Entscheidet wann das Kommando ausgeführt wird.
+	\item[Empfänger] \hfill \\ Objekt das die Aktion ausführen kann.
+\end{description}
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.7]{command.png}
+\end{center}
+
+\newpage
+\section{Factory Pattern}
+\subsection{Idee}
+Das Muster beschreibt, wie ein Objekt durch Aufruf einer Methode anstatt durch direkten Aufruf eines Konstruktors erzeugt wird. Es gehört somit zur Kategorie der Erzeugungsmuster.
+\subsubsection{Verwendung}
+Die Fabrikmethode findet Anwendung, wenn eine Klasse die von ihr zu erzeugenden Objekte nicht kennen kann bzw. soll, oder wenn Unterklassen bestimmen sollen, welche Objekte erzeugt werden. Typische Anwendungsfälle sind Frameworks und Klassenbibliotheken.
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.3]{factory.png}
+\end{center}
+
+\newpage
+\section{Singleton}
+\subsection{Idee}
+Von einer Klasse soll ho?chstens eine Instanz existieren.
+\subsection{Motivation}
+\begin{itemize}
+	\item Cache-Implementierungen
+	\item Objekte welche Registryeinstellungen oder Präferenzen verwalten
+	\item Thread-Pool
+	\item Klasse, mit welcher MP3 Dateien abgespielt werden. Falls man wa?hrend dem Abspielen einer Datei eine neue Datei abspielen lässt, so ist das Verhalten unvorhersehbar.
+	\item Treiber (Drucker/Datenbank).
+	\item Kommunikation über Rechnergrenzen hinweg: Versand von Daten u?ber einen Socket
+\end{itemize}
+
+\subsection{Struktur}
+\begin{center}
+	\includegraphics[scale=0.6]{singleton.png}
+\end{center}
+
+\subsection{Implementierung}
+\begin{lstlisting}[language=Java, caption=Java Implementierung, style=JavaStyle]
+public final class Singleton  {
+    private static Singleton instance;
+    private Singleton() {}
+    public synchronized static Singleton getInstance() {
+        if (instance == null) instance = new Singleton();
+        return instance;
+    }
+}
+\end{lstlisting}
+
+\pagebreak 
+Soft-Referenzen werden beim Traversieren des Garbage Collectors zerst\"{o}rt, wenn keine weiteren harten Referenzen auf das Objekt mehr zeigen. Dies verhindert Memory-Leak durch Singleton-Patterns.
+\begin{lstlisting}[language=Java, caption=Java Implementierung (freundlicher für den Garbage Collector), style=JavaStyle]
+import java.lang.ref.SoftReference;
+public final class Singleton {
+    private static SoftReference<Singleton> instance;
+    private Singleton(){}
+    public synchronized static Singleton getInstance(){
+        if(instance == null){
+            instance = new SoftReference<Singleton>(new Singleton());
+        }
+        return instance.get();
+    }
+}
+\end{lstlisting}
+Das Initialization-on-demand Holder Idiom nutzt die Funktionsweise der JVM aus und macht effektiv das Gleiche wie die Synchronized-Variante. Sie ist threadsafe, ohne sich dabei auf spezielle Konstrukte wie synchronized oder volatile berufen zu müssen.
+\begin{lstlisting}[language=Java, caption=Initialization-on-demand holder idiom, style=JavaStyle]
+public class Singleton {
+        private Singleton() { }
+        /**
+        * SingletonHolder is loaded on the first execution 
+        * of Singleton.getInstance() or the first access
+        * to SingletonHolder.INSTANCE, not before.
+        */
+        private static class SingletonHolder { 
+                public static final Singleton INSTANCE = new Singleton();
+        }
+        public static Singleton getInstance() {
+                return SingletonHolder.INSTANCE;
+        }
+}
+\end{lstlisting}
+
+% Inhalt Ende
+\end{document}

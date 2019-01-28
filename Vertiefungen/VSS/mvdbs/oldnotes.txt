@@ -1,0 +1,114 @@
+\section{2 Phase Commit}
+\begin{description}
+ \item [1) WahlPhase] Der Koordinator fragt alle Teilnehmer, ob sie bereit sind für ein
+Commit: Prepare.\\
+Jeder Teilnehmer teilt dem Koordinator seine Entscheidung mit:
+Vote-Commit oder Vote-Abort.
+\item[2) EntscheidungsPhase] Der Koordinator trifft endgültige Entscheidung:
+Commit: Falls alle Teilnehmer bereit zum Commit\\
+Abort: In allen anderen Fällen
+und teilt sie den Teilnehmern mit: Global-Commit oder
+Global-Abort.
+Diese müssen sich entsprechend verhalten und bestätigen:
+Acknowledge.
+\end{description}
+
+\subsection{Ablauf}
+\pic[ 2 phase commit ablauf : write commit in log left global commit to rightmost ready.]{2pcom.png}
+
+\subsection{Beobachtungen}
+\begin{enumerate}
+ \item Ein Teilnehmer kann einseitig Abort durchführen,
+vorausgesetzt, er hat nicht mit Vote-Commit geantwortet.
+\item Nachdem ein Teilnehmer mit Vote-Commit geantwortet hat,
+muss er zum Commit bereit sein und kann nicht mehr
+umentscheiden.
+\item Ein Teilnehmer im Ready-Zustand muss bereit sein zum
+Commit oder Abort, je nach Entscheid des Koordinators.
+\item Die endgültige Entscheidung ist Commit, falls alle
+Teilnehmer Vote-Commit geantwortet haben, oder Abort,
+falls irgendein Teilnehmer mit Vote-Abort geantwortet hat.
+\item Koordinator und Teilnehmer verwenden Time-Out
+Methoden, um möglichen Wartezustand zu verlassen.
+\end{enumerate}
+
+\subsection{Zentralisirtes 2 P C}
+\pic{z2pc.png}
+\subsection{Lineares 2PC}
+\pic{l2pc.png}
+\subsection{Verteiltes 2PC}
+\pic{v2pc.png}
+\subsection{Zustandsübergänge}
+\pic{zu2pc.png}
+
+\subsection{Protokol Bemerkungen}
+\begin{description}
+ \item [Termination Protocols]\hfill \\
+ \begin{itemize}
+  \item Time Out des Koordinators im Zustand WAIT,ABORT,und COMMIT möglich.
+  \item WAIT Zustand
+  \subitem Koordinator wartet auf Entscheid der Teilnehmer.
+  \subitem \textbf{Lösung:} Koordinator entscheidet Global-Abort Transaktion.
+  \item COMMIT oder ABORT Zustand
+  \subitem Koordinator ist nicht sicher ob das Commit oder Abort Verfahren durch die LRMs aller Teilnehmer durchgeführt 
+wurde.
+\subitem \textbf{Lösung:} Global Commit oder Global Abort an alle Teilnehmer , die nicht geantwortet haben, erneut 
+senden.
+\item Time out eines Teilnehmers im Zustand INITIAL oder READY  möglich
+\item INITIAL Zustand
+\subitem Teilnehmer wartet auf das Prepare des Koordinators
+\subitem \textbf{Lösung:} Teilnehmer führt einseitig Abort dürch. Falls Prepare später ankommt, mit Vote-Abort 
+antworten oder ignorieren.
+\item READY Zustand
+\subitem Teilnehmer darf nach dem Vote Commit nicht umentscheiden und einsitig Abort durchführen.
+\subitem \textbf{Lösung:} Teilnehmer blokiert und muss auf den entgültigen Entscheid des Koordinators warten.
+ \end{itemize}
+\item[Recovery Protocols] \begin{itemize}
+                           \item Protokolle die ein Koordinator oder Teilnehmer nach einem Ausfall verwenden für die 
+Wiederherstellung beim Neustart.
+\item Annahmen: 
+\subitem Beschreiben des Logs und Versenden von Nachrichten ist eine Atomare Aktion
+\subitem Zustandsübergänge erfolgen nach Versenden der Nachricht.
+\end{itemize}
+\item[Ausfall des Koordinators] \hfill \\
+\begin{itemize}
+ \item Koordinator im Zustand INITIAL fällt aus 
+ \subitem Neustart der Transaktion
+ \item Koordinator im Zustand WAIT fällt aus :
+ \subitem Neustart des Commit Verfahrens mit nochmaligem Versenden der Prepare nachricht.
+ \item Koordinator im Zustand COMMIT oder ABORT fällt aus:
+ \subitem Falls alle Aknowledge Meldungen erhalten ist nichts zu tun.
+ \subitem Sonst Termination Protocols anwenden.
+ \item Teilneh,mer im Zustand INITIAL fällt aus :
+ \subitem Nach der Wiederherstellung führt Teilnehmer einseitig ein Abort der Transaktion durch.
+ \item Teilnehmer im Zustand READY fällt aus :
+ \subitem Ablauf wie nach Time Out im Ready Zustand und Termination Protocols anwenden
+ \item Ausfall bei COMMIT oder ABORT
+ \subitem Nichts tun.
+\end{itemize}
+\item[Probleme mit 2PC] \hfill \\
+\begin{itemize}
+ \item Blockierend
+  \subitem Im Zustand READY muss Teilnehmer auf Entscheid des Koordinators warten.
+  \subitem Fällt Koordinator aus, ist Teilnehmer blockiert.
+  \subitem Damit wird Verfügbarkeit reduziert.
+  \item Unanhängiges Recovery nicht möglich
+  \subitem Recovery eines Teilnehmers nach Ausfall in Zustand READY kann nicht unabhängig erfolgen.
+  \subitem Verfügbarkeit des Koordinators oder eines Teilnehmers , der die Rolle des Koordinators übernimmt ist nötig.
+\end{itemize}
+\end{description}
+
+\section{3 Phase Commit}
+\begin{itemize}
+ \item 3PC ist nicht blockierend.
+ \item Commit Protocol ist nicht Blockierend genau dann wenn
+ \subitem es synchron ist innerhalb eines Zustandübergangs. 
+ \subitem es keine Zustände hat die
+ \subsubitem benachbart sind zu einem Commit und Abort Zustand
+ \subsubitem benachbart sind zu einem Commit Zustand aber nicht ``commitable''
+ \item ``Commitable'' : Zustand in dem sichergestellt ist, dass alle Teilnehmer mit Vote Commit geantwortet haben.
+ 
+\end{itemize}
+
+\subsection{Zustandsübergänge}
+\pic{3pczu.png}
