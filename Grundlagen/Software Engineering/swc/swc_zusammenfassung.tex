@@ -1,4 +1,11 @@
 \documentclass[10pt]{article}
+%Packages
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{caption}
 
 %Math
 \usepackage{amsmath}
@@ -7,8 +14,7 @@
 \usepackage{amsthm}
 \usepackage{ulem}
 \usepackage{stmaryrd} %f\UTF{00FC}r Blitz!
-\usepackage{multirow}
-\usepackage{multicol}
+
 
 %PageStyle
 \usepackage[ngerman]{babel} % deutsche Silbentrennung
@@ -42,11 +48,7 @@
 \newcommand{\Ral}{\Longrightarrow}
 \newcommand{\Lal}{\Longleftarrow}
 
-% Code listenings
-\usepackage{color}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{caption}
+% Java Code listenings
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
@@ -74,6 +76,29 @@
  framexrightmargin=5pt,
  framexbottommargin=4pt,
  showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+}
+
+% XML Snippet Listings
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape
+}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
 }
 
 %Config
@@ -244,13 +269,16 @@ Bezeichnet den Vorgang wenn Dateien aus dem Repository mit der eigenen Working C
 \subsubsection{Revision, Version}
 Jeder Commit verändert den Inhalt des Repositories und erzeugt somit eine neue Version oder Revision des Repositories die eindeutig identifizierbar sein muss. Dies ist notwendig um später wieder auf einen bestimmten Stand der Arbeit zurückzukehren zu können. Manche Repositories verwenden mehrstellige Versionsnummern (z.B. CVS), andere nummerieren die Commits einfach durch (z.B. Subversion) oder vergeben einen Hash (z.B. Git) als Identifikation.
 \subsubsection{Entwicklungsverlauf (Baseline, Codeline, Line of Development}
-TODO
-\subsubsection{Branch}
-TODO
-\subsubsection{Merging}
-TODO
-\subsubsection{Tag, Label}
+Dies sind Bezeichnungen für eine Menge von relevanten Projektdateien die zusammen gehören und die miteinander weiterentwickelt werden. Eine Working Copy enthält all diese Dateien einmal. Ein Entwicklungsverlauf bezeichnet aber die gesamte Historie dieser Dateien während des Entwicklungsverlaufes. D.h. er enthält alle relevanten Projektdateien in allen Versionen für einen bestimmten Entwicklungsverlauf. Ein Entwicklungsverlauf ist eindeutig über seinen Revisionsverlauf gekennzeichnet. Der Hauptentwicklungsverlauf wird in Subversion oder CVS auch einfach \textit{trunk} genannt und in Git heisst er üblicherweise \textit{master}.
 
+\subsubsection{Branch}
+So wird eine Verzweigung von Entwicklungsverläufen genannt. Branches sind selber auch wieder Entwicklungsverläufe. Sie enthalten selber eine eigene, von anderen Entwicklungsverläufen unabhängigen Historie. Je nach Versionsverwaltungssystem werden Branches unterschiedlich eingesetzt. Ein mögliches Szenario ist z.B. wenn die Entwicklung an einer Version 2 weiterläuft (Hauptentwicklungsverlauf) und gleichzeitig die alte Version 1.x noch weiter gewartet werde soll (Branch). 
+
+\subsubsection{Merging}
+Bezeichnet den Vorgang zwei Entwicklungsverläufe zu vereinen. Dazu müssen Dateien in unterschiedlichen Versionen zusammengeführt werden. Dies ist in der Regel ein manueller Vorgang der nur bedingt automatisiert werden kann. Wie beim Branching wird auch das Merging unterschiedlich unterstützt von den verschiedenen Versionskontrollsystemen. 
+
+\subsubsection{Tag, Label}
+Identifiziert bzw. markiert eine bestimmte Revision eines Entwicklungsverlaufes oder Configuration Items und fügt ihm noch zusätzliche Informationen hinzu (z.B. gibt ihm einen bestimmten Namen oder Bemerkung wie beispielsweise: „Release für Demo anlässlich Veranstaltung xxx“). Tags sind konzeptionell keine Entwicklungsverläufe sondern nur eine Momentaufnahme (Snapshot) eines solchen.
 
 \subsection{Configuration Items}
 \begin{center}
@@ -275,10 +303,292 @@ Video / Audiofiles (kleine) & Compilate &\\
 \section{Build - Automation}
 Die Komponenten einer Software werden per Knopfdruck erstellt. Macht meist mehrer Dinge auf einmal (Code compilieren, Tests durchlaufen, Checkout, Kopie auf Server, E-Mail). Der Buildvorgang kann auch automatisch gestartet werden.
 \subsection{Wieso wird dies benötigt, Probleme}
-TODO
+\begin{itemize}
+	\item Die Entwickler können die Applikation nicht zuverlässig lokal erstellen
+	\item Fehlen einer konsistenten Versionierung
+	\item Unit Testing ist nicht konsistent
+	\item Status des Build ist nicht bekannt
+	\item Abhängigkeiten von Komponenten ist nicht bekannt
+	\item Entwicklung ist nicht transparent
+	\item Handarbeit ist fehleranfällig
+	\item Wiederholende Arbeit ist langweilig
+	\item Automation ist auch Dokumentation
+\end{itemize}
+
 \subsection{Build Prozess}
 \includegraphics{assets/buildprozess.png}
 
+\subsection{Benötigte Komponenten}
+\begin{itemize}
+	\item Build Server
+	\item Source Code Control Server
+	\item Prozesse
+	\item Tools
+	\item Entwickler Verantwortung (Code checked before end of day, buildable, passed unit test)
+\end{itemize}
+
+\subsection{CRISP}
+\begin{itemize}
+	\item Complete (Tests erfolgreich, alle Komponenten enthalten)
+	\item Repeatable (Wiederherstellung von alten Builds, keine Binary committen, bugfixing)
+	\item Informative (Code Dokumentation, Infos für Merging)
+	\item Schedulable (planbar, für Akronym)
+	\item Portable (definierte Portabilität, auch auf anderen System funktional)
+\end{itemize}
+
+\subsection{Maven}
+Maven ist ein Build Automation Tool und der de-facto Standard in Java Projekten. Maven setzt auf deklarative Konfiguration und folgten dem Ansatz Konvention vor Konfiguration. \textbf{Put the source in the correct directory and Maven will take care of the rest}.
+
+\subsubsection{Project Model (POM)}
+Enthält die Informationen für den Output.
+
+
+\begin{center}
+	\begin{tabular}{|ll|c} 
+		\includegraphics[scale=0.5\textwidth]{assets/pom.png} 
+		& 
+		\lstset{language=XML}
+			\begin{lstlisting}
+				<project>
+					<modelVersion>4.0.0</modelVersion> 
+					
+					<groupId>ch.fhnw.imvs</groupId>
+					<artifactId>myapp</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<packaging>jar</packaging>
+					
+					<name>My First App</name>
+					<url>http://maven.apache.org</url>
+				</project>
+			\end{lstlisting}
+		\\
+	\end{tabular}
+\textbf{Pflichtfelder: groupeId, artifactId, version und packaging}
+\end{center}
+
+\subsubsection{Standard Build Prozess}
+\begin{tabular}{|ll|c} 
+\hline
+Begriff & Beschreibung  \\
+\hline
+	\textbf{validate} & check if project is valid and all necessary information is available \\
+	\textbf{process-resources} & convert and filter resource files \\
+	\textbf{compile} & compile source code \\
+	\textbf{test-compile} & compile test code \\
+	\textbf{test} & Execute tests \\
+	\textbf{package} & package the artifact \\
+	\textbf{integration-test} & execute integration tests \\
+	\textbf{install} & copy artifact into the local repository \\
+	\textbf{deploy} & publish artifact in the remote repository \\
+\hline
+\end{tabular}
+
+\subsubsection{Directory Structure}
+\begin{center}
+	\begin{tabular}{|ll|c} 
+		\includegraphics[scale=0.5\textwidth]{assets/mvn_directory_structure.png} 
+		& 
+		\begin{itemize}
+			\item Java-Source (to be delivered)
+			\item Non-Source Files (properties, icons …)
+			\item Test Classes
+			\item Resources for testing only
+			\item generated files
+		\end{itemize}				
+		\\
+	\end{tabular}
+\textbf{Pflichtfelder: groupeId, artifactId, version und packaging}
+\end{center}
+
+\subsubsection{Fallbeispiel POM}
+\lstset{language=XML}
+\begin{lstlisting}
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.fhnw.swc</groupId>
+  <artifactId>MRS19</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <build>	
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.8</version>
+      </plugin>
+      <plugin>
+ 	<groupId>org.codehaus.mojo</groupId>
+ 	<artifactId>jaxws-maven-plugin</artifactId>
+ 	<version>1.12</version>
+      </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.16</version>
+        <configuration>
+          <configLocation>src/main/config/swc_checks.xml</configLocation>
+        </configuration>
+      </plugin>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>2.2.1</version>
+	<configuration>
+	  <archive>
+	    <manifest>
+             <mainClass>ch.fhnw.edu.rental.MovieRentalApplication</mainClass>
+	    </manifest>
+	  </archive>
+	  <descriptorRefs>
+	  <descriptorRef>jar-with-dependencies</descriptorRef>
+	  </descriptorRefs>
+	</configuration>
+	<executions>
+		<execution>
+			<phase>package</phase>
+			<goals>
+				<goal>assembly</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+<plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <configuration>
+        	<stylesheet>maven</stylesheet>
+        	<doctitle>Movie Rental System - Software Construction Lab</doctitle>
+        	<footer>Copyright © 2015 Christoph Denzler, Martin Kropp - IMVS, FHNW</footer>
+        </configuration>
+        <executions>
+            <execution>
+                <id>generate-javadocs</id>
+                <phase>generate-sources</phase>
+                <goals>
+                    <goal>javadoc</goal>
+                </goals>
+            </execution>
+            <execution>
+                <id>attach-javadocs</id>
+                <phase>package</phase>
+                <goals>
+                    <goal>jar</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
+		
+    </plugins>
+    <pluginManagement>
+    	<plugins>
+    		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+    		<plugin>
+    			<groupId>org.eclipse.m2e</groupId>
+    			<artifactId>lifecycle-mapping</artifactId>
+    			<version>1.0.0</version>
+    			<configuration>
+    				<lifecycleMappingMetadata>
+    					<pluginExecutions>
+    						<pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>
+    									org.apache.maven.plugins
+    								</groupId>
+    								<artifactId>
+    									maven-javadoc-plugin
+    								</artifactId>
+    								<versionRange>
+    									[2.10.3,)
+    								</versionRange>
+    								<goals>
+    									<goal>javadoc</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore></ignore>
+    							</action>
+    						</pluginExecution>
+    					</pluginExecutions>
+    				</lifecycleMappingMetadata>
+    			</configuration>
+    		</plugin>
+    	</plugins>
+    </pluginManagement>
+  </build>
+
+  <dependencies>
+  	<dependency>
+  		<groupId>org.dbunit</groupId>
+  		<artifactId>dbunit</artifactId>
+  		<version>2.5.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.hsqldb</groupId>
+  		<artifactId>hsqldb</artifactId>
+  		<version>2.3.2</version>
+  		<scope>runtime</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>junit</groupId>
+  		<artifactId>junit</artifactId>
+  		<version>4.11</version>
+  		<scope>test</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.slf4j</groupId>
+  		<artifactId>slf4j-nop</artifactId>
+  		<version>1.7.12</version>
+  		<scope>runtime</scope>
+  	</dependency>
+  	<dependency>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-javadoc-plugin</artifactId>
+		<version>2.10.3</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-jdk14</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-checkstyle-plugin</artifactId>
+		<version>2.16</version>
+	</dependency>
+  </dependencies>
+</project>
+\end{lstlisting}
+
+\section{Clean Code}
+Clean code is \textbf{simple} and direct. Clean code reads like well-written prose. Clean code never obscures the designer’s intent but rather is full of \textbf{crisp} abstractions and \textbf{straightforward} lines of control.
+\begin{center}
+\includegraphics[scale=1.0]{assets/clean_code.tif}
+\end{center}
+
+\subsection{Grundsätze}
 
 
 % Inhalt Ende 
