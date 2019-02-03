@@ -1,4 +1,5 @@
 \documentclass[10pt]{article}
+
 %Packages
 \usepackage{multirow}
 \usepackage{multicol}
@@ -29,6 +30,8 @@
 \setlength{\textwidth}{17cm}
 \setlength{\oddsidemargin}{-0.5cm}
 
+% Colors
+\definecolor{darkgreen}{rgb}{0.3,0.7,0.3}
 
 % Shortcommands
 \newcommand{\Bold}[1]{\textbf{#1}} %Boldface
@@ -377,18 +380,21 @@ morekeywords={xmlns,type}% list your attributes here
         \hline
     \end{tabular}
      \end{center}
+	
+	\newpage
 
     \subsubsection{Directory Structure}
-
-			\includegraphics[scale=0.5]{assets/mvn_directory_structure}
-               
-                \begin{itemize}
-                \item Java-Source (to be delivered)
-                \item Non-Source Files (properties, icons \ldots)
-                \item Test Classes
-                \item Resources files
-            \end{itemize}
-
+    \begin{multicols}{2}
+    	\includegraphics[scale=0.5]{assets/mvn_directory_structure.png}
+    	\begin{itemize}
+			\item Java-Source (to be delivered)
+			\item Non-Source Files (properties, icons …)
+			\item Test Classes
+			\item Resources for testing only
+			\item generated files
+		\end{itemize}
+    \end{multicols}
+				
 	\newpage
     \subsubsection{Fallbeispiel POM}
     \lstinputlisting[language=XML]{assets/pom.xml}
@@ -707,6 +713,122 @@ morekeywords={xmlns,type}% list your attributes here
 	
 	
 	\section{Software Smells \& Refactoring }
+	Is the process of changing a software system in such a way that
+	it does not alter the external behavior of the code, yet improves
+	its internal structure. \textit{Martin Fowler, 1999}
+	
+	\subsection{Code Smell}
+	A \textcolor{red}{\textit{Code Smell}} is a hint that something \textcolor{red}{\textit{might}} be wrong with the code.
+	\subsection{How do i find Code Smells?}
+	\begin{itemize}
+		\item Sniff out the “bad smells in code”! (Check out Martin Fowler, Cap 3)
+		\item 	Analyze your code
+			\subitem Manually, by looking at the code
+			\subitem Automated, using software analysis tools
+				\subsubitem Checkstyle for java 
+				\subsubitem Spotbugs for Java
+				\subsubitem PMD for Java
+	\end{itemize}
+	
+	\subsection{Some Typical Code Smells}
+	\begin{multicols}{2}
+	\begin{itemize}
+		\item “Too Much” Code Smells Duplicated Code
+			\subitem Long Method
+			\subitem Large Class
+			\subitem Long Parameter List
+			\subitem Feature Envy
+			\subitem Switch Statements
+			\subitem Parallel Inheritance Hierarchies \\
+		\item Code Change Smells
+			\subitem Divergent Change
+			\subitem Shotgun Surgery
+			\item “Not enough” Code Smells
+			\subitem Empty Catch Clause 
+		\item Comment Smells
+			\subitem Need To Comment 
+			\subitem Too much Comments
+	\end{itemize}	
+	\end{multicols}
+	\subsection{Why Refactoring}
+	\begin{itemize}
+		\item Context: You need to modify existing code 
+			\subitem extend/adapt/correct/...
+		\item (Bad) Solution:
+			\subitem Just add new features
+		\item Consequence: 
+			\subitem Design decays
+			\subitem Duplicated code
+			\subitem Long methods / classes , ...
+		\item (Good) Solution:
+			\subitem first make code simpler, prepare for more complexity resp. $\rightarrow$ Refactor
+			\subitem Add new features
+		\item Consequence:
+			\subitem Code stays simple
+	\end{itemize}
+	\subsection{Benefits of Refactoring}
+	\begin{itemize}
+		\item Refactoring improves the design of your system 
+			\subitem Fight code rot!
+		\item  Refactoring makes your software easier to understand 
+			\subitem because structure is improved
+			\subitem duplicated code is removed
+			\subitem etc.
+		\item Refactoring helps you to find bugs
+			\subitem because it promotes a deep understanding of the code
+		\item Refactoring saves development time 
+			\subitem because good code is easier to evolve 
+			\subitem because your code/design is more robust
+	\end{itemize}
+
+	\subsection{Prerequisites for Refactoring}
+	\subsubsection{Automated measures}
+	\begin{itemize}
+		\item Version Control System 
+		\item Continuous integration 
+		\item Tests
+		\item Coding standards
+	\end{itemize}
+	
+	\subsubsection{Social measures}
+	These are in descent order of importance
+	\begin{itemize}
+		\item Collective ownership 
+		\item Rules of Simplicity
+		\item Sustainable Pace
+		\item Pair programming
+	\end{itemize}
+	\subsubsection{The two Hats of Refactoring}
+	\begin{itemize}
+		\item \textcolor{red}{Don't try to clean the code when wearing the function hat.}
+		\item \textcolor{darkgreen}{Don't try to add features when wearing the refactoring hat.}
+	\end{itemize}
+	\subsection{Refactoring Workflow}
+	\begin{center}
+		\includegraphics[scale=0.4]{assets/refactoring_workflow.png}
+	\end{center}
+	
+	\subsection{When?}
+	\begin{itemize}
+		\item Do refactor
+			\subitem Before or after you add functionality
+			\subitem When you learn something about the code 
+			\subitem As a consequence of a bug fix
+			\subitem As a consequence of code review
+		\item Do not refactor
+			\subitem When the tests are not passing
+			\subitem When you should re-implement the code 
+	\end{itemize}
+
+	\subsection{Problems with Refactoring}
+	\begin{itemize}
+		\item ▪ Taken too far, refactoring can lead to incessant tinkering with the code, trying to make it perfect
+		\item ▪ Databases can be difficult to refactor
+code is easy to change; databases are not
+▪ Refactoring published interfaces can cause problems for the code that uses those interfaces
+	\end{itemize}
+
+	
 	%Neues Kapitel, neue Seite
 	\newpage
 	
@@ -727,7 +849,7 @@ morekeywords={xmlns,type}% list your attributes here
 	A useful metric has four characteristics
 	\begin{itemize}
 		\item \textbf{Measurable:} If you can’t measure it, you can’t use it!
-		\item \textbf{Independent:} A metric must be independent of any influence of the project members!→If they can manipulate the metric, it gets useless!
+		\item \textbf{Independent:} A metric must be independent of any influence of the project members! If they can manipulate the metric, it gets useless!
 		\item \textbf{Reliable:} Conclusions drawn from metrics must be plausible. Therefore the raw data must be reliable.
 		\item \textbf{Accurate:} Metrics must be accurate, to be useful. Even if the precision varies!
 	\end{itemize}
@@ -809,9 +931,9 @@ morekeywords={xmlns,type}% list your attributes here
 	\end{multicols}
 	Oft falsch gemacht:
 	\begin{itemize}
-		\item switch-Statement selbst ist kein Entscheidungspunkt, wohl aber jedes einzelne case- Statement. Denn erst bei den case-Statements steht die Bedingung, welche entscheidet, ob der nachfolgende Block ausgeführt wird.
-		\item Else und default sind keine Entscheidungspunkte, die Entscheidung wird im if, bzw in allen anderen case-Statements getroffen. Else und default sind dann nur noch die übrigbleibende Alternative.
-		\item break: springt zwar auch im Kontrollfluss über folgende Statements hinweg, ist aber kein Entscheidungspunkt, da der Sprung unbedingt ist.
+		\item switch-Statement selbst ist kein Entscheidungspunkt, wohl aber jedes einzelne case- Statement. Denn erst bei den case-Statements steht die Bedingung, welche entscheidet, ob der nachfolgende Block ausgef\"uhrt wird.
+		\item Else und default sind keine Entscheidungspunkte, die Entscheidung wird im if, bzw in allen anderen case-Statements getroffen. Else und default sind dann nur noch die \"ubrigbleibende Alternative.
+		\item break: springt zwar auch im Kontrollfluss \"uber folgende Statements hinweg, ist aber kein Entscheidungspunkt, da der Sprung unbedingt ist.
 	\end{itemize}
 	
 	%Neues Kapitel, neue Seite

@@ -76,7 +76,7 @@
                 <configuration>
                     <stylesheet>maven</stylesheet>
                     <doctitle>Movie Rental System - Software Construction Lab</doctitle>
-                    <footer>Copyright © 2015 Christoph Denzler, Martin Kropp - IMVS, FHNW</footer>
+                    <footer>Copyright 2015 Christoph Denzler, Martin Kropp - IMVS, FHNW</footer>
                 </configuration>
                 <executions>
                     <execution>

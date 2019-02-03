@@ -80,6 +80,9 @@
 \contentsline {subsection}{\numberline {7.2}Know Where To Put Comments!}{21}
 \contentsline {subsection}{\numberline {7.3}Hints}{21}
 \contentsline {section}{\numberline {8}Software Smells \& Refactoring }{22}
+\contentsline {subsection}{\numberline {8.1}Code Smell}{22}
+\contentsline {subsection}{\numberline {8.2}How do i find Code Smells?}{22}
+\contentsline {subsection}{\numberline {8.3}Some Typical Code Smells}{22}
 \contentsline {section}{\numberline {9}Metrics}{23}
 \contentsline {subsection}{\numberline {9.1}Software Quality}{23}
 \contentsline {subsection}{\numberline {9.2}Characteristics of useful Metrics}{23}
