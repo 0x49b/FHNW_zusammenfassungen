@@ -1,0 +1,94 @@
+\babel@toc {ngerman}{}
+\contentsline {section}{\numberline {1}Software Construction}{1}
+\contentsline {subsection}{\numberline {1.1}Definition}{1}
+\contentsline {subsection}{\numberline {1.2}Low Level SWC}{1}
+\contentsline {subsection}{\numberline {1.3}Wieso ist SWC wichtig}{1}
+\contentsline {subsection}{\numberline {1.4}Software Qualit\"at}{2}
+\contentsline {subsection}{\numberline {1.5}Ziele}{2}
+\contentsline {subsection}{\numberline {1.6}Extreme Programming}{2}
+\contentsline {section}{\numberline {2}Version Control System}{3}
+\contentsline {subsection}{\numberline {2.1}Motivation f\"ur eine VCS}{3}
+\contentsline {subsection}{\numberline {2.2}Problem of Filesharing}{3}
+\contentsline {subsection}{\numberline {2.3}Lock-Modify-Unlock Solution}{3}
+\contentsline {subsection}{\numberline {2.4}Copy-Modify-Merge Solution}{4}
+\contentsline {subsection}{\numberline {2.5}Grundbegriffe Versions- und Release-Management}{4}
+\contentsline {subsubsection}{\numberline {2.5.1}Version}{4}
+\contentsline {subsubsection}{\numberline {2.5.2}Release}{4}
+\contentsline {subsubsection}{\numberline {2.5.3}Major}{4}
+\contentsline {subsubsection}{\numberline {2.5.4}Minor}{4}
+\contentsline {subsubsection}{\numberline {2.5.5}Patch}{4}
+\contentsline {subsubsection}{\numberline {2.5.6}Build}{4}
+\contentsline {subsubsection}{\numberline {2.5.7}Revision}{4}
+\contentsline {subsubsection}{\numberline {2.5.8}Variante}{5}
+\contentsline {subsection}{\numberline {2.6}Grundbegriffe VCS}{5}
+\contentsline {subsubsection}{\numberline {2.6.1}Repository}{5}
+\contentsline {subsubsection}{\numberline {2.6.2}Working Copy}{5}
+\contentsline {subsubsection}{\numberline {2.6.3}Checkout / Clone}{5}
+\contentsline {subsubsection}{\numberline {2.6.4}Commit / Push}{5}
+\contentsline {subsubsection}{\numberline {2.6.5}Update / Fetch / Pull}{5}
+\contentsline {subsubsection}{\numberline {2.6.6}Revision, Version}{5}
+\contentsline {subsubsection}{\numberline {2.6.7}Entwicklungsverlauf (Baseline, Codeline, Line of Development}{6}
+\contentsline {subsubsection}{\numberline {2.6.8}Branch}{6}
+\contentsline {subsubsection}{\numberline {2.6.9}Merging}{6}
+\contentsline {subsubsection}{\numberline {2.6.10}Tag, Label}{6}
+\contentsline {subsection}{\numberline {2.7}Configuration Items}{6}
+\contentsline {section}{\numberline {3}Build - Automation}{7}
+\contentsline {subsection}{\numberline {3.1}Wieso wird dies ben\"otigt, Probleme}{7}
+\contentsline {subsection}{\numberline {3.2}Build Prozess}{7}
+\contentsline {subsection}{\numberline {3.3}Ben\"otigte Komponenten}{7}
+\contentsline {subsection}{\numberline {3.4}CRISP}{8}
+\contentsline {subsection}{\numberline {3.5}Maven}{8}
+\contentsline {subsubsection}{\numberline {3.5.1}Project Model (POM)}{8}
+\contentsline {subsubsection}{\numberline {3.5.2}Standard Build Prozess}{8}
+\contentsline {subsubsection}{\numberline {3.5.3}Directory Structure}{9}
+\contentsline {subsubsection}{\numberline {3.5.4}Fallbeispiel POM}{10}
+\contentsline {section}{\numberline {4}Clean Code}{13}
+\contentsline {subsection}{\numberline {4.1}Grunds\"atze}{13}
+\contentsline {subsection}{\numberline {4.2}Wieso CleanCode}{13}
+\contentsline {subsection}{\numberline {4.3}Konzepte}{13}
+\contentsline {subsubsection}{\numberline {4.3.1}Vertical Openness}{13}
+\contentsline {subsubsection}{\numberline {4.3.2}Vertical density}{13}
+\contentsline {subsubsection}{\numberline {4.3.3}Vertical Distance and Ordering}{14}
+\contentsline {subsubsection}{\numberline {4.3.4}Horizontal Openness and Density}{14}
+\contentsline {subsubsection}{\numberline {4.3.5}Team Rules}{14}
+\contentsline {section}{\numberline {5}Continous Integration}{15}
+\contentsline {subsubsection}{\numberline {5.0.1}Fehlerhafte Integration}{15}
+\contentsline {subsubsection}{\numberline {5.0.2}Arbeiten mit Continous Integration}{15}
+\contentsline {subsection}{\numberline {5.1}Prerequisites of Continuous Integration}{15}
+\contentsline {subsection}{\numberline {5.2}Jenkins}{15}
+\contentsline {subsection}{\numberline {5.3}Jenkins Componenten und Add Ons}{16}
+\contentsline {section}{\numberline {6}Unit Testing}{17}
+\contentsline {subsection}{\numberline {6.1}Fault, Error and Failure}{17}
+\contentsline {subsubsection}{\numberline {6.1.1}Fault}{17}
+\contentsline {subsubsection}{\numberline {6.1.2}Software Error}{17}
+\contentsline {subsubsection}{\numberline {6.1.3}Software Failure}{17}
+\contentsline {subsection}{\numberline {6.2}Ablauf}{17}
+\contentsline {subsection}{\numberline {6.3}Schlechte Ausreden gegen Unit Testing}{17}
+\contentsline {subsection}{\numberline {6.4}JUnit}{18}
+\contentsline {subsubsection}{\numberline {6.4.1}Gute JUnit Tests}{18}
+\contentsline {subsubsection}{\numberline {6.4.2}Equivalent Klassen}{18}
+\contentsline {subsubsection}{\numberline {6.4.3}Right BICEP}{18}
+\contentsline {subsubsection}{\numberline {6.4.4}Grundbegriffe}{18}
+\contentsline {subsection}{\numberline {6.5}Testing in Isolation}{19}
+\contentsline {subsubsection}{\numberline {6.5.1}Test Doubles}{19}
+\contentsline {subsubsection}{\numberline {6.5.2}Test Doubles in Unit Testing}{19}
+\contentsline {subsubsection}{\numberline {6.5.3}Test Doubles - Stubs}{19}
+\contentsline {subsubsection}{\numberline {6.5.4}Stubs - Sample Application}{20}
+\contentsline {subsection}{\numberline {6.6}Mock Testing}{20}
+\contentsline {section}{\numberline {7}Javadoc}{21}
+\contentsline {subsection}{\numberline {7.1}Tags In javadoc Comments}{21}
+\contentsline {subsection}{\numberline {7.2}Know Where To Put Comments!}{21}
+\contentsline {subsection}{\numberline {7.3}Hints}{21}
+\contentsline {section}{\numberline {8}Software Smells \& Refactoring }{22}
+\contentsline {section}{\numberline {9}Metrics}{23}
+\contentsline {subsection}{\numberline {9.1}Software Quality}{23}
+\contentsline {subsection}{\numberline {9.2}Characteristics of useful Metrics}{23}
+\contentsline {subsection}{\numberline {9.3}Static Software Metrics}{23}
+\contentsline {subsection}{\numberline {9.4}Dynamic Software Metrics}{24}
+\contentsline {subsection}{\numberline {9.5}What else can be measured}{24}
+\contentsline {subsection}{\numberline {9.6}Cyclomatic Complexity (McCabe)}{25}
+\contentsline {subsubsection}{\numberline {9.6.1}Decision Points}{25}
+\contentsline {section}{\numberline {10}Logging}{26}
+\contentsline {section}{\numberline {11}Codebeispiele}{26}
+\contentsline {subsection}{\numberline {11.1}RentalTest}{26}
+\contentsline {subsection}{\numberline {11.2}Checkstyle}{29}
