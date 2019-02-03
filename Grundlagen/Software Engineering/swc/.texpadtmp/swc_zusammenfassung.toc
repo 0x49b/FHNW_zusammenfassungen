@@ -75,23 +75,62 @@
 \contentsline {subsubsection}{\numberline {6.5.3}Test Doubles - Stubs}{19}
 \contentsline {subsubsection}{\numberline {6.5.4}Stubs - Sample Application}{20}
 \contentsline {subsection}{\numberline {6.6}Mock Testing}{20}
-\contentsline {section}{\numberline {7}Javadoc}{21}
-\contentsline {subsection}{\numberline {7.1}Tags In javadoc Comments}{21}
-\contentsline {subsection}{\numberline {7.2}Know Where To Put Comments!}{21}
-\contentsline {subsection}{\numberline {7.3}Hints}{21}
-\contentsline {section}{\numberline {8}Software Smells \& Refactoring }{22}
-\contentsline {subsection}{\numberline {8.1}Code Smell}{22}
-\contentsline {subsection}{\numberline {8.2}How do i find Code Smells?}{22}
-\contentsline {subsection}{\numberline {8.3}Some Typical Code Smells}{22}
-\contentsline {section}{\numberline {9}Metrics}{23}
-\contentsline {subsection}{\numberline {9.1}Software Quality}{23}
-\contentsline {subsection}{\numberline {9.2}Characteristics of useful Metrics}{23}
-\contentsline {subsection}{\numberline {9.3}Static Software Metrics}{23}
-\contentsline {subsection}{\numberline {9.4}Dynamic Software Metrics}{24}
-\contentsline {subsection}{\numberline {9.5}What else can be measured}{24}
-\contentsline {subsection}{\numberline {9.6}Cyclomatic Complexity (McCabe)}{25}
-\contentsline {subsubsection}{\numberline {9.6.1}Decision Points}{25}
-\contentsline {section}{\numberline {10}Logging}{26}
-\contentsline {section}{\numberline {11}Codebeispiele}{26}
-\contentsline {subsection}{\numberline {11.1}RentalTest}{26}
-\contentsline {subsection}{\numberline {11.2}Checkstyle}{29}
+\contentsline {subsubsection}{\numberline {6.6.1}When to use Mock Objects}{20}
+\contentsline {subsubsection}{\numberline {6.6.2}Pros and Cons of Mock Objects}{20}
+\contentsline {subsection}{\numberline {6.7}Mockito}{21}
+\contentsline {subsubsection}{\numberline {6.7.1}Mocking Usage Pattern}{21}
+\contentsline {subsubsection}{\numberline {6.7.2}Mockito Benefits}{21}
+\contentsline {section}{\numberline {7}Javadoc}{22}
+\contentsline {subsection}{\numberline {7.1}Tags In javadoc Comments}{22}
+\contentsline {subsection}{\numberline {7.2}Know Where To Put Comments!}{22}
+\contentsline {subsection}{\numberline {7.3}Hints}{22}
+\contentsline {section}{\numberline {8}Software Smells \& Refactoring }{23}
+\contentsline {subsection}{\numberline {8.1}Code Smell}{23}
+\contentsline {subsection}{\numberline {8.2}How do i find Code Smells?}{23}
+\contentsline {subsection}{\numberline {8.3}Some Typical Code Smells}{23}
+\contentsline {subsection}{\numberline {8.4}Why Refactoring}{23}
+\contentsline {subsection}{\numberline {8.5}Benefits of Refactoring}{24}
+\contentsline {subsection}{\numberline {8.6}Prerequisites for Refactoring}{24}
+\contentsline {subsubsection}{\numberline {8.6.1}Automated measures}{24}
+\contentsline {subsubsection}{\numberline {8.6.2}Social measures}{24}
+\contentsline {subsubsection}{\numberline {8.6.3}The two Hats of Refactoring}{24}
+\contentsline {subsection}{\numberline {8.7}Refactoring Workflow}{25}
+\contentsline {subsection}{\numberline {8.8}When?}{25}
+\contentsline {subsection}{\numberline {8.9}Problems with Refactoring}{25}
+\contentsline {section}{\numberline {9}Metrics}{26}
+\contentsline {subsection}{\numberline {9.1}Software Quality}{26}
+\contentsline {subsection}{\numberline {9.2}Characteristics of useful Metrics}{26}
+\contentsline {subsection}{\numberline {9.3}Static Software Metrics}{26}
+\contentsline {subsection}{\numberline {9.4}Dynamic Software Metrics}{27}
+\contentsline {subsection}{\numberline {9.5}What else can be measured}{27}
+\contentsline {subsection}{\numberline {9.6}Cyclomatic Complexity (McCabe)}{28}
+\contentsline {subsubsection}{\numberline {9.6.1}Decision Points}{28}
+\contentsline {subsection}{\numberline {9.7}Cohesion and Coupling Metrics}{29}
+\contentsline {subsection}{\numberline {9.8}LCOM - Lack of cohesion in methods}{29}
+\contentsline {section}{\numberline {10}Logging}{31}
+\contentsline {subsection}{\numberline {10.1}Why logging?}{31}
+\contentsline {subsection}{\numberline {10.2}Value of Logging}{31}
+\contentsline {subsection}{\numberline {10.3}Approaches to logging}{31}
+\contentsline {subsubsection}{\numberline {10.3.1}Benefits using Logframeworks}{31}
+\contentsline {subsection}{\numberline {10.4}Log4j*}{32}
+\contentsline {subsubsection}{\numberline {10.4.1}Basic Usage}{32}
+\contentsline {subsection}{\numberline {10.5}Concepts}{32}
+\contentsline {subsection}{\numberline {10.6}Logging Priorities}{32}
+\contentsline {subsubsection}{\numberline {10.6.1}Defect logging}{32}
+\contentsline {subsubsection}{\numberline {10.6.2}Informative logging}{33}
+\contentsline {subsection}{\numberline {10.7}Logging API}{33}
+\contentsline {subsection}{\numberline {10.8}Logger Names}{33}
+\contentsline {subsubsection}{\numberline {10.8.1}Benefits of using Fully Qualified Class Names}{33}
+\contentsline {subsection}{\numberline {10.9}Loggers, Appenders und Layouts}{34}
+\contentsline {subsection}{\numberline {10.10}Level}{34}
+\contentsline {subsection}{\numberline {10.11}Appender}{34}
+\contentsline {subsection}{\numberline {10.12}Pattern Layout}{35}
+\contentsline {subsection}{\numberline {10.13}Beispiel log4j.xml}{35}
+\contentsline {subsection}{\numberline {10.14}Costs of logging}{35}
+\contentsline {subsection}{\numberline {10.15}Hidden costs of logging}{36}
+\contentsline {subsection}{\numberline {10.16}More Log4j2 Fearures}{36}
+\contentsline {subsection}{\numberline {10.17}Logging Exceptions}{36}
+\contentsline {subsection}{\numberline {10.18}log4j2 Patterns Vars}{37}
+\contentsline {section}{\numberline {11}Codebeispiele}{38}
+\contentsline {subsection}{\numberline {11.1}RentalTest}{38}
+\contentsline {subsection}{\numberline {11.2}Checkstyle}{41}

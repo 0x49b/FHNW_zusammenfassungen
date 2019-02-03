@@ -7,7 +7,7 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{caption}
-\usepackage{multicol}
+
 
 %Math
 \usepackage{amsmath}
@@ -38,6 +38,7 @@
 \newcommand{\Kursiv}[1]{\textit{#1}} %Italic
 \newcommand{\T}[1]{\text{#1}} %Textmode
 \newcommand{\Nicht}[1]{\T{\sout{$ #1 $}}} %Streicht Shit durch
+\newcommand\graybox[1]{\colorbox{lightgray}{\ttfamily #1}} % gibt eine graue Box mit Console Text
 
 %Arrows
 \newcommand{\lra}{\leftrightarrow}
@@ -105,7 +106,7 @@ morecomment=[s]{<?}{?>},
 stringstyle=\color{black},
 identifierstyle=\color{darkblue},
 keywordstyle=\color{cyan},
-morekeywords={xmlns,type}% list your attributes here
+morekeywords={xmlns,type, name, target, level, additivity, ref}% list your attributes here
 }
 
 
@@ -653,11 +654,57 @@ morekeywords={xmlns,type}% list your attributes here
     \end{center}
        
     \subsection{Mock Testing}
+    \begin{itemize}
+    	\item Mock objects simulate parts of the behaviour of domain objects.
+    	\item Classes can be tested in isolation by simulating their collaborators with mock objects.
+    	\item Takes classes out of a production environment and puts them in a well defined lab environment.
+    \end{itemize}
+    
+    \subsubsection{When to use Mock Objects}
+    \begin{itemize}
+    	\item The real object has non-deterministic behaviour.
+    	\item The real object is difficult to set up.
+    	\item The real object is slow.
+    	\item The real object has a user interface.
+    	\item The test needs to ask the real object about how it was used (-> if callback function was called)
+    	\item The real object does not yet exist.
+    \end{itemize}
+    
+    \subsubsection{Pros and Cons of Mock Objects}
+    \begin{itemize}
+    	\item Pros
+			\subitem Emphasize that testing is about isolation
+			\subitem Simplifies handling of interfaces with many methods
+			\subitem Can enable near-instant testing even of code that uses resource-bound APIs such as JDBC
+		\item Cons
+			\subitem Can mirror the implementation too closely, making atest suite fragile
+			\subitem Mocking can become complex with APIs like JDBC
+    \end{itemize}
+    
+    \subsection{Mockito}
+    \begin{center}
+    	\includegraphics[scale=0.4]{assets/mockito.png}
+    \end{center}
+    \subsubsection{Mocking Usage Pattern}
+    \begin{enumerate}
+    	\item Create a mock object for the interface or class we would like to simulate
+    	\item Specify the expected behavior of the mock
+    	\item Use the mock in standard unit testing, as if it was a normal object
+    	\item Verify behavior
+    \end{enumerate}
+    
+    \subsubsection{Mockito Benefits}
+    \begin{itemize}
+    	\item No hand-writing of classes for mock objects needed.
+    	\item Supports refactoring-safe mock objects: test code will not break at runtime when renaming methods or reordering method parameters
+    	\item Supports return values and exceptions.
+    	\item Supports order-checking of method calls, for one or more mock objects.
+    	\item Supports checking of the number of actual calls of the mock objects
+    \end{itemize}
+    
 	%Neues Kapitel, neue Seite
 	\newpage
-	
-	
-	
+		
 	
     \section{Javadoc}
     \begin{itemize}
@@ -822,10 +869,9 @@ morekeywords={xmlns,type}% list your attributes here
 
 	\subsection{Problems with Refactoring}
 	\begin{itemize}
-		\item ▪ Taken too far, refactoring can lead to incessant tinkering with the code, trying to make it perfect
-		\item ▪ Databases can be difficult to refactor
-code is easy to change; databases are not
-▪ Refactoring published interfaces can cause problems for the code that uses those interfaces
+		\item Taken too far, refactoring can lead to incessant tinkering with the code, trying to make it perfect
+		\item Databases can be difficult to refactor code is easy to change; databases are not
+		\item Refactoring published interfaces can cause problems for the code that uses those interfaces
 	\end{itemize}
 
 	
@@ -929,30 +975,283 @@ code is easy to change; databases are not
 		\item case
 	\end{itemize}
 	\end{multicols}
-	Oft falsch gemacht:
+	Wird oft falsch gemacht:
 	\begin{itemize}
 		\item switch-Statement selbst ist kein Entscheidungspunkt, wohl aber jedes einzelne case- Statement. Denn erst bei den case-Statements steht die Bedingung, welche entscheidet, ob der nachfolgende Block ausgef\"uhrt wird.
 		\item Else und default sind keine Entscheidungspunkte, die Entscheidung wird im if, bzw in allen anderen case-Statements getroffen. Else und default sind dann nur noch die \"ubrigbleibende Alternative.
 		\item break: springt zwar auch im Kontrollfluss \"uber folgende Statements hinweg, ist aber kein Entscheidungspunkt, da der Sprung unbedingt ist.
 	\end{itemize}
 	
+	\subsection{Cohesion and Coupling Metrics}
+	\includegraphics[scale=0.5]{assets/cohesion_coupling.png}
+	\begin{itemize}
+		\item Cohesion
+			\subitem Measure how closely related the methods of a class are.
+		\item Coupling / Dependency
+			\subitem Measure the degree to which each class relies on other classes
+		\item Low coupling usually correlates with high cohesion (which is optimal)
+		\item Metrics: LCOM (Lack of Cohesion in Method) several LCOM metrics!
+	\end{itemize}
+	
+	\subsection{LCOM -  Lack of cohesion in methods}
+	Zur Messung von Softwareprodukten werden sogenannte Software-Metriken verwendet, die unterschiedliche Eigenschaften von Softwareprodukten und -prozessen quantifizieren. Eine objektorientierte Metrik berücksichtigt bei der Messung von Software die Zusammenfassung von Datenstrukturen und der darauf anwendbaren Methoden zu einem Objekt, dessen Beziehungen zu anderen Objekten sowie die generellen Strukturmerkmale objektorientierter Programmierung.
+	Die Metrik nach Lack of Cohesion in Methods (LCOM) ist ein Maß für die Kohäsion - d.h. den Zusammenhalt - von Methoden in der betrachteten Klasse. Weitere objektorientierte Software-Metriken sind Weighted Methods for Class (WMC), Response for a Class (RFC), Coupling Between Objects (CBO), Depth of Inheritance Tree (DIT) und Number of Children (NOC).
+
+	LCOM-Definition: LCOM ist gleich der Paare von Methoden ohne gm. Instv. Abzüglich der Paare von Methoden mit gm. Instv. gm. Instv. ist die gemeinsame Instanzvariable.
+
+	Wichtig bei dieser Methode ist es, darauf zu achten, dass jeweils Paare von Methoden betrachtet werden. Da ein negativer Wert von LCOM unsinnig ist, wird LCOM=0 gesetzt, wenn die Subtraktion einen negativen Wert ergibt.
+		\begin{center}
+			\includegraphics{assets/lcom_ex}
+		\end{center}
+	
+	Gemäß anliegender Darstellung ist eine Klasse A mit 3 Methoden m1(), m2() und m3() gegeben, die jeweils auf bestimmten Instanzvariablen operieren.
+
+	Beispiel Klasse mit Methoden und Instanz-variablen:
+	
+	Paare: m1/m3, m1/m2, m2/m3, mit m1/m2 als gemeinsame Instanzvariable c.
+
+	Paare von Methoden ohne gm. Instv. = 1+0+1, Paare von Methoden mit gm. Instv. = 0+1+0
+
+	LCOM(A) = 2-1 = 1.
+
+	Anwendung: Ansatz zur Überprüfung der Kapselung einer Klasse. Dies aus der Überlegung heraus, dass ein hoher Wert von LCOM auf eine schlechte Kapselung hindeutet, da offensichtlich viele Methoden auf disjunkten Attributmengen operieren.
+	
 	%Neues Kapitel, neue Seite
 	\newpage
 	
-	
 	\section{Logging}
+	\subsection{Why logging?}
+	\begin{itemize}
+		\item Logging is a technique for \textcolor{red}{Monitoring} and \textcolor{red}{Debugging} applications
+		\item \textcolor{red}{Debuggers} focus on the \textcolor{red}{state} of a program \textcolor{red}{\textbf{now}}
+			\subitem A stack trace can tell you only how the program got here directly 
+			\subitem It is not possible to detect what was before this actual call
+		\item \textcolor{red}{Logging} provides information about the \textcolor{red}{state} of a program or a data structure \textcolor{red}{\textbf{over time}}
+			\subitem Logging can reveal several classes of errors and information that debuggers cannot.
+	\end{itemize}
 	
-    \section{Codebeispiele} \label{sec:codebeispiele}
+	\subsection{Value of Logging}
+	\begin{itemize}
+		\item Logging is invaluable in any system that needs to know how 
+			\subitem an application is used
+			\subitem who is using the application
+			\subitem sequences of event
+			\subitem how fast the system is 
+			\subitem how well a systems scales
+		\item Especially for 
+			\subitem real-time systems
+			\subitem event-based application 
+			\subitem distributed environment 
+			\subitem (concurrent processes)
+	\end{itemize}
+	
+	\subsection{Approaches to logging}
+	Do not use \texttt{System.out.println}. Use a Standart Framework such as Log4j2, slf4j, Logback, Standard Java Logging
+	\subsubsection{Benefits using Logframeworks}
+	\begin{itemize}
+		\item Configuration of the logging features is externalized
+		\item Log messages can be prioritized
+		\item Logging supports different message layouts
+		\item Enabling / disabling at runtime
+		\item Support different output targets
+		\item  Different output levels
+		\item supports message caching in order to prevent performance decrease
+	\end{itemize}
+	
+	\subsection{Log4j*}
+    Log4j is an Apache Open Source Project. It's actual Release is 2.x and you can find Documentation under http://logging.apache.org/log4j/2.x/. Originally developed by IBM at Zurich Research Labs. It is the father of many other logging Frameworks like: log4php, log4cxx, log4net, \dots
+    
+    \subsubsection{Basic Usage}
+	\lstinputlisting[language=Java]{assets/basic_log4j.java}
+	
+	\subsection{Concepts}
+	\begin{itemize}
+		\item \textbf{Priority}: Determines in the code \textcolor{blue}{what} is logged.
+		\item \textbf{Level}: Determines in the configuration \textcolor{blue}{wheter} something logged.
+		\item \textbf{Layout (Formatter)}: Determines \textcolor{blue}{how} it is logged.
+		\item \textbf{Appender}: Determines \textcolor{blue}{where} it is logged.
+		\item \textbf{Logger}: Writes a log entry to an \textcolor{blue}{appender} in a given \textcolor{blue}{layout} it the appropriate \textcolor{blue}{level} is met by the \textcolor{blue}{priority} of the log-instruction.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.5]{assets/logger_flow}
+	\end{center}
+	
+	\subsection{Logging Priorities}
+	\subsubsection{Defect logging}
+	\begin{itemize}
+		\item FATAL: In case of very severe errors from which your application cannot recover.
+		\item ERROR: When an error is encountered (but you application can still run).
+		\item WARN: Log requests to alert about harmful situations. 
+	\end{itemize}
+	
+	\subsubsection{Informative logging}
+	\begin{itemize}
+		\item INFO: Logs to inform about progress of the application at a coarse grained level.
+		\item DEBUG: Log requests that are relevant to debug the application.
+		\item TRACE: Log on an extremely fined grained level to trace control flow.
+	\end{itemize}
+	
+	\subsection{Logging API}	
+	\begin{table}[h]
+		\begin{tabular}{|l|l|}
+			\hline
+			\textbf{Level} & \textbf{Command} \\
+			\hline
+			FATAL 		& fatal(Object message [, Throwable throwable] ); \\
+			\hline
+			ERROR 		& error(Object message [, Throwable throwable] ); \\
+			\hline
+		 	WARN 		& warn(Object message [, Throwable throwable] ); \\
+		 	\hline
+		 	INFO 		& info(Object message [, Throwable throwable] );\\
+		 	\hline
+			DEBUG 		& debug(Object message [, Throwable throwable] );\\
+			\hline
+		 	TRACE 		& trace(Object message [, Throwable throwable] );\\
+		 	\hline
+		 	As wrapper 	& log(Priority level, Object message);\\
+						& log(Priority level, Object message,Throwable throwable);\\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Logger Names}
+	Name a Logger by locality. Instantiating a logger in each class, with the logger name equal to the fully-qualified name of the class. This is a useful and straightforward approach for defining loggers. 
+	\\
+	\graybox{class Foo \{
+			static Logger logger = LogManager.getLogger(Foo.class); ...
+			\}
+	}
+	\subsubsection{Benefits of using Fully Qualified Class Names}
+	\begin{itemize}
+		\item It is very simple to implement.
+		\item It is very simple to explain to new developers.
+		\item It automatically mirrors the application's own modular design.
+		\item It can be further refined at will.
+		\item Printing the logger automatically gives information on the locality of the log statement.
+		\item A Logger is an ancestor of another Logger if its name followed by a dot is a prefix of the descendant logger name.
+		\item For example, the Logger named "com.foo" is a parent of the Logger named "com.foo.Bar". Similarly, "java" is a parent of "java.util" and an ancestor of "java.util.Vector". This naming scheme should be familiar to most developers.
+	\end{itemize}
+	\subsection{Loggers, Appenders und Layouts}
+	\begin{center}
+		\includegraphics[scale=0.4]{assets/loggers_appenders_layouts}
+	\end{center}
+	Logger sind in Hierarchien definiert. Über Properties kann man das logging zur runtime anpassen. Jedem Logger ist ein Level zugeordnet. Ein Logstatement wird nur ausgegeben, wenn seine Priorität (also Level) und seine Kategorie (logger) zutreffen. \"Uber Appender können mehrere Output angegeben werden. Logger definieren eine Level und einen Appender.\\
+	\begin{center}
+		\includegraphics[scale=0.4]{assets/logger_example}
+	\end{center}
+	Wenn kein Logger konfiguriert ist über eine Konfigurationsdatei oder im Sourcecode, wird der Output an den Root Logger gesendet.
+	
+	\subsection{Level}
+	\begin{itemize}
+		\item Levels have the same name as priorities
+		\item Levels are set in the configuration (log4j2.xml)
+		\item Priorities are programmed in the code
+		\item Levels determine which log messages will be shown in the log. They act as a filter which allows to pass logs with priorities of the same name and higher to pass to the appenders. All other logs will be ignored.
+	\end{itemize}
+	\subsection{Appender}
+	Ein Appender sendet seine empfangenen Messages an einen definierten Endabnehmer. Dies können sein:
+	\begin{itemize}
+		\item ConsoleAppender - Write log to System.out or System.err
+		\item FileAppender – Write to a log file
+		\item SocketAppender – Dump log output to a socket
+		\item SyslogAppender – Write to the syslog.
+		\item NTEventLogAppender – Write the logs to the NT Event Log system.
+		\item RollingFileAppender – backup the log files after they reach a certain size.
+		\item SMTPAppender – Send Messages to email
+		\item JMSAppender – Send messages using Java Messaging Service
+	\end{itemize}
+	Es kann auch ein eigener Implementiert werden, je nachdem, was gebraucht wird.
+	
+	\subsection{Pattern Layout}
+	Mit einem Pattern könne die Meldungen formatiert ausgegeben werden. Die Definition eines Appenders ist stark an die printf Funktion aus C angelehnt.
+	\begin{center}
+		\includegraphics[scale=0.4]{assets/pattern}
+	\end{center}
+	Dieses Pattern resultiert in der Ausgabe:\\
+	\graybox{2000-09-07 14:07:41,508 [main] INFO MyApp - Entering application.}\\
+	\graybox{2000-09-07 14:07:41,529 [main] INFO MyApp - Exiting application. }
+	
+	\subsection{Beispiel log4j.xml}
+	\lstinputlisting[language=XML]{assets/log4j.xml}
+	
+	\subsection{Costs of logging}
+	\begin{itemize}
+		\item Logging performance is an issue
+		\item When logging is turned off entirely or just for a set of priorities, the cost of a log request consists of a method invocation plus an integer comparison.
+		\item The typical cost of actually logging is about 100 to 300 microseconds. This is the cost of formatting the log output and sending it to its target destination.
+	\end{itemize}
+	\newpage
+	\subsection{Hidden costs of logging}
+	\begin{itemize}
+		\item Method invocation involves the "hidden" cost of parameter construction.
+		\item To avoid the parameter construction cost use lazy logging with lambdas:
+			\subitem \begin{verbatim}
+				logger.debug(() -> ("Entry number: " + i + " is " + String.valueOf(entry[i])));
+				// or before Java 1.8..
+					if (logger.isDebugEnabled()) {
+					logger.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));
+				} 
+			\end{verbatim} 
+	\end{itemize}
+	
+	\subsection{More Log4j2 Fearures}
+	\begin{itemize}
+		\item Async Loggers - performance similar to logging switched off
+		\item Custom log levels
+		\item Automatic reload of configuration upon modification
+		\item Java 8-style lambda support for lazy logging
+		\item Filtering: filtering based on context data, markers, regular expressions, and other components in the Log event.
+		\item Plugin Architecture - easy to extend by building custom components
+	\end{itemize}
+	
+	\subsection{Logging Exceptions}
+	\begin{itemize}
+		\item Don't use e.printStackTrace() use log.error("Exception message", e) instead
+		\item Don't log an exception and throw same exception again
+		\item Don't discard the stack trace, append it!
+			\subitem \} catch(SQLException e)\{
+						throw new RuntimeException("DB exception", e);
+						\}
+	\end{itemize}
+	\newpage
+	\subsection{log4j2 Patterns Vars}
+	\begin{table}[h]
+		\begin{tabular}{|p{1.5cm}|p{15cm}|}
+		\hline
+		Conversion & Character	Effect \\
+		\hline
+c &	Used to output the category of the logging event. \\ \hline
+C &	Used to output the fully qualified class name of the caller issuing the logging request \%C{1} will output "SomeClass". \\ \hline
+d &	Used to output the date of the logging event. The date conversion specifier may be followed by a date format specifier enclosed between braces. For example, \%d\{HH:mm:ss,SSS\} \\ \hline
+F &	Used to output the file name where the logging request was issued.\\ \hline
+l &	Used to output location information of the caller which generated the logging event. \\ \hline
+L &	Used to output the line number from where the logging request was issued.\\ \hline
+m & Used to output the application supplied message associated with the logging event.\\ \hline
+M &	Used to output the method name where the logging request was issued. \\ \hline
+n &	Outputs the platform dependent line separator character or characters. \\ \hline
+p &	Used to output the priority of the logging event.\\ \hline
+r &	Used to output the number of milliseconds elapsed from the construction of the layout until the creation of the logging event.\\ \hline
+t &	Used to output the name of the thread that generated the logging event.\\ \hline
+x &	Used to output the NDC (nested diagnostic context) associated with the thread that generated the logging event.\\ \hline
+X &	Used to output the MDC (mapped diagnostic context) associated with the thread that generated the logging event. \\ \hline
+\% & The sequence \%\% outputs a single percent sign.\\
+			\hline
+		\end{tabular}
+	\end{table}
 
+	
+	
+	%Neues Kapitel, neue Seite
+	\newpage
+    \section{Codebeispiele} \label{sec:codebeispiele}
     \subsection{RentalTest} \label{subsec:rentaltest}
     \lstinputlisting[language=Java]{assets/RentalTest.java}
-    %Neues Kapitel, neue Seite
+    %Neues Codebeispiel, neue Seite
 	\newpage
-	
-
     \subsection{Checkstyle} \label{subsec:heckstyle}
     \lstinputlisting[language=XML]{assets/swc_checkstyle.xml}
-
+    
     % Inhalt Ende
 \end{document} 
 
