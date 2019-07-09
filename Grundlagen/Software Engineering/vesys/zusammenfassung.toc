@@ -1,4 +1,4 @@
-\select@language {ngerman}
+\babel@toc {ngerman}{}
 \contentsline {section}{\numberline {1}Networking}{1}
 \contentsline {subsection}{\numberline {1.1}InetAddress}{1}
 \contentsline {subsection}{\numberline {1.2}Network Interfaces}{1}
