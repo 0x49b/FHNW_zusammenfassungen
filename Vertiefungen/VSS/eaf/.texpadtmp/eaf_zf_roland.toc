@@ -1,0 +1,122 @@
+\babel@toc {german}{}
+\contentsline {part}{\numberline {I}Theorie}{4}
+\contentsline {chapter}{\numberline {1}Einf\IeC {\"u}hrung in Spring Framework}{5}
+\contentsline {section}{\numberline {1.1}Classpath (Spring HelloWorld)}{6}
+\contentsline {section}{\numberline {1.2}Einfache Entkoppelung mittels Dependancy Injection}{6}
+\contentsline {subsection}{\numberline {1.2.1}Ausgangspunkt}{6}
+\contentsline {subsection}{\numberline {1.2.2}Versuch 1}{6}
+\contentsline {subsection}{\numberline {1.2.3}V\IeC {\"o}llig entkoppelt}{7}
+\contentsline {subsection}{\numberline {1.2.4}Besonderheiten}{8}
+\contentsline {chapter}{\numberline {2}Spring Konfiguration}{9}
+\contentsline {section}{\numberline {2.1}Intro}{9}
+\contentsline {section}{\numberline {2.2}Setter Injection vs Constructor Injection}{10}
+\contentsline {section}{\numberline {2.3}Konfiguration \IeC {\"u}ber XML hinaus}{10}
+\contentsline {subsection}{\numberline {2.3.1}Implementation von Annotationsbasierte Konfiguration}{11}
+\contentsline {subsection}{\numberline {2.3.2}Scanning f\IeC {\"u}r Annotationen in den Klassen}{11}
+\contentsline {section}{\numberline {2.4}Spring + Testing}{12}
+\contentsline {chapter}{\numberline {3}Datenbank}{13}
+\contentsline {section}{\numberline {3.1}Data Acess Object Pattern}{13}
+\contentsline {subsection}{\numberline {3.1.1}Motivation}{13}
+\contentsline {section}{\numberline {3.2}Service Layer}{13}
+\contentsline {section}{\numberline {3.3}JDBC Problems}{13}
+\contentsline {section}{\numberline {3.4}JDBC Probleme}{14}
+\contentsline {subsection}{\numberline {3.4.1}JDBC pure DAO}{14}
+\contentsline {section}{\numberline {3.5}Spring Template Pattern}{15}
+\contentsline {subsection}{\numberline {3.5.1}JDBC Template : Query Results}{16}
+\contentsline {subsection}{\numberline {3.5.2}Query Results with Callbacks}{16}
+\contentsline {subsection}{\numberline {3.5.3}Exception Hirachie}{17}
+\contentsline {section}{\numberline {3.6}Resourcen in Spring}{17}
+\contentsline {section}{\numberline {3.7}Testing : DBUnit}{18}
+\contentsline {section}{\numberline {3.8}JPA}{19}
+\contentsline {subsection}{\numberline {3.8.1}Entity Manager}{20}
+\contentsline {subsection}{\numberline {3.8.2}Entity Annotations}{20}
+\contentsline {subsection}{\numberline {3.8.3}Entity Klasse Voraussetzungen}{20}
+\contentsline {subsection}{\numberline {3.8.4}Annotation Definitionen}{20}
+\contentsline {subsection}{\numberline {3.8.5}JPA Inheritance}{22}
+\contentsline {subsection}{\numberline {3.8.6}JPA Method and Field Annotations}{22}
+\contentsline {subsection}{\numberline {3.8.7}JPA Entity Manager}{22}
+\contentsline {subsection}{\numberline {3.8.8}Spring und Entity Manager}{24}
+\contentsline {subsection}{\numberline {3.8.9}Transactions mit JPA}{24}
+\contentsline {subsection}{\numberline {3.8.10}JPA Associations}{25}
+\contentsline {subsubsection}{\nonumberline Cascading}{25}
+\contentsline {subsubsection}{\nonumberline FetchType}{25}
+\contentsline {subsubsection}{\nonumberline OneToOne Unidirectional}{26}
+\contentsline {subsubsection}{\nonumberline OneToMany biderectional}{27}
+\contentsline {subsubsection}{\nonumberline Many to One}{28}
+\contentsline {subsubsection}{\nonumberline Many to Many}{29}
+\contentsline {subsubsection}{\nonumberline Entity Relation Richtungen}{29}
+\contentsline {subsubsection}{\nonumberline orphanRemoval}{30}
+\contentsline {subsubsection}{\nonumberline OrderBy}{30}
+\contentsline {subsection}{\numberline {3.8.11}Inheritance with JPA}{30}
+\contentsline {subsubsection}{\nonumberline Single Table Strategy}{30}
+\contentsline {subsubsection}{\nonumberline Joined Strategy}{31}
+\contentsline {subsubsection}{\nonumberline Table per Class Strategy}{31}
+\contentsline {subsubsection}{\nonumberline Non Entity Base Class}{31}
+\contentsline {subsection}{\numberline {3.8.12}JPA Query Sprache (JPQL)}{32}
+\contentsline {subsubsection}{\nonumberline Typed Query}{32}
+\contentsline {subsubsection}{\nonumberline Named Query}{32}
+\contentsline {subsubsection}{\nonumberline Select und From}{32}
+\contentsline {subsubsection}{\nonumberline Where Klausel}{32}
+\contentsline {subsubsection}{\nonumberline Functions}{32}
+\contentsline {subsubsection}{\nonumberline Ordering and Paging}{32}
+\contentsline {subsubsection}{\nonumberline Inner Joins}{34}
+\contentsline {subsubsection}{\nonumberline Outer Joins}{34}
+\contentsline {subsubsection}{\nonumberline Fetch Joins und Lazy Loading}{34}
+\contentsline {subsubsection}{\nonumberline Update and Delete}{34}
+\contentsline {chapter}{\numberline {4}Data Transfer Objects}{37}
+\contentsline {section}{\numberline {4.1}Dozer}{37}
+\contentsline {section}{\numberline {4.2}Pros Cons}{38}
+\contentsline {chapter}{\numberline {5}Remoting with Spring}{39}
+\contentsline {section}{\numberline {5.1}Spring Service Export mit RMI}{39}
+\contentsline {section}{\numberline {5.2}Benutzung ein RMI Dienst mittels Spring}{40}
+\contentsline {section}{\numberline {5.3}Remoting Exceptions mit Spring}{40}
+\contentsline {section}{\numberline {5.4}Spring Remoting Client Seite (nicht Pr\IeC {\"u}fungsrelevant)}{40}
+\contentsline {section}{\numberline {5.5}Bemerkungen zum Remoting}{41}
+\contentsline {section}{\numberline {5.6}HttpInvokers}{41}
+\contentsline {subsection}{\numberline {5.6.1}Config}{42}
+\contentsline {chapter}{\numberline {6}Transaktionen}{44}
+\contentsline {section}{\numberline {6.1}Key Design Principles}{44}
+\contentsline {section}{\numberline {6.2}Key Architecture Principles}{44}
+\contentsline {section}{\numberline {6.3}SchichtenSystem}{44}
+\contentsline {section}{\numberline {6.4}Enterprise App Design}{45}
+\contentsline {subsection}{\numberline {6.4.1}OO Design}{45}
+\contentsline {subsection}{\numberline {6.4.2}Enkapselung}{45}
+\contentsline {subsection}{\numberline {6.4.3}POJO Facade}{46}
+\contentsline {subsection}{\numberline {6.4.4}Exposed Model Pattern}{46}
+\contentsline {section}{\numberline {6.5}Transaktionengrenzen}{47}
+\contentsline {section}{\numberline {6.6}Warum Transaktionen?}{47}
+\contentsline {section}{\numberline {6.7}ACID}{48}
+\contentsline {section}{\numberline {6.8}Transaktionsdefinitonen}{48}
+\contentsline {chapter}{\numberline {7}Transaktions Strategieen}{49}
+\contentsline {section}{\numberline {7.1}Theorie}{49}
+\contentsline {section}{\numberline {7.2}Transaction Isolation Levels}{50}
+\contentsline {section}{\numberline {7.3}Transaktionen Propagieren}{50}
+\contentsline {section}{\numberline {7.4}Transaktionen mit Spring}{50}
+\contentsline {section}{\numberline {7.5}Bemerkungen zu Transaktionsstrategie}{51}
+\contentsline {chapter}{\numberline {8}Aspektorientierte Programmierung (AOP)}{52}
+\contentsline {section}{\numberline {8.1}Definitionen}{52}
+\contentsline {section}{\numberline {8.2}Advice Typen}{52}
+\contentsline {subsection}{\numberline {8.2.1}AOP Implementierungen}{53}
+\contentsline {subsection}{\numberline {8.2.2}Sprig AOP Architecture}{53}
+\contentsline {section}{\numberline {8.3}AOP Calls}{53}
+\contentsline {subsection}{\numberline {8.3.1}Programmatische Proxies}{54}
+\contentsline {section}{\numberline {8.4}AOP Development}{54}
+\contentsline {subsection}{\numberline {8.4.1}Aspect J Expression Language}{54}
+\contentsline {subsection}{\numberline {8.4.2}AspectJ Support Beispiel}{55}
+\contentsline {subsection}{\numberline {8.4.3}Enable Aspect J}{55}
+\contentsline {subsection}{\numberline {8.4.4}AspectJ DI}{55}
+\contentsline {section}{\numberline {8.5}Vorteile Nachteile}{55}
+\contentsline {section}{\numberline {8.6}Spring configuration}{56}
+\contentsline {part}{\numberline {II}Code, Beispiele \IeC {\"U}bungen}{57}
+\contentsline {chapter}{\numberline {9}JPA Complete}{58}
+\contentsline {section}{\numberline {9.1}Services}{61}
+\contentsline {chapter}{\numberline {10}Discussions JPA}{69}
+\contentsline {section}{\numberline {10.1}JPA Cascade Types}{69}
+\contentsline {section}{\numberline {10.2}JDBC}{69}
+\contentsline {section}{\numberline {10.3}JPA}{76}
+\contentsline {chapter}{\numberline {11}Caching, Email, Sheduled Tasks, Docker, RESTTest}{85}
+\contentsline {chapter}{\numberline {12}AOP}{90}
+\contentsline {chapter}{\numberline {13}Convention over Configuration}{92}
+\contentsline {section}{\numberline {13.1}Main Code}{92}
+\contentsline {section}{\numberline {13.2}XML Configuration}{92}
+\contentsline {section}{\numberline {13.3}Tests}{93}

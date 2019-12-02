@@ -6,7 +6,7 @@
 \usepackage{pdfpages}
 %opening
 \title{Enterprise Application Frameworks}
-\author{Roland Hediger}
+\author{Florian Thiévent, Roger Kreienbühl}
 \usepackage{fancyhdr}
 \renewcommand{\familydefault}{\sfdefault}
 \newcommand{\pic}[2][figure]{\begin{figure}[h]
@@ -3042,12 +3042,28 @@ public class UserServiceImpl implements UserService {
 
 \end{lstlisting}
 \chapter{Discussions JPA}
+\section{JPA Cascade Types}
+The cascade types supported by the Java Persistence Architecture are as below:
+\begin{enumerate}
+	 
+\item  \textbf{CascadeType.PERSIST} : cascade type presist means that save() or persist() operations cascade to related entities.
+\item  \textbf{CascadeType.MERGE} : cascade type merge means that related entities are merged when the owning entity is merged.
+\item  \textbf{CascadeType.REFRESH} : cascade type refresh does the same thing for the refresh() operation.
+\item  \textbf{CascadeType.REMOVE} : cascade type remove removes all related entities association with this setting when the owning entity is deleted.
+\item  \textbf{CascadeType.DETACH} : cascade type detach detaches all related entities if a “manual detach” occurs.
+\item  \textbf{CascadeType.ALL} : cascade type all is shorthand for all of the above cascade operations.
+\end{enumerate}
+There is no default cascade type in JPA. By default no operations are cascaded.
 \section{JDBC}
  \includepdf[pages=-,nup=2x2]{d1.pdf}
 \section{JPA}
  \includepdf[pages=-,nup=2x2]{d2.pdf}
   \includepdf[pages=-,nup=2x2]{d3.pdf}
+\chapter{Caching, Email, Sheduled Tasks, Docker, RESTTest}
+ \includepdf[pages=-,nup=2x2]{cache.pdf}
+ 
 \chapter{AOP}
+ \includegraphics[scale=0.4,keepaspectratio=true]{aop_ex.jpeg}
 \begin{lstlisting}[caption=Aspekt Beispiele]
  @Aspect
 @Component
@@ -3113,5 +3129,311 @@ public class MovieValidatorAspect {
 		}
 	}
 }
+\end{lstlisting}
+\begin{lstlisting}[caption=SwaggerConfig.java]
+package ch.fhnw.edu.eaf.movierental;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+// Needs in build.gradle dependencies
+//  implementation 'io.springfox:springfox-swagger2:2.9.2'
+//  implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {                                    
+    @Bean
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_2)  
+          .select()                                  
+          .apis(RequestHandlerSelectors.any())              
+          .paths(PathSelectors.any())                          
+          .build();                                           
+    }
+}
+\end{lstlisting}
+\chapter{Convention over Configuration}
+\section{Main Code}
+\begin{lstlisting}[caption=HelloWorldConfiguration.java]	
+package ch.fhnw.edu.eaf.app;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+// Use this annotations for java config. They can be commented out if using spring boot conventions
+@Configuration
+@ComponentScan(basePackages = {"ch.fhnw.edu.eaf.app.domain"})
+@PropertySource(value={"classpath:application.properties"})
+// Use this annotation to fire spring boot conventions
+@SpringBootApplication
+public class HelloWorldConfiguration {
+}
+\end{lstlisting}
+\begin{lstlisting}[caption=HelloWorldConfigurationWithoutConfiguration.java]
+package ch.fhnw.edu.eaf.app;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+import ch.fhnw.edu.eaf.app.domain.impl.ExternalizedHelloWorldMessageProvider;
+import ch.fhnw.edu.eaf.app.domain.impl.StandardOutRenderer;
+
+@Configuration
+@PropertySource(value={"classpath:application.properties"})
+public class HelloWorldConfigurationWithoutComponentScan {
+    @Bean
+    public MessageProvider messageProvider() {
+        return new ExternalizedHelloWorldMessageProvider();
+    }
+
+    @Bean
+    public MessageRenderer messageRenderer() {
+        MessageRenderer renderer = new StandardOutRenderer();
+        renderer.setMessageProvider(messageProvider());
+        return renderer;
+    }
+}
+	
+\end{lstlisting}
+\section{XML Configuration}
+\begin{lstlisting}[caption=helloConfigWithAnnotationFormat.xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+			
+	<!-- load property resources -->
+	<context:property-placeholder location="classpath:application.properties"/>
+	
+	<!-- autodetect spring beans and register them -->
+	<context:component-scan base-package="ch.fhnw.edu.eaf.app.domain"/>
+</beans>	
+\end{lstlisting}
+
+\begin{lstlisting}[caption="helloConfigWithApplicationContextWithXmlFormat.xml]
+	<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- load property resources -->
+	<context:property-placeholder location="classpath:application.properties"/>
+
+	<bean id="renderer" class="ch.fhnw.edu.eaf.app.domain.impl.StandardOutRenderer">
+		<property name="messageProvider" ref="provider"/>
+	</bean>
+
+	<bean id="provider" class="ch.fhnw.edu.eaf.app.domain.impl.ExternalizedHelloWorldMessageProvider">
+		<property name="message" value="${helloworld.message}"/>
+	</bean>
+</beans>
+\end{lstlisting}
+
+\section{Tests}
+\begin{lstlisting}[caption=HelloWorldAnnotationTest.java]
+package ch.fhnw.edu.eaf.app;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(locations = {"/spring/helloConfigWithAnnotationFormat.xml"})
+public class HelloWorldAnnotationTest {
+	
+	@Autowired
+	private MessageProvider messageProvider;
+	
+	@Autowired
+	private MessageRenderer messageRenderer;
+	
+	@Test
+	public void testGetMessage() {
+		assertEquals("Herzlich willkommen!", messageProvider.getMessage());
+	}
+
+	@Test
+	public void testGetMessageProvider() {
+		assertNotNull(messageRenderer.getMessageProvider());
+	}
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=HelloWorldConventionTest.java]
+package ch.fhnw.edu.eaf.app;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+
+@RunWith(SpringRunner.class)
+// SpringBootTest searches for a class annotated with @SpringBootConfiguration
+@SpringBootTest
+public class HelloWorldConventionTest {
+	
+	@Autowired
+	private MessageProvider messageProvider;
+	
+	@Autowired
+	private MessageRenderer messageRenderer;
+	
+	@Test
+	public void testGetMessage() {
+		assertEquals("Herzlich willkommen!", messageProvider.getMessage());
+	}
+
+	@Test
+	public void testGetMessageProvider() {
+		assertNotNull(messageRenderer.getMessageProvider());
+	}
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption=HelloWorldJavaTest.java]
+package ch.fhnw.edu.eaf.app;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes= {ch.fhnw.edu.eaf.app.HelloWorldConfiguration.class})
+public class HelloWorldJavaTest {
+	
+	@Autowired
+	private MessageProvider messageProvider;
+	
+	@Autowired
+	private MessageRenderer messageRenderer;
+	
+	@Test
+	public void testGetMessage() {
+		assertEquals("Herzlich willkommen!", messageProvider.getMessage());
+	}
+
+	@Test
+	public void testGetMessageProvider() {
+		assertNotNull(messageRenderer.getMessageProvider());
+	}
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption=HelloWorldJavaTestWithoutComponentScan.java]
+package ch.fhnw.edu.eaf.app;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes= {HelloWorldConfigurationWithoutComponentScan.class})
+public class HelloWorldJavaTestWithoutComponentScan {
+	
+	@Autowired
+	private MessageProvider messageProvider;
+	
+	@Autowired
+	private MessageRenderer messageRenderer;
+	
+	@Test
+	public void testGetMessage() {
+		assertEquals("Herzlich willkommen!", messageProvider.getMessage());
+	}
+
+	@Test
+	public void testGetMessageProvider() {
+		assertNotNull(messageRenderer.getMessageProvider());
+	}
+}
+
+\end{lstlisting}
+\begin{lstlisting}[caption=HelloWorldXMLTest.java]
+package ch.fhnw.edu.eaf.app;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import ch.fhnw.edu.eaf.app.domain.MessageProvider;
+import ch.fhnw.edu.eaf.app.domain.MessageRenderer;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(locations = {"/spring/helloConfigWithApplicationContextWithXmlFormat.xml"})
+public class HelloWorldXMLTest {
+	
+	@Autowired
+	private MessageProvider messageProvider;
+	
+	@Autowired
+	private MessageRenderer messageRenderer;
+	
+	@Test
+	public void testGetMessage() {
+		assertEquals("Herzlich willkommen!", messageProvider.getMessage());
+	}
+
+	@Test
+	public void testGetMessageProvider() {
+		assertNotNull(messageRenderer.getMessageProvider());
+	}
+}
+
 \end{lstlisting}
 \end{document}
